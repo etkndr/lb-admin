@@ -1,4 +1,4 @@
-from .db import db, environment, SCHEMA
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 from sqlalchemy.sql import func
 
 class Section(db.Model):
@@ -8,6 +8,7 @@ class Section(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
+    menu_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("menus.id")), nullable=False)
     choice_desc = db.Column(db.String(255))
     price = db.Column(db.Integer)
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
@@ -19,6 +20,7 @@ class Section(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
+            "menu_id": self.menu_id,
             "choice_desc": self.choice_desc,
             "price": self.price,
             "created_at": self.created_at,
