@@ -1,7 +1,7 @@
 from .db import db, environment, SCHEMA
 from sqlalchemy.sql import func
 
-class Instrument(db.Model):
+class Section(db.Model):
     __tablename__ = "sections"
     
     if environment == "production":

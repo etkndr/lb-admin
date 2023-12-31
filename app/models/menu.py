@@ -1,7 +1,7 @@
 from .db import db, environment, SCHEMA
 from sqlalchemy.sql import func
 
-class Instrument(db.Model):
+class Menu(db.Model):
     __tablename__ = "menus"
     
     if environment == "production":

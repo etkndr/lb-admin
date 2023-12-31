@@ -1,7 +1,7 @@
 from .db import db, environment, SCHEMA
 from sqlalchemy.sql import func
 
-class Instrument(db.Model):
+class Item(db.Model):
     __tablename__ = "items"
     
     if environment == "production":
