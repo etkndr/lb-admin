@@ -10,9 +10,12 @@ menu_routes = Blueprint("menu", __name__)
 @menu_routes.route("/")
 @login_required
 def user_menus():
+    if not current_user:
+        return {"errors": "Please log in to continue"}
+    
     menus = Menu.query.filter(Menu.user_id == current_user.id).all()
     
-    return {"menus": [menu.to_dict() for menu in menus]}
+    return [menu.to_dict() for menu in menus]
 
 # GET MENU BY ID
 @menu_routes.route("/<int:id>")

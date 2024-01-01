@@ -11,7 +11,7 @@ class Menu(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    visible = db.Column(db.Boolean, nullable=False)
+    visible = db.Column(db.String(3), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
