@@ -1,5 +1,5 @@
-from app.models import db, Menu, Section
-from app.forms import SectionForm
+from app.models import db, Menu, Section, Item
+from app.forms import SectionForm, ItemForm
 from flask import Blueprint, request
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
@@ -55,3 +55,34 @@ def delete_section(id):
     db.session.commit()
     
     return {"message": "Section successfully deleted"}
+
+# GET ALL ITEMS FOR SECTION BY ID
+@section_routes.route("/<int:id>/items")
+def section_items(id):
+    section = Section.query.get(id)
+    
+    if not section:
+        return {"errors": "Section not found"}, 404
+    
+    items = Item.query.filter(Item.section_id == section.id).all()
+    
+    return [item.to_dict() for item in items]
+
+# CREATE NEW ITEM
+@section_routes.route("/<int:id>/items", methods=["POST"])
+@login_required
+def new_item(id):
+    form = ItemForm()
+    form["csrf_token"].data = request.cookies["csrf_token"]
+    
+    if form.validate_on_submit():
+        item = Item(
+            section_id = id,
+            title = form.data["title"]
+        )
+        
+        db.session.add(item)
+        db.session.commit()
+        
+        return item.to_dict()
+    return {"errors": validation_errors_to_error_messages(form.errors)}, 401
