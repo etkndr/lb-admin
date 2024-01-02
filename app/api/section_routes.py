@@ -46,6 +46,8 @@ def delete_section(id):
     section = Section.query.get(id)  
     menu = Menu.query.get(section.menu_id)
     
+    if not menu:
+        return {"errors", "Menu not found"}, 404
     if not section:
         return {"errors": "Section not found"}, 404
     if menu.user_id != current_user.id:
@@ -72,6 +74,12 @@ def section_items(id):
 @section_routes.route("/<int:id>/items", methods=["POST"])
 @login_required
 def new_item(id):
+    section = Section.query.get(id)
+    menu = Menu.query.get(section.menu_id)
+    
+    if menu.user_id != current_user.id:
+        return {"errors": "Items can only be added by menu creator"}, 400
+    
     form = ItemForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     

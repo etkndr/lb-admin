@@ -104,6 +104,12 @@ def menu_sections(id):
 @menu_routes.route("/<int:id>/sections", methods=["POST"])
 @login_required
 def new_section(id):
+    menu = Menu.query.get(id)  
+    if not menu:
+        return {"errors": "Menu not found"}, 404
+    if menu.user_id != current_user.id:
+        return {"errors": "Sections can only be added by menu creator"}, 400
+    
     form = SectionForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     
