@@ -105,6 +105,7 @@ def menu_sections(id):
 @login_required
 def new_section(id):
     menu = Menu.query.get(id)  
+    
     if not menu:
         return {"errors": "Menu not found"}, 404
     if menu.user_id != current_user.id:
