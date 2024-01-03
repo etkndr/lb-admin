@@ -1,4 +1,4 @@
-from app.models import db, Menu, Section, Item
+from app.models import db, Section, Item
 from app.forms import SectionForm, ItemForm
 from flask import Blueprint, request
 from flask_login import current_user, login_required
@@ -16,18 +16,17 @@ def get_section(id):
     return section.to_dict()
 
 # SAVE SECTION UPDATES
-@section_routes.route("/<int:id>", methods=["PUT"])
+@section_routes.put("/<int:id>")
 @login_required
 def edit_section(id):
     form = SectionForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     
     section = Section.query.get(id)
-    menu = Menu.query.get(section.menu_id)
     
     if not section:
         return {"errors": "Section not found"}, 404
-    if menu.user_id != current_user.id:
+    if section.user_id != current_user.id:
         return {"errors": "Section can only be edited by creator"}, 400
 
     if form.validate_on_submit():
@@ -40,17 +39,14 @@ def edit_section(id):
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 # DELETE SECTION
-@section_routes.route("/<int:id>", methods=["DELETE"])
+@section_routes.delete("/<int:id>")
 @login_required
 def delete_section(id):
     section = Section.query.get(id)  
-    menu = Menu.query.get(section.menu_id)
     
-    if not menu:
-        return {"errors", "Menu not found"}, 404
     if not section:
         return {"errors": "Section not found"}, 404
-    if menu.user_id != current_user.id:
+    if section.user_id != current_user.id:
         return {"errors": "Section can only be deleted by creator"}, 400
 
     db.session.delete(section)
@@ -71,13 +67,14 @@ def section_items(id):
     return [item.to_dict() for item in items]
 
 # CREATE NEW ITEM
-@section_routes.route("/<int:id>/items", methods=["POST"])
+@section_routes.post("/<int:id>/items")
 @login_required
 def new_item(id):
     section = Section.query.get(id)
-    menu = Menu.query.get(section.menu_id)
     
-    if menu.user_id != current_user.id:
+    if not section:
+        return {"errors", "Section not found"}, 404
+    if section.user_id != current_user.id:
         return {"errors": "Items can only be added by menu creator"}, 400
     
     form = ItemForm()
@@ -86,6 +83,7 @@ def new_item(id):
     if form.validate_on_submit():
         item = Item(
             section_id = id,
+            user_id = current_user.id,
             title = form.data["title"]
         )
         

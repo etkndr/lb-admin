@@ -9,6 +9,8 @@ from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.menu_routes import menu_routes
 from .api.section_routes import section_routes
+from .api.item_routes import item_routes
+from .api.desc_routes import desc_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -30,8 +32,8 @@ app.cli.add_command(seed_commands)
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
-# app.register_blueprint(desc_routes, url_prefix='/api/descs')
-# app.register_blueprint(item_routes, url_prefix='/api/items')
+app.register_blueprint(desc_routes, url_prefix='/api/descs')
+app.register_blueprint(item_routes, url_prefix='/api/items')
 app.register_blueprint(menu_routes, url_prefix='/api/menus')
 app.register_blueprint(section_routes, url_prefix='/api/sections')
 db.init_app(app)

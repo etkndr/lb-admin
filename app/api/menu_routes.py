@@ -27,7 +27,7 @@ def get_menu(id):
     return menu.to_dict()
 
 # CREATE NEW MENU
-@menu_routes.route("/", methods=["POST"])
+@menu_routes.post("/")
 @login_required
 def new_menu():
     form = MenuForm()
@@ -48,7 +48,7 @@ def new_menu():
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 # SAVE MENU UPDATES
-@menu_routes.route("/<int:id>", methods=["PUT"])
+@menu_routes.put("/<int:id>")
 @login_required
 def edit_menu(id):
     form = MenuForm()
@@ -74,7 +74,7 @@ def edit_menu(id):
 
 
 # DELETE MENU
-@menu_routes.route("/<int:id>", methods=["DELETE"])
+@menu_routes.delete("/<int:id>")
 @login_required
 def delete_menu(id):
     menu = Menu.query.get(id)  
@@ -101,7 +101,7 @@ def menu_sections(id):
     return [section.to_dict() for section in sections]
 
 # CREATE NEW SECTION
-@menu_routes.route("/<int:id>/sections", methods=["POST"])
+@menu_routes.post("/<int:id>/sections")
 @login_required
 def new_section(id):
     menu = Menu.query.get(id)  
@@ -117,6 +117,7 @@ def new_section(id):
     if form.validate_on_submit():
         section = Section(
             menu_id = id,
+            user_id = current_user.id,
             choice_desc = form.data["choice_desc"],
             price = form.data["price"]
         )

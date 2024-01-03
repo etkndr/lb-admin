@@ -15,6 +15,9 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
     
     menu = db.relationship("Menu", back_populates="user", cascade="all, delete")
+    section = db.relationship("Section", back_populates="user")
+    item = db.relationship("Item", back_populates="user")
+    desc = db.relationship("Desc", back_populates="user")
 
     @property
     def password(self):
