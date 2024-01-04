@@ -9,7 +9,7 @@ import {
 
 export function getAllMenus() {
   return async (dispatch) => {
-    const res = await fetch("/api/menus/");
+    const res = await fetch(`/api/menus/`);
     const data = await res.json();
 
     if (res.ok) {
@@ -23,8 +23,27 @@ export function getAllMenus() {
   };
 }
 
+export function getMenuById(menuId) {
+  return async (dispatch) => {
+    const res = await fetch(`/api/menus/${menuId}`);
+    const data = await res.json();
+
+    if (res.ok) {
+      dispatch(getMenu(data));
+    } else {
+      if (data.errors) {
+        return data.errors;
+      }
+      return ["Error occured, please try again"];
+    }
+  };
+}
+
 export const menus = createReducer([], {
-  ["GET_MENUS"]: (state, action) => {
-    return [...state, action.menus];
+  ["ALL_MENUS"]: (state, action) => {
+    return { ...state, menuList: action.menuList };
+  },
+  ["GET_MENU"]: (state, action) => {
+    return { ...state, menu: action.menu };
   },
 });

@@ -9,11 +9,12 @@ import * as menuActions from "./store/menu";
 
 function App() {
   const dispatch = useDispatch();
-  const menus = useSelector((state) => state.menus);
+  const menus = useSelector((state) => state);
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true));
     dispatch(menuActions.getAllMenus());
+    dispatch(menuActions.getMenuById(1));
   }, [dispatch]);
 
   console.log(menus);
