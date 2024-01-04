@@ -1,10 +1,22 @@
-from app.models import db, Menu, Section
+import os
+from app.models import db, User, Menu, Section
 from app.forms import MenuForm, SectionForm
 from flask import Blueprint, request
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
+from sqlalchemy import and_
 
 menu_routes = Blueprint("menu", __name__)
+
+# GET VISIBLE MENUS
+@menu_routes.route("/visible")
+def vis_menus():
+    user = User.query.filter(User.key == os.environ.get("ADMIN")).one()
+    menus = Menu.query.filter(and_(
+        Menu.visible == "visible",
+        Menu.user_id == user.id)).all()
+    
+    return [menu.to_dict() for menu in menus]
 
 # GET ALL MENUS FOR USER
 @menu_routes.route("/")
