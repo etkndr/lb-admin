@@ -12,6 +12,7 @@ menu_routes = Blueprint("menu", __name__)
 @menu_routes.route("/visible")
 def vis_menus():
     user = User.query.filter(User.key == os.environ.get("ADMIN")).one()
+    
     menus = Menu.query.filter(and_(
         Menu.visible == "visible",
         Menu.user_id == user.id)).all()
