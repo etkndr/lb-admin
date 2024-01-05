@@ -1,5 +1,5 @@
-from api.models import db, Section, Item
-from api.forms import SectionForm, ItemForm
+from app.models import db, Section, Item
+from app.forms import SectionForm, ItemForm
 from flask import Blueprint, request
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
