@@ -1,6 +1,6 @@
 import os
-from app.models import db, User, Menu, Section
-from app.forms import MenuForm, SectionForm
+from api.models import db, User, Menu, Section
+from api.forms import MenuForm, SectionForm
 from flask import Blueprint, request
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
