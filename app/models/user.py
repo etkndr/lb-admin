@@ -13,8 +13,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    key = db.Column(db.String(255))
-    
+    secret = db.Column(db.String(255))
+
     menu = db.relationship("Menu", back_populates="user", cascade="all, delete")
     section = db.relationship("Section", back_populates="user")
     item = db.relationship("Item", back_populates="user")
@@ -35,5 +35,6 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
-            'email': self.email
+            'email': self.email,
+            'secret': self.secret
         }

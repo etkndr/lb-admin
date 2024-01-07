@@ -12,7 +12,7 @@ def get_item(id):
     item = Item.query.get(id)
     if not item:
         return {"errors": "Item not found"}, 404
-    
+
     return item.to_dict()
 
 # SAVE ITEM UPDATES
@@ -21,9 +21,9 @@ def get_item(id):
 def edit_item(id):
     form = ItemForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
-    
+
     item = Item.query.get(id)
-    
+
     if not item:
         return {"errors": "Item not found"}, 404
     if item.user_id != current_user.id:
@@ -31,9 +31,9 @@ def edit_item(id):
 
     if form.validate_on_submit():
         item.title = form.data["title"]
-        
+
         db.session.commit()
-        
+
         return item.to_dict()
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
@@ -41,8 +41,8 @@ def edit_item(id):
 @item_routes.delete("/<int:id>")
 @login_required
 def delete_item(id):
-    item = Item.query.get(id)  
-    
+    item = Item.query.get(id)
+
     if not item:
         return {"errors": "Item not found"}, 404
     if item.user_id != current_user.id:
@@ -50,19 +50,19 @@ def delete_item(id):
 
     db.session.delete(item)
     db.session.commit()
-    
+
     return {"message": "Item successfully deleted"}
 
 # GET ALL DESCS FOR ITEM BY ID
 @item_routes.route("/<int:id>/descs")
 def item_descs(id):
     item = Item.query.get(id)
-    
+
     if not item:
         return {"errors": "Item not found"}, 404
-    
+
     descs = Desc.query.filter(Desc.item_id == item.id).all()
-    
+
     return [desc.to_dict() for desc in descs]
 
 # CREATE NEW DESC
@@ -70,24 +70,24 @@ def item_descs(id):
 @login_required
 def new_desc(id):
     item = Item.query.get(id)
-    
+
     if not item:
         return {"errors": "Item not found"}, 404
     if item.user_id != current_user.id:
         return {"errors": "Descs can only be added by menu creator"}, 400
-    
+
     form = DescForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
-    
+
     if form.validate_on_submit():
         desc = Desc(
             item_id = id,
             user_id = current_user.id,
             body = form.data["body"]
         )
-        
+
         db.session.add(desc)
         db.session.commit()
-        
+
         return desc.to_dict()
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401

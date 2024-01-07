@@ -12,7 +12,7 @@ def get_section(id):
     section = Section.query.get(id)
     if not section:
         return {"errors": "Section not found"}, 404
-    
+
     return section.to_dict()
 
 # SAVE SECTION UPDATES
@@ -21,9 +21,9 @@ def get_section(id):
 def edit_section(id):
     form = SectionForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
-    
+
     section = Section.query.get(id)
-    
+
     if not section:
         return {"errors": "Section not found"}, 404
     if section.user_id != current_user.id:
@@ -32,9 +32,9 @@ def edit_section(id):
     if form.validate_on_submit():
         section.choice_desc = form.data["choice_desc"]
         section.price = form.data["price"]
-        
+
         db.session.commit()
-        
+
         return section.to_dict()
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
@@ -42,8 +42,8 @@ def edit_section(id):
 @section_routes.delete("/<int:id>")
 @login_required
 def delete_section(id):
-    section = Section.query.get(id)  
-    
+    section = Section.query.get(id)
+
     if not section:
         return {"errors": "Section not found"}, 404
     if section.user_id != current_user.id:
@@ -51,19 +51,19 @@ def delete_section(id):
 
     db.session.delete(section)
     db.session.commit()
-    
+
     return {"message": "Section successfully deleted"}
 
 # GET ALL ITEMS FOR SECTION BY ID
 @section_routes.route("/<int:id>/items")
 def section_items(id):
     section = Section.query.get(id)
-    
+
     if not section:
         return {"errors": "Section not found"}, 404
-    
+
     items = Item.query.filter(Item.section_id == section.id).all()
-    
+
     return [item.to_dict() for item in items]
 
 # CREATE NEW ITEM
@@ -71,24 +71,24 @@ def section_items(id):
 @login_required
 def new_item(id):
     section = Section.query.get(id)
-    
+
     if not section:
         return {"errors", "Section not found"}, 404
     if section.user_id != current_user.id:
         return {"errors": "Items can only be added by menu creator"}, 400
-    
+
     form = ItemForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
-    
+
     if form.validate_on_submit():
         item = Item(
             section_id = id,
             user_id = current_user.id,
             title = form.data["title"]
         )
-        
+
         db.session.add(item)
         db.session.commit()
-        
+
         return item.to_dict()
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401

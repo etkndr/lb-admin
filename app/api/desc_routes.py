@@ -12,7 +12,7 @@ def get_desc(id):
     desc = Desc.query.get(id)
     if not desc:
         return {"errors": "Desc not found"}, 404
-    
+
     return desc.to_dict()
 
 # SAVE DESC UPDATES
@@ -21,9 +21,9 @@ def get_desc(id):
 def edit_desc(id):
     form = DescForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
-    
+
     desc = Desc.query.get(id)
-    
+
     if not desc:
         return {"errors": "Desc not found"}, 404
     if desc.user_id != current_user.id:
@@ -31,9 +31,9 @@ def edit_desc(id):
 
     if form.validate_on_submit():
         desc.body = form.data["body"]
-        
+
         db.session.commit()
-        
+
         return desc.to_dict()
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
@@ -41,8 +41,8 @@ def edit_desc(id):
 @desc_routes.delete("/<int:id>")
 @login_required
 def delete_desc(id):
-    desc = Desc.query.get(id)  
-    
+    desc = Desc.query.get(id)
+
     if not desc:
         return {"errors": "Desc not found"}, 404
     if desc.user_id != current_user.id:
@@ -50,5 +50,5 @@ def delete_desc(id):
 
     db.session.delete(desc)
     db.session.commit()
-    
+
     return {"message": "Desc successfully deleted"}
