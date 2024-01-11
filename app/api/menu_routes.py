@@ -1,5 +1,4 @@
-import os
-from app.models import db, User, Menu, Section
+from app.models import db, User, Menu, Section, Item, Desc
 from app.forms import MenuForm, SectionForm
 from flask import Blueprint, request
 from flask_login import current_user, login_required
@@ -41,7 +40,24 @@ def get_menu(id):
     if not menu:
         return {"errors": "Menu not found"}, 404
 
-    return menu.to_dict()
+    menu_dict = menu.to_dict()
+    sections = Section.query.filter(Section.menu_id == id)
+    section_list = [section.to_dict() for section in sections]
+
+    for section in section_list:
+        items = Item.query.filter(Item.section_id == section["id"])
+        item_list = [item.to_dict() for item in items]
+
+        for item in item_list:
+            descs = Desc.query.filter(Desc.item_id == item["id"])
+            desc_list = [desc.to_dict() for desc in descs]
+            item["descs"] = desc_list
+
+        section["items"] = item_list
+
+    menu_dict["sections"] = section_list
+
+    return menu_dict
 
 # CREATE NEW MENU
 @menu_routes.post("/")
