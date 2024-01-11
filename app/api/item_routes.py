@@ -10,6 +10,8 @@ item_routes = Blueprint("item", __name__)
 @item_routes.route("/<int:id>")
 def get_item(id):
     item = Item.query.get(id)
+
+    print(item)
     if not item:
         return {"errors": "Item not found"}, 404
 
@@ -31,6 +33,8 @@ def edit_item(id):
 
     if form.validate_on_submit():
         item.title = form.data["title"]
+        item.includes = form.data["includes"]
+        item.order_num = form.data["order_num"]
 
         db.session.commit()
 
@@ -70,6 +74,7 @@ def item_descs(id):
 @login_required
 def new_desc(id):
     item = Item.query.get(id)
+    descs = Desc.query.filter(Desc.item_id == id).all()
 
     if not item:
         return {"errors": "Item not found"}, 404
@@ -83,7 +88,8 @@ def new_desc(id):
         desc = Desc(
             item_id = id,
             user_id = current_user.id,
-            body = form.data["body"]
+            body = form.data["body"],
+            order_num = len(descs) + 1
         )
 
         db.session.add(desc)

@@ -71,6 +71,7 @@ def section_items(id):
 @login_required
 def new_item(id):
     section = Section.query.get(id)
+    items = Item.query.filter(Item.section_id == section.id).all()
 
     if not section:
         return {"errors", "Section not found"}, 404
@@ -84,7 +85,9 @@ def new_item(id):
         item = Item(
             section_id = id,
             user_id = current_user.id,
-            title = form.data["title"]
+            title = form.data["title"],
+            includes = form.data["includes"],
+            order_num = len(items) + 1
         )
 
         db.session.add(item)
