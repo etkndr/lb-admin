@@ -16,6 +16,8 @@ class Menu(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
     section = db.relationship("Section", back_populates="menu", cascade="all, delete")
+    # item = db.relationship("Item", back_populates="menu")
+    # desc = db.relationship("Desc", back_populates="menu")
     user = db.relationship("User", back_populates="menu")
     
     def to_dict(self):
