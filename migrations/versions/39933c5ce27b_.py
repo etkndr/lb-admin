@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: b1123bff2884
+Revision ID: 39933c5ce27b
 Revises: 
-Create Date: 2024-01-04 12:19:53.518036
+Create Date: 2024-01-11 13:05:42.536536
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b1123bff2884'
+revision = '39933c5ce27b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -56,6 +56,8 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('section_id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=255), nullable=False),
+    sa.Column('includes', sa.String(length=255), nullable=True),
+    sa.Column('order_num', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.ForeignKeyConstraint(['section_id'], ['sections.id'], ),
@@ -67,6 +69,7 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('item_id', sa.Integer(), nullable=False),
     sa.Column('body', sa.String(length=255), nullable=False),
+    sa.Column('order_num', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.ForeignKeyConstraint(['item_id'], ['items.id'], ),
