@@ -3,7 +3,7 @@ from sqlalchemy.sql import func
 
 class Menu(db.Model):
     __tablename__ = "menus"
-    
+
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
@@ -11,13 +11,13 @@ class Menu(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    visible = db.Column(db.String(3), nullable=False)
+    visible = db.Column(db.String(7), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-    
+
     section = db.relationship("Section", back_populates="menu", cascade="all, delete")
     user = db.relationship("User", back_populates="menu")
-    
+
     def to_dict(self):
         return {
             'id': self.id,
