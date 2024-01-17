@@ -1,8 +1,9 @@
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, jsonify, session, request, make_response
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_cors import cross_origin
 
 auth_routes = Blueprint('auth', __name__)
 
@@ -27,8 +28,15 @@ def authenticate():
         return current_user.to_dict()
     return {'errors': ['Unauthorized']}
 
+@auth_routes.route('/user')
+@cross_origin(supports_credentials=True)
+def get_user():
+    response = make_response('cookie being retrieved!')
+    cookie = request.cookies.get('csrf_token')
+    return jsonify({'csrf_token': cookie})
 
-@auth_routes.route('/login', methods=['POST'])
+@auth_routes.route('/login', methods=['POST', 'OPTIONS'])
+@cross_origin(origin="*")
 def login():
     """
     Logs a user in

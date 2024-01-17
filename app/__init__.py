@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, session, redirect
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
@@ -14,7 +14,7 @@ from .api.desc_routes import desc_routes
 from .seeds import seed_commands
 from .config import Config
 
-app = Flask(__name__, static_folder='../react-app/build', static_url_path='/')
+app = Flask(__name__, static_folder='../like-butter/build', static_url_path='/')
 
 # Setup login manager
 login = LoginManager(app)
@@ -40,7 +40,7 @@ db.init_app(app)
 Migrate(app, db)
 
 # Application Security
-CORS(app)
+CORS(app, origins=['http://localhost:3000', 'http://localhost:5000'], supports_credentials=True)
 
 
 # Since we are deploying with Docker and Flask,
@@ -58,6 +58,7 @@ def https_redirect():
 
 
 @app.after_request
+@cross_origin()
 def inject_csrf_token(response):
     response.set_cookie(
         'csrf_token',
@@ -83,6 +84,7 @@ def api_help():
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
+@cross_origin()
 def react_root(path):
     """
     This route will direct to the public directory in our
