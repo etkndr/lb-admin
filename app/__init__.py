@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, jsonify
 from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
@@ -14,7 +14,7 @@ from .api.desc_routes import desc_routes
 from .seeds import seed_commands
 from .config import Config
 
-app = Flask(__name__, static_folder='../like-butter/build', static_url_path='/')
+app = Flask(__name__)
 
 # Setup login manager
 login = LoginManager(app)
@@ -58,16 +58,22 @@ def https_redirect():
 
 
 @app.after_request
-@cross_origin()
-def inject_csrf_token(response):
-    response.set_cookie(
-        'csrf_token',
-        generate_csrf(),
-        secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
-        samesite='Strict' if os.environ.get(
-            'FLASK_ENV') == 'production' else None,
-        httponly=True)
-    return response
+@cross_origin(supports_credentials=True)
+def add_cors(rv):
+    # rv.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+    rv.headers.add('Access-Control-Allow-Headers', 'X-CSRFToken')
+    # rv.headers.add('Access-Control-Allow-Credentials', 'true')
+    return rv
+# def inject_csrf_token(response):
+    
+    # response.set_cookie(
+    #     'csrf_token',
+    #     generate_csrf(),
+    #     secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
+    #     samesite='Strict' if os.environ.get(
+    #         'FLASK_ENV') == 'production' else None,
+    #     httponly=True)
+    # return response
 
 
 @app.route("/api/docs")
@@ -80,7 +86,6 @@ def api_help():
                     app.view_functions[rule.endpoint].__doc__ ]
                     for rule in app.url_map.iter_rules() if rule.endpoint != 'static' }
     return route_list
-
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
