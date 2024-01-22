@@ -40,7 +40,7 @@ db.init_app(app)
 Migrate(app, db)
 
 # Application Security
-CORS(app, origins=['http://localhost:3000', 'http://localhost:5000'], supports_credentials=True)
+CORS(app)
 
 
 # Since we are deploying with Docker and Flask,
@@ -58,22 +58,15 @@ def https_redirect():
 
 
 @app.after_request
-@cross_origin(supports_credentials=True)
-def add_cors(rv):
-    # rv.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-    rv.headers.add('Access-Control-Allow-Headers', 'X-CSRFToken')
-    # rv.headers.add('Access-Control-Allow-Credentials', 'true')
-    return rv
-# def inject_csrf_token(response):
-    
-    # response.set_cookie(
-    #     'csrf_token',
-    #     generate_csrf(),
-    #     secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
-    #     samesite='Strict' if os.environ.get(
-    #         'FLASK_ENV') == 'production' else None,
-    #     httponly=True)
-    # return response
+def inject_csrf_token(response):
+    response.set_cookie(
+        'csrf_token',
+        generate_csrf(),
+        secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
+        samesite='Strict' if os.environ.get(
+            'FLASK_ENV') == 'production' else None,
+        httponly=True)
+    return response
 
 
 @app.route("/api/docs")
@@ -87,9 +80,9 @@ def api_help():
                     for rule in app.url_map.iter_rules() if rule.endpoint != 'static' }
     return route_list
 
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
-@cross_origin()
 def react_root(path):
     """
     This route will direct to the public directory in our

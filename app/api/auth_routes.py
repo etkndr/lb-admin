@@ -1,10 +1,8 @@
-from flask import Blueprint, jsonify, session, request, make_response, jsonify
+from flask import Blueprint, jsonify, session, request
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
-from flask_cors import cross_origin
-from flask_wtf.csrf import generate_csrf
 
 auth_routes = Blueprint('auth', __name__)
 
@@ -19,13 +17,6 @@ def validation_errors_to_error_messages(validation_errors):
             errorMessages.append(f'{field} : {error}')
     return errorMessages
 
-@auth_routes.route('/token', methods=['GET', 'POST', 'OPTIONS'])
-@cross_origin(supports_credentials=True)
-def token():
-    csrf_token = generate_csrf()
-    print(jsonify(csrf_token=csrf_token))
-    return jsonify(csrf_token=csrf_token)
-
 
 @auth_routes.route('/')
 def authenticate():
@@ -36,8 +27,8 @@ def authenticate():
         return current_user.to_dict()
     return {'errors': ['Unauthorized']}
 
-@auth_routes.route('/login', methods=['POST', 'OPTIONS'])
-@cross_origin(supports_credentials=True)
+
+@auth_routes.route('/login', methods=['POST'])
 def login():
     """
     Logs a user in
@@ -45,7 +36,7 @@ def login():
     form = LoginForm()
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
-    form['csrf_token'].data = form.data['csrf_token']
+    form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
@@ -74,8 +65,7 @@ def sign_up():
         user = User(
             username=form.data['username'],
             email=form.data['email'],
-            password=form.data['password'],
-            key=form.data["key"]
+            password=form.data['password']
         )
         db.session.add(user)
         db.session.commit()
