@@ -4,15 +4,15 @@ from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
-from .models import db, User, Desc, Item, Menu, Section
-from .api.user_routes import user_routes
-from .api.auth_routes import auth_routes
-from .api.menu_routes import menu_routes
-from .api.section_routes import section_routes
-from .api.item_routes import item_routes
-from .api.desc_routes import desc_routes
-from .seeds import seed_commands
-from .config import Config
+from app.models import db, User, Desc, Item, Menu, Section
+from app.api.user_routes import user_routes
+from app.api.auth_routes import auth_routes
+from app.api.menu_routes import menu_routes
+from app.api.section_routes import section_routes
+from app.api.item_routes import item_routes
+from app.api.desc_routes import desc_routes
+from app.seeds import seed_commands
+from app.config import Config
 
 app = Flask(__name__)
 
