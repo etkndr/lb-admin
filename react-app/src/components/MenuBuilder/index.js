@@ -4,11 +4,10 @@ import { useEffect, useState } from "react"
 import * as menuActions from "../../store/menu"
 import BuildArea from "./BuildArea"
 
-const menuId = signal(0)
+export const menuId = signal(null)
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.session.user)
   const menus = useSelector((state) => state.menus.menuList)
   const loading = useSignal(true)
 
@@ -31,7 +30,7 @@ export default function MenuBuilder() {
         })}
       </div>
       <div>
-        <BuildArea menuId={menuId.value} />
+        <BuildArea />
       </div>
     </div>
   )
