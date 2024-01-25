@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import * as menuActions from "../../store/menu"
 import BuildArea from "./BuildArea"
+import { menuId } from "../../App"
 
-export const menuId = signal(null)
-
-export default function MenuBuilder() {
+export default function MenuBuilder({ menu }) {
   const dispatch = useDispatch()
   const menus = useSelector((state) => state.menus.menuList)
   const loading = useSignal(true)
@@ -30,7 +29,7 @@ export default function MenuBuilder() {
         })}
       </div>
       <div>
-        <BuildArea />
+        <BuildArea menu={menu} />
       </div>
     </div>
   )
