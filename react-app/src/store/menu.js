@@ -122,7 +122,7 @@ export const menus = createReducer([], {
     return { ...state, menuList: action.menuList }
   },
   [getMenu().type]: (state, action) => {
-    return { ...state, menu: action.menu }
+    return { ...state, currMenu: action.menu }
   },
   [editMenu().type]: (state, action) => {
     return { ...state, menu: action.menu }
