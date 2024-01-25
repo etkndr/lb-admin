@@ -41,8 +41,6 @@ export function getUserMenus() {
 }
 
 export function getMenuById(menuId) {
-  const csrf = document.cookie
-  console.log(csrf)
   return async (dispatch) => {
     const res = await fetch(`${baseUrl}/api/menus/${menuId}`)
     const data = await res.json()
@@ -117,19 +115,19 @@ export function deleteMenuById(menuId) {
 }
 
 export const menus = createReducer([], {
-  ["VISIBLE_MENUS"]: (state, action) => {
+  [visibleMenus().type]: (state, action) => {
     return { ...state, menuList: action.menuList }
   },
-  ["USER_MENUS"]: (state, action) => {
+  [userMenus().type]: (state, action) => {
     return { ...state, menuList: action.menuList }
   },
-  ["GET_MENU"]: (state, action) => {
+  [getMenu().type]: (state, action) => {
     return { ...state, menu: action.menu }
   },
-  ["EDIT_MENU"]: (state, action) => {
+  [editMenu().type]: (state, action) => {
     return { ...state, menu: action.menu }
   },
-  ["DELETE_MENU"]: (state, action) => {
+  [deleteMenu().type]: (state, action) => {
     delete state[action.menu]
   },
 })

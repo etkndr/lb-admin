@@ -1,1 +1,20 @@
-/* TODO Add site wide styles */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.main-container {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar-container {
+  width: 20%;
+  min-height: 100%;
+  background-color: gainsboro;
+  border-right: 1px solid gray;
+}
