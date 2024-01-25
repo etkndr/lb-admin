@@ -23,7 +23,7 @@ export default function MenuBuilder() {
       menuEdit.visible = "visible"
     }
     dispatch(menuActions.editMenuById(menu.id, menuEdit))
-    console.log(vis)
+    console.log(menu.visible)
   }
 
   return (

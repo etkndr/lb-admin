@@ -2,7 +2,7 @@ import { useSignal } from "@preact/signals-react"
 import { useSelector } from "react-redux"
 
 export default function BuildArea() {
-  const menu = useSelector((state) => state.menus.menu)
+  const menu = useSelector((state) => state.menus.currMenu)
 
   return (
     <>
