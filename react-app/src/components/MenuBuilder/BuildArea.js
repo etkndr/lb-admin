@@ -1,18 +1,19 @@
-// import { useSignalEffect } from "@preact/signals-react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSignal } from "@preact/signals-react"
+import { useSelector } from "react-redux"
 
 export default function BuildArea() {
   const menu = useSelector((state) => state.menus.menu)
 
   return (
     <>
-      <div>{menu?.title}</div>
+      <h1>{menu?.title}</h1>
+      <p>(${menu?.price}/person)</p>
       <div>
         {menu?.sections?.map((section, idx) => {
           return (
             <div key={`${idx}1`}>
-              <p>${section.price}/person</p>
               <p>{section.choice_desc}</p>
+              <p>(+${section.price}/person)</p>
               {section.items?.map((item, idx) => {
                 return (
                   <div key={`${idx}2`}>
@@ -24,6 +25,7 @@ export default function BuildArea() {
                   </div>
                 )
               })}
+              <h1>. . .</h1>
             </div>
           )
         })}
