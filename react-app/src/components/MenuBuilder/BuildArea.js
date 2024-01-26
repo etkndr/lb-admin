@@ -1,8 +1,55 @@
 import { useSignal } from "@preact/signals-react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import * as menuActions from "../../store/menu"
+import * as sectionActions from "../../store/section"
+import * as itemActions from "../../store/item"
+import * as descActions from "../../store/desc"
+import { useEffect } from "react"
 
 export default function BuildArea() {
+  const dispatch = useDispatch()
   const menu = useSelector((state) => state.menus.currMenu)
+  const menuState = useSignal(null)
+  const saving = useSignal(false)
+
+  useEffect(() => {
+    if (menu) {
+      menuState.value = menu
+    }
+  }, [menu])
+
+  function saveChanges(type, id, obj) {
+    saving.value = true
+
+    switch (type) {
+      case "menu":
+        dispatch(menuActions.editMenuById(id, obj)).then(() => {
+          setTimeout(() => {
+            saving.value = false
+          }, 500)
+        })
+      case "section":
+        dispatch(sectionActions.editSectionById(id, obj)).then(() => {
+          setTimeout(() => {
+            saving.value = false
+          }, 500)
+        })
+      case "item":
+        dispatch(itemActions.editItemById(id, obj)).then(() => {
+          setTimeout(() => {
+            saving.value = false
+          }, 500)
+        })
+      case "desc":
+        dispatch(descActions.editDescById(id, obj)).then(() => {
+          setTimeout(() => {
+            saving.value = false
+          }, 500)
+        })
+      default:
+        return
+    }
+  }
 
   if (!menu) {
     return null
@@ -35,6 +82,7 @@ export default function BuildArea() {
             )
           })}
         </div>
+        {saving.value && "Saving changes.."}
       </>
     )
   )
