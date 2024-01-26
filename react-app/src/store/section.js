@@ -40,7 +40,7 @@ export function getSectionById(sectionId) {
   }
 }
 
-export function createSection(section, menuId) {
+export function createSection(menuId, section) {
   return async (dispatch) => {
     const res = await fetch(`${baseUrl}/api/menus/${menuId}/sections`, {
       method: "POST",
@@ -60,7 +60,7 @@ export function createSection(section, menuId) {
   }
 }
 
-export function editSectionById(section, sectionId) {
+export function editSectionById(sectionId, section) {
   return async (dispatch) => {
     const res = await fetch(`${baseUrl}/api/sections/${sectionId}`, {
       method: "PUT",

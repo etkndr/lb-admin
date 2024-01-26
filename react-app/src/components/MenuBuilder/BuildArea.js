@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { menuState } from "../../App"
+import { menuListState, menuState } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
@@ -65,19 +65,42 @@ export default function BuildArea() {
     menu &&
     menuState.value && (
       <>
-        <input
-          key={Math.random()}
-          className="menu-title"
-          defaultValue={menuState.value?.title}
-          onChange={(e) => (menuState.value.title = e.target.value)}
-          onBlur={() => saveChanges("menu", menu.id, menuState.value)}
-        />
-        <p>(${menu?.price}/person)</p>
         <div>
-          {menu?.sections?.map((section, idx) => {
+          <input
+            key={Math.random()}
+            className="menu-title"
+            defaultValue={menuState.value?.title}
+            onChange={(e) => (menuState.value.title = e.target.value)}
+            onBlur={() => saveChanges("menu", menu.id, menuState.value)}
+          />
+        </div>
+        <div>
+          ($
+          <input
+            key={Math.random()}
+            type="number"
+            className="menu-price"
+            defaultValue={menuState.value?.price}
+            onChange={(e) => (menuState.value.price = e.target.value)}
+            onBlur={() => saveChanges("menu", menu.id, menuState.value)}
+          />
+          /person)
+        </div>
+        <div>
+          {menuState.value?.sections?.map((section, idx) => {
             return (
-              <div key={`${idx}1`}>
-                <p>{section.choice_desc}</p>
+              <div key={`section-${section.id}`}>
+                {section.choice_desc && (
+                  <div>
+                    <input
+                      key={Math.random()}
+                      className="choice-desc"
+                      defaultValue={section.choice_desc}
+                      onChange={(e) => (section.choice_desc = e.target.value)}
+                      onBlur={() => saveChanges("section", section.id, section)}
+                    />
+                  </div>
+                )}
                 <p>(+${section.price}/person)</p>
                 {section.items?.map((item, idx) => {
                   return (

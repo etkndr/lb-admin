@@ -40,7 +40,7 @@ export function getItemById(itemId) {
   }
 }
 
-export function createItem(item, sectionId) {
+export function createItem(sectionId, item) {
   return async (dispatch) => {
     const res = await fetch(`${baseUrl}/api/sections/${sectionId}/items`, {
       method: "POST",
@@ -60,7 +60,7 @@ export function createItem(item, sectionId) {
   }
 }
 
-export function editItemById(item, itemId) {
+export function editItemById(itemId, item) {
   return async (dispatch) => {
     const res = await fetch(`${baseUrl}/api/items/${itemId}`, {
       method: "PUT",

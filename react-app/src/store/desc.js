@@ -40,7 +40,7 @@ export function getDescById(descId) {
   }
 }
 
-export function createDesc(desc, itemId) {
+export function createDesc(itemId, desc) {
   return async (dispatch) => {
     const res = await fetch(`${baseUrl}/api/items/${itemId}/descs`, {
       method: "POST",
@@ -60,7 +60,7 @@ export function createDesc(desc, itemId) {
   }
 }
 
-export function editDescById(desc, descId) {
+export function editDescById(descId, desc) {
   return async (dispatch) => {
     const res = await fetch(`${baseUrl}/api/descs/${descId}`, {
       method: "PUT",

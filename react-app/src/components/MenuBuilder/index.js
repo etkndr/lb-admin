@@ -9,11 +9,7 @@ import { logout } from "../../store/session"
 export default function MenuBuilder() {
   const dispatch = useDispatch()
   const menus = useSelector((state) => state.menus.menuList)
-  const loading = useSignal(true)
-
-  useEffect(() => {
-    dispatch(menuActions.getUserMenus()).then(() => (loading.value = false))
-  }, [dispatch])
+  const loading = useSignal(false)
 
   useEffect(() => {
     menus?.forEach((menu) => {
