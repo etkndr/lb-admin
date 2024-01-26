@@ -28,18 +28,21 @@ export default function BuildArea() {
             saving.value = false
           }, 500)
         })
+        break
       case "section":
         dispatch(sectionActions.editSectionById(id, obj)).then(() => {
           setTimeout(() => {
             saving.value = false
           }, 500)
         })
+        break
       case "item":
         dispatch(itemActions.editItemById(id, obj)).then(() => {
           setTimeout(() => {
             saving.value = false
           }, 500)
         })
+        break
       case "desc":
         dispatch(descActions.editDescById(id, obj)).then(() => {
           setTimeout(() => {
@@ -47,7 +50,7 @@ export default function BuildArea() {
           }, 500)
         })
       default:
-        return
+        break
     }
   }
 
@@ -56,9 +59,15 @@ export default function BuildArea() {
   }
 
   return (
-    menu && (
+    menu &&
+    menuState.value && (
       <>
-        <h1>{menu?.title}</h1>
+        <input
+          className="menu-title"
+          defaultValue={menuState.value?.title}
+          onChange={(e) => (menuState.value.title = e.target.value)}
+          onBlur={() => saveChanges("menu", menu.id, menuState.value)}
+        />
         <p>(${menu?.price}/person)</p>
         <div>
           {menu?.sections?.map((section, idx) => {
