@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { menuListState, menuState } from "../../App"
+import { menuState } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
@@ -13,12 +13,16 @@ export default function BuildArea() {
   const saving = useSignal(false)
 
   useEffect(() => {
+    // Sets menuState to current menu when menu changes
+
     if (menu) {
       menuState.value = menu
     }
   }, [menu])
 
   function saveChanges(type, id, obj) {
+    // Function called when a fied loses focus, checks type of action to dispatch then passes id & data from menuState.
+
     saving.value = true
 
     switch (type) {
@@ -26,6 +30,7 @@ export default function BuildArea() {
         dispatch(menuActions.editMenuById(id, obj)).then(() => {
           setTimeout(() => {
             saving.value = false
+            dispatch(menuActions.getUserMenus())
           }, 500)
         })
         break
@@ -52,9 +57,6 @@ export default function BuildArea() {
       default:
         break
     }
-    setTimeout(() => {
-      dispatch(menuActions.getUserMenus())
-    }, 500)
   }
 
   if (!menu) {

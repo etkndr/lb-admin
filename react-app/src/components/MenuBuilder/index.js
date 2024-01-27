@@ -18,7 +18,7 @@ export default function MenuBuilder() {
   }, [menus])
 
   function handleVis(menu) {
-    const vis = menuListState.value[menu.id].visible
+    const vis = menuListState.value[menu.id]?.visible
     if (vis === "visible") {
       menuListState.value[menu.id].visible = "hidden"
     }
@@ -35,11 +35,12 @@ export default function MenuBuilder() {
         {loading.value && "Loading menus"}
         {!loading.value &&
           Object.values(menuListState.value) &&
-          Object.values(menuListState.value).map((menu, idx) => {
+          Object.values(menuListState.value)?.map((menu, idx) => {
             return (
               <li key={Math.random()}>
                 {menu.title}
                 <button onClick={() => (menuId.value = menu.id)}>edit</button>
+                Published
                 <input
                   key={Math.random()}
                   type="checkbox"

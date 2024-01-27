@@ -68,7 +68,6 @@ export function editItemById(itemId, item) {
       body: JSON.stringify(item),
     })
     const data = await res.json()
-    console.log(data, item)
 
     if (res.ok) {
       dispatch(editItem(data))
