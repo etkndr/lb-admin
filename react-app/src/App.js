@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { signal, useSignalEffect } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { Route, Switch } from "react-router-dom"
 import LoginFormPage from "./components/LoginFormPage"
 import { authenticate } from "./store/session"
 import { getMenuById } from "./store/menu"
-import Navigation from "./components/Navigation"
 import MenuBuilder from "./components/MenuBuilder"
 import { getUserMenus } from "./store/menu"
 

@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { menuListState, menuState } from "../../App"
+import { menuState } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
@@ -13,12 +13,16 @@ export default function BuildArea() {
   const saving = useSignal(false)
 
   useEffect(() => {
+    // Sets menuState to current menu when menu changes
+
     if (menu) {
       menuState.value = menu
     }
   }, [menu])
 
   function saveChanges(type, id, obj) {
+    // Function called when a fied loses focus, checks type of action to dispatch then passes id & data from menuState.
+
     saving.value = true
 
     switch (type) {
@@ -26,6 +30,7 @@ export default function BuildArea() {
         dispatch(menuActions.editMenuById(id, obj)).then(() => {
           setTimeout(() => {
             saving.value = false
+            dispatch(menuActions.getUserMenus())
           }, 500)
         })
         break
@@ -52,9 +57,6 @@ export default function BuildArea() {
       default:
         break
     }
-    setTimeout(() => {
-      dispatch(menuActions.getUserMenus())
-    }, 500)
   }
 
   if (!menu) {
@@ -89,26 +91,64 @@ export default function BuildArea() {
         <div>
           {menuState.value?.sections?.map((section, idx) => {
             return (
-              <div key={`section-${section.id}`}>
+              <div key={`section${section.id}`}>
                 {section.choice_desc && (
-                  <div>
+                  <div key={`section-choice${section.id}`}>
                     <input
                       key={Math.random()}
-                      className="choice-desc"
+                      className="section-choice"
                       defaultValue={section.choice_desc}
                       onChange={(e) => (section.choice_desc = e.target.value)}
                       onBlur={() => saveChanges("section", section.id, section)}
                     />
                   </div>
                 )}
-                <p>(+${section.price}/person)</p>
+                <div key={`section-price${section.id}`}>
+                  (+$
+                  <input
+                    key={Math.random()}
+                    className="section-price"
+                    defaultValue={section.price}
+                    onChange={(e) => (section.price = e.target.value)}
+                    onBlur={() => saveChanges("section", section.id, section)}
+                  />
+                  /person)
+                </div>
                 {section.items?.map((item, idx) => {
                   return (
-                    <div key={`${idx}2`}>
-                      <p>{item.title}</p>
-                      <p>{item.includes}</p>
+                    <div key={`item${item.id}`}>
+                      <div key={`item-title${item.id}`}>
+                        <input
+                          key={Math.random()}
+                          className="item-title"
+                          defaultValue={item.title}
+                          onChange={(e) => (item.title = e.target.value)}
+                          onBlur={() => saveChanges("item", item.id, item)}
+                        />
+                      </div>
+                      {item.includes && (
+                        <div key={`item-includes${item.id}`}>
+                          <input
+                            key={Math.random()}
+                            className="item-includes"
+                            defaultValue={item.includes}
+                            onChange={(e) => (item.includes = e.target.value)}
+                            onBlur={() => saveChanges("item", item.id, item)}
+                          />
+                        </div>
+                      )}
                       {item.descs?.map((desc, idx) => {
-                        return <div key={`${idx}3`}>{desc.body}</div>
+                        return (
+                          <div key={`desc${desc.id}`}>
+                            <input
+                              key={Math.random()}
+                              className="desc-body"
+                              defaultValue={desc.body}
+                              onChange={(e) => (desc.body = e.target.value)}
+                              onBlur={() => saveChanges("desc", desc.id, desc)}
+                            />
+                          </div>
+                        )
                       })}
                     </div>
                   )
