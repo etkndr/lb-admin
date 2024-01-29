@@ -20,7 +20,7 @@ export default function BuildArea() {
   }, [menu])
 
   function saveChanges() {
-    // Checks type of action to dispatch then passes id & data from saveList.
+    // Dispatches any existing data from saveList
     saving.value = true
     const list = saveList.value
     const state = menuState.value

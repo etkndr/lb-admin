@@ -17,6 +17,18 @@ export default function MenuBuilder() {
     })
   }, [menus])
 
+  function handleCreate() {
+    const newMenu = {
+      title: "Menu title",
+      price: 10,
+      visible: "hidden",
+    }
+
+    dispatch(menuActions.createMenu(newMenu)).then(
+      (res) => (menuId.value = res.id)
+    )
+  }
+
   function handleVis(menu) {
     const vis = menuListState.value[menu.id]?.visible
     if (vis === "visible") {
@@ -50,7 +62,7 @@ export default function MenuBuilder() {
               </li>
             )
           })}
-        <button>New menu</button>
+        <button onClick={handleCreate}>New menu</button>
         <button onClick={() => dispatch(logout())}>Log out</button>
       </div>
       <div>
