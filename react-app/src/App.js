@@ -10,6 +10,12 @@ import { getUserMenus } from "./store/menu"
 export const menuId = signal(null)
 export const menuState = signal(null)
 export const menuListState = signal({})
+export const saveList = signal({
+  menu: false,
+  sections: {},
+  items: {},
+  descs: {},
+})
 
 function App() {
   const dispatch = useDispatch()

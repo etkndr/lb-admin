@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { menuState } from "../../App"
+import { menuState, saveList } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
@@ -14,49 +14,49 @@ export default function BuildArea() {
 
   useEffect(() => {
     // Sets menuState to current menu when menu changes
-
     if (menu) {
       menuState.value = menu
     }
   }, [menu])
 
-  function saveChanges(type, id, obj) {
-    // Function called when a fied loses focus, checks type of action to dispatch then passes id & data from menuState.
-
+  function saveChanges() {
+    // Checks type of action to dispatch then passes id & data from saveList.
     saving.value = true
+    const list = saveList.value
+    const state = menuState.value
 
-    switch (type) {
-      case "menu":
-        dispatch(menuActions.editMenuById(id, obj)).then(() => {
-          setTimeout(() => {
-            saving.value = false
-            dispatch(menuActions.getUserMenus())
-          }, 500)
-        })
-        break
-      case "section":
-        dispatch(sectionActions.editSectionById(id, obj)).then(() => {
-          setTimeout(() => {
-            saving.value = false
-          }, 500)
-        })
-        break
-      case "item":
-        dispatch(itemActions.editItemById(id, obj)).then(() => {
-          setTimeout(() => {
-            saving.value = false
-          }, 500)
-        })
-        break
-      case "desc":
-        dispatch(descActions.editDescById(id, obj)).then(() => {
-          setTimeout(() => {
-            saving.value = false
-          }, 500)
-        })
-      default:
-        break
+    if (list.menu) {
+      dispatch(menuActions.editMenuById(state.id, state))
     }
+    if (Object.keys(list.sections).length) {
+      for (let sectionId in list.sections) {
+        dispatch(
+          sectionActions.editSectionById(sectionId, list.sections[sectionId])
+        )
+      }
+    }
+    if (Object.keys(list.items).length) {
+      for (let itemId in list.items) {
+        dispatch(itemActions.editItemById(itemId, list.items[itemId]))
+      }
+    }
+    if (Object.keys(list.descs).length) {
+      for (let descId in list.descs) {
+        dispatch(descActions.editDescById(descId, list.descs[descId]))
+      }
+    }
+
+    saveList.value = {
+      menu: false,
+      sections: {},
+      items: {},
+      descs: {},
+    }
+
+    setTimeout(() => {
+      saving.value = false
+      dispatch(menuActions.getUserMenus())
+    }, 500)
   }
 
   if (!menu) {
@@ -72,8 +72,10 @@ export default function BuildArea() {
             key={Math.random()}
             className="menu-title"
             defaultValue={menuState.value?.title}
-            onChange={(e) => (menuState.value.title = e.target.value)}
-            onBlur={() => saveChanges("menu", menu.id, menuState.value)}
+            onChange={(e) => {
+              menuState.value.title = e.target.value
+              saveList.value.menu = true
+            }}
           />
         </div>
         <div>
@@ -83,8 +85,10 @@ export default function BuildArea() {
             type="number"
             className="menu-price"
             defaultValue={menuState.value?.price}
-            onChange={(e) => (menuState.value.price = e.target.value)}
-            onBlur={() => saveChanges("menu", menu.id, menuState.value)}
+            onChange={(e) => {
+              menuState.value.price = e.target.value
+              saveList.value.menu = true
+            }}
           />
           /person)
         </div>
@@ -98,8 +102,10 @@ export default function BuildArea() {
                       key={Math.random()}
                       className="section-choice"
                       defaultValue={section.choice_desc}
-                      onChange={(e) => (section.choice_desc = e.target.value)}
-                      onBlur={() => saveChanges("section", section.id, section)}
+                      onChange={(e) => {
+                        section.choice_desc = e.target.value
+                        saveList.value.sections[section.id] = section
+                      }}
                     />
                   </div>
                 )}
@@ -109,8 +115,10 @@ export default function BuildArea() {
                     key={Math.random()}
                     className="section-price"
                     defaultValue={section.price}
-                    onChange={(e) => (section.price = e.target.value)}
-                    onBlur={() => saveChanges("section", section.id, section)}
+                    onChange={(e) => {
+                      section.price = e.target.value
+                      saveList.value.sections[section.id] = section
+                    }}
                   />
                   /person)
                 </div>
@@ -122,8 +130,10 @@ export default function BuildArea() {
                           key={Math.random()}
                           className="item-title"
                           defaultValue={item.title}
-                          onChange={(e) => (item.title = e.target.value)}
-                          onBlur={() => saveChanges("item", item.id, item)}
+                          onChange={(e) => {
+                            item.title = e.target.value
+                            saveList.value.items[item.id] = item
+                          }}
                         />
                       </div>
                       {item.includes && (
@@ -132,8 +142,10 @@ export default function BuildArea() {
                             key={Math.random()}
                             className="item-includes"
                             defaultValue={item.includes}
-                            onChange={(e) => (item.includes = e.target.value)}
-                            onBlur={() => saveChanges("item", item.id, item)}
+                            onChange={(e) => {
+                              item.includes = e.target.value
+                              saveList.value.items[item.id] = item
+                            }}
                           />
                         </div>
                       )}
@@ -144,8 +156,10 @@ export default function BuildArea() {
                               key={Math.random()}
                               className="desc-body"
                               defaultValue={desc.body}
-                              onChange={(e) => (desc.body = e.target.value)}
-                              onBlur={() => saveChanges("desc", desc.id, desc)}
+                              onChange={(e) => {
+                                desc.body = e.target.value
+                                saveList.value.descs[desc.id] = desc
+                              }}
                             />
                           </div>
                         )
@@ -158,6 +172,7 @@ export default function BuildArea() {
             )
           })}
         </div>
+        <button onClick={saveChanges}>save</button>
         {saving.value && "Saving changes.."}
       </>
     )
