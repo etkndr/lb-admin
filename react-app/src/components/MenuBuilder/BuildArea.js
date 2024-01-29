@@ -96,6 +96,7 @@ export default function BuildArea() {
           {menuState.value?.sections?.map((section, idx) => {
             return (
               <div key={`section${section.id}`}>
+                {!section.choice_desc && <button>Add "pick one"</button>}
                 {section.choice_desc && (
                   <div key={`section-choice${section.id}`}>
                     <input
@@ -109,19 +110,22 @@ export default function BuildArea() {
                     />
                   </div>
                 )}
-                <div key={`section-price${section.id}`}>
-                  (+$
-                  <input
-                    key={Math.random()}
-                    className="section-price"
-                    defaultValue={section.price}
-                    onChange={(e) => {
-                      section.price = e.target.value
-                      saveList.value.sections[section.id] = section
-                    }}
-                  />
-                  /person)
-                </div>
+                {!section.price && <button>Add price per person</button>}
+                {section.price && (
+                  <div key={`section-price${section.id}`}>
+                    (+$
+                    <input
+                      key={Math.random()}
+                      className="section-price"
+                      defaultValue={section.price}
+                      onChange={(e) => {
+                        section.price = e.target.value
+                        saveList.value.sections[section.id] = section
+                      }}
+                    />
+                    /person)
+                  </div>
+                )}
                 {section.items?.map((item, idx) => {
                   return (
                     <div key={`item${item.id}`}>
@@ -136,6 +140,9 @@ export default function BuildArea() {
                           }}
                         />
                       </div>
+                      {!item.includes && (
+                        <button>Add "item includes..."</button>
+                      )}
                       {item.includes && (
                         <div key={`item-includes${item.id}`}>
                           <input
@@ -164,13 +171,16 @@ export default function BuildArea() {
                           </div>
                         )
                       })}
+                      <button>Add description</button>
                     </div>
                   )
                 })}
+                <button>Add item</button>
                 <h1>. . .</h1>
               </div>
             )
           })}
+          <button>Add section</button>
         </div>
         <button onClick={saveChanges}>save</button>
         {saving.value && "Saving changes.."}
