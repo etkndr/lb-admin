@@ -6,6 +6,7 @@ import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
+import Add from "./Add"
 
 export default function BuildArea() {
   const dispatch = useDispatch()
@@ -93,10 +94,17 @@ export default function BuildArea() {
           /person)
         </div>
         <div>
-          {menuState.value?.sections?.map((section, idx) => {
+          {Object.values(menuState.value?.sections)?.map((section, idx) => {
             return (
               <div key={`section${section.id}`}>
-                {!section.choice_desc && <button>Add "pick one"</button>}
+                {!section.choice_desc && (
+                  <Add
+                    id={section.id}
+                    type={"section-edit"}
+                    obj={section}
+                    tooltip={"Add description for section, e.g. 'Pick one'"}
+                  />
+                )}
                 {section.choice_desc && (
                   <div key={`section-choice${section.id}`}>
                     <input
@@ -110,7 +118,14 @@ export default function BuildArea() {
                     />
                   </div>
                 )}
-                {!section.price && <button>Add price per person</button>}
+                {!section.price && (
+                  <Add
+                    id={section.id}
+                    type={"section-edit"}
+                    obj={section}
+                    tooltip={"Add extra price per person for this section"}
+                  />
+                )}
                 {section.price && (
                   <div key={`section-price${section.id}`}>
                     (+$
@@ -126,7 +141,7 @@ export default function BuildArea() {
                     /person)
                   </div>
                 )}
-                {section.items?.map((item, idx) => {
+                {Object.values(section.items)?.map((item, idx) => {
                   return (
                     <div key={`item${item.id}`}>
                       <div key={`item-title${item.id}`}>
@@ -141,7 +156,14 @@ export default function BuildArea() {
                         />
                       </div>
                       {!item.includes && (
-                        <button>Add "item includes..."</button>
+                        <Add
+                          id={item.id}
+                          type={"item-edit"}
+                          obj={item}
+                          tooltip={
+                            "Add info about what is included with this item"
+                          }
+                        />
                       )}
                       {item.includes && (
                         <div key={`item-includes${item.id}`}>
@@ -156,7 +178,7 @@ export default function BuildArea() {
                           />
                         </div>
                       )}
-                      {item.descs?.map((desc, idx) => {
+                      {Object.values(item.descs)?.map((desc, idx) => {
                         return (
                           <div key={`desc${desc.id}`}>
                             <input
@@ -171,16 +193,28 @@ export default function BuildArea() {
                           </div>
                         )
                       })}
-                      <button>Add description</button>
+                      <Add
+                        id={item.id}
+                        type={"desc"}
+                        tooltip={"Add description for this item"}
+                      />
                     </div>
                   )
                 })}
-                <button>Add item</button>
+                <Add
+                  id={section.id}
+                  type={"item"}
+                  tooltip={"Add item to this section"}
+                />
                 <h1>. . .</h1>
               </div>
             )
           })}
-          <button>Add section</button>
+          <Add
+            id={menuState.value.id}
+            type={"section"}
+            tooltip={"Create a new section"}
+          />
         </div>
         <button onClick={saveChanges}>save</button>
         {saving.value && "Saving changes.."}
