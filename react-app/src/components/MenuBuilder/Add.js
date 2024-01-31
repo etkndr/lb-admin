@@ -10,16 +10,25 @@ export default function Add({ parent, id, type, obj, tooltip }) {
 
   function handleAdd() {
     const list = saveList.value
-    const state = menuState.value
 
     switch (type) {
-      case "section-edit":
+      case "section-choice":
         obj.choice_desc = "Pick one"
         list.sections[id] = obj
-        dispatch(sectionActions.editSectionById(id, obj)).then(() =>
-          dispatch(getMenuById(menuId))
-        )
+        menuState.value = { ...menuState.value, ["sections".id]: obj }
         break
+      case "section-price":
+        obj.price = 1
+        list.sections[id] = obj
+        menuState.value = { ...menuState.value, ["sections".id]: obj }
+        break
+      case "item-edit":
+        obj.includes = "Includes..."
+        list.items[id] = obj
+        menuState.value = {
+          ...menuState.value,
+          [menuState.value.sections[parent].items[id]]: obj,
+        }
       default:
         return
     }

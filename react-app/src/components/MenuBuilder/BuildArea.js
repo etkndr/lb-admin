@@ -64,6 +64,8 @@ export default function BuildArea() {
     return null
   }
 
+  console.log(menuState.value)
+
   return (
     menu &&
     menuState.value && (
@@ -100,7 +102,7 @@ export default function BuildArea() {
                 {!section.choice_desc && (
                   <Add
                     id={section.id}
-                    type={"section-edit"}
+                    type={"section-choice"}
                     obj={section}
                     tooltip={"Add description for section, e.g. 'Pick one'"}
                   />
@@ -121,7 +123,7 @@ export default function BuildArea() {
                 {!section.price && (
                   <Add
                     id={section.id}
-                    type={"section-edit"}
+                    type={"section-price"}
                     obj={section}
                     tooltip={"Add extra price per person for this section"}
                   />
@@ -134,7 +136,7 @@ export default function BuildArea() {
                       className="section-price"
                       defaultValue={section.price}
                       onChange={(e) => {
-                        section.price = e.target.value
+                        section.price = e.target.value > 0 ? e.target.value : ""
                         saveList.value.sections[section.id] = section
                       }}
                     />
@@ -157,6 +159,7 @@ export default function BuildArea() {
                       </div>
                       {!item.includes && (
                         <Add
+                          parent={item.section_id}
                           id={item.id}
                           type={"item-edit"}
                           obj={item}
