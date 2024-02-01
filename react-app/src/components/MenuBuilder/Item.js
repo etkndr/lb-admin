@@ -41,6 +41,13 @@ export default function Item({ item }) {
           }}
         />
       </div>
+      {descs?.map((desc, idx) => {
+        return (
+          <div key={desc.id}>
+            <Desc desc={desc} />
+          </div>
+        )
+      })}
     </>
   )
 }

@@ -1,15 +1,22 @@
+import { useSignal } from "@preact/signals-react"
+import { useEffect } from "react"
 import { saveList } from "../../App"
 
 export default function Desc({ desc }) {
+  const body = useSignal(null)
+
+  useEffect(() => {
+    body.value = desc?.body
+  }, [desc])
+
   return (
     <>
-      <div key={`desc${desc.id}`}>
+      <div>
         <input
-          key={Math.random()}
           className="desc-body"
-          defaultValue={desc.body}
+          defaultValue={body.value}
           onChange={(e) => {
-            desc.body = e.target.value
+            body.value = e.target.value
             saveList.value.descs[desc.id] = desc
           }}
         />
