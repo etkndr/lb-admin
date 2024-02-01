@@ -122,13 +122,13 @@ export const menus = createReducer([], {
   [userMenus().type]: (state, action) => {
     return { ...state, menuList: action.menuList }
   },
-  [getMenu().type]: (state, action) => {
+  [getMenu(0).type]: (state, action) => {
     return { ...state, currMenu: action.menu }
   },
-  [editMenu().type]: (state, action) => {
+  [editMenu(0).type]: (state, action) => {
     return { ...state, menu: action.menu }
   },
-  [deleteMenu().type]: (state, action) => {
+  [deleteMenu(0).type]: (state, action) => {
     delete state[action.menu]
   },
 })

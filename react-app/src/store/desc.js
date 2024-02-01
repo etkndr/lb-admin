@@ -99,16 +99,16 @@ export function deleteDescById(descId) {
 }
 
 export const descs = createReducer([], {
-  [allDescs().type]: (state, action) => {
+  [allDescs(0).type]: (state, action) => {
     return { ...state, descList: action.descList }
   },
-  [getDesc().type]: (state, action) => {
+  [getDesc(0).type]: (state, action) => {
     return { ...state, desc: action.desc }
   },
-  [editDesc().type]: (state, action) => {
+  [editDesc(0).type]: (state, action) => {
     return { ...state, desc: action.desc }
   },
-  [deleteDesc().type]: (state, action) => {
+  [deleteDesc(0).type]: (state, action) => {
     delete state[action.desc]
   },
 })

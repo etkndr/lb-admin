@@ -99,16 +99,16 @@ export function deleteSectionById(sectionId) {
 }
 
 export const sections = createReducer([], {
-  [allSections().type]: (state, action) => {
+  [allSections(0).type]: (state, action) => {
     return { ...state, sectionList: action.sectionList }
   },
-  [getSection().type]: (state, action) => {
+  [getSection(0).type]: (state, action) => {
     return { ...state, section: action.section }
   },
-  [editSection().type]: (state, action) => {
+  [editSection(0).type]: (state, action) => {
     return { ...state, section: action.section }
   },
-  [deleteSection().type]: (state, action) => {
+  [deleteSection(0).type]: (state, action) => {
     delete state[action.section]
   },
 })
