@@ -5,7 +5,6 @@ import LoginFormPage from "./components/LoginFormPage"
 import { authenticate } from "./store/session"
 import { getMenuById } from "./store/menu"
 import MenuBuilder from "./components/MenuBuilder"
-import { getUserMenus } from "./store/menu"
 
 export const menuId = signal(null)
 export const menuState = signal(null)
@@ -24,7 +23,6 @@ function App() {
 
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true))
-    dispatch(getUserMenus())
   }, [dispatch])
 
   useSignalEffect(() => {

@@ -31,6 +31,7 @@ def edit_desc(id):
 
     if form.validate_on_submit():
         desc.body = form.data["body"]
+        desc.order_num = form.data["order_num"]
         
         db.session.commit()
         

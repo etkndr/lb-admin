@@ -31,6 +31,8 @@ def edit_item(id):
 
     if form.validate_on_submit():
         item.title = form.data["title"]
+        item.includes = form.data["includes"]
+        item.order_num = form.data["order_num"]
         
         db.session.commit()
         

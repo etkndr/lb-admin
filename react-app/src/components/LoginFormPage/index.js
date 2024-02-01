@@ -11,8 +11,6 @@ function LoginFormPage() {
   const [password, setPassword] = useState("")
   const [errors, setErrors] = useState([])
 
-  if (sessionUser) return <Redirect to="/builder" />
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     const data = await dispatch(login(email, password))

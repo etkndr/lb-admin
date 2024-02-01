@@ -7,10 +7,12 @@ import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
 import Add from "./Add"
+import Section from "./Section"
 
 export default function BuildArea() {
   const dispatch = useDispatch()
   const menu = useSelector((state) => state.menus.currMenu)
+  const sections = useSelector((state) => state.sections.sectionList)
   const saving = useSignal(false)
 
   useEffect(() => {
@@ -64,8 +66,6 @@ export default function BuildArea() {
     return null
   }
 
-  console.log(menuState.value)
-
   return (
     menu &&
     menuState.value && (
@@ -96,120 +96,10 @@ export default function BuildArea() {
           /person)
         </div>
         <div>
-          {Object.values(menuState.value?.sections)?.map((section, idx) => {
+          {Object.values(menuState.value.sections)?.map((section, idx) => {
             return (
-              <div key={`section${section.id}`}>
-                {!section.choice_desc && (
-                  <Add
-                    id={section.id}
-                    type={"section-choice"}
-                    obj={section}
-                    tooltip={"Add description for section, e.g. 'Pick one'"}
-                  />
-                )}
-                {section.choice_desc && (
-                  <div key={`section-choice${section.id}`}>
-                    <input
-                      key={Math.random()}
-                      className="section-choice"
-                      defaultValue={section.choice_desc}
-                      onChange={(e) => {
-                        section.choice_desc = e.target.value
-                        saveList.value.sections[section.id] = section
-                      }}
-                    />
-                  </div>
-                )}
-                {!section.price && (
-                  <Add
-                    id={section.id}
-                    type={"section-price"}
-                    obj={section}
-                    tooltip={"Add extra price per person for this section"}
-                  />
-                )}
-                {section.price && (
-                  <div key={`section-price${section.id}`}>
-                    (+$
-                    <input
-                      key={Math.random()}
-                      className="section-price"
-                      defaultValue={section.price}
-                      onChange={(e) => {
-                        section.price = e.target.value > 0 ? e.target.value : ""
-                        saveList.value.sections[section.id] = section
-                      }}
-                    />
-                    /person)
-                  </div>
-                )}
-                {Object.values(section.items)?.map((item, idx) => {
-                  return (
-                    <div key={`item${item.id}`}>
-                      <div key={`item-title${item.id}`}>
-                        <input
-                          key={Math.random()}
-                          className="item-title"
-                          defaultValue={item.title}
-                          onChange={(e) => {
-                            item.title = e.target.value
-                            saveList.value.items[item.id] = item
-                          }}
-                        />
-                      </div>
-                      {!item.includes && (
-                        <Add
-                          parent={item.section_id}
-                          id={item.id}
-                          type={"item-edit"}
-                          obj={item}
-                          tooltip={
-                            "Add info about what is included with this item"
-                          }
-                        />
-                      )}
-                      {item.includes && (
-                        <div key={`item-includes${item.id}`}>
-                          <input
-                            key={Math.random()}
-                            className="item-includes"
-                            defaultValue={item.includes}
-                            onChange={(e) => {
-                              item.includes = e.target.value
-                              saveList.value.items[item.id] = item
-                            }}
-                          />
-                        </div>
-                      )}
-                      {Object.values(item.descs)?.map((desc, idx) => {
-                        return (
-                          <div key={`desc${desc.id}`}>
-                            <input
-                              key={Math.random()}
-                              className="desc-body"
-                              defaultValue={desc.body}
-                              onChange={(e) => {
-                                desc.body = e.target.value
-                                saveList.value.descs[desc.id] = desc
-                              }}
-                            />
-                          </div>
-                        )
-                      })}
-                      <Add
-                        id={item.id}
-                        type={"desc"}
-                        tooltip={"Add description for this item"}
-                      />
-                    </div>
-                  )
-                })}
-                <Add
-                  id={section.id}
-                  type={"item"}
-                  tooltip={"Add item to this section"}
-                />
-                <h1>. . .</h1>
+              <div key={section.id}>
+                <Section section={section} />
               </div>
             )
           })}
@@ -225,3 +115,121 @@ export default function BuildArea() {
     )
   )
 }
+
+// {Object.values(menuState.value?.sections)?.map((section, idx) => {
+//   return (
+//     <div key={`section${section.id}`}>
+//       {!section.choice_desc && (
+//         <Add
+//           id={section.id}
+//           type={"section-choice"}
+//           obj={section}
+//           tooltip={"Add description for section, e.g. 'Pick one'"}
+//         />
+//       )}
+//       {section.choice_desc && (
+//         <div key={`section-choice${section.id}`}>
+//           <input
+//             key={Math.random()}
+//             className="section-choice"
+//             defaultValue={section.choice_desc}
+//             onChange={(e) => {
+//               section.choice_desc = e.target.value
+//               saveList.value.sections[section.id] = section
+//             }}
+//           />
+//         </div>
+//       )}
+//       {!section.price && (
+//         <Add
+//           id={section.id}
+//           type={"section-price"}
+//           obj={section}
+//           tooltip={"Add extra price per person for this section"}
+//         />
+//       )}
+//       {section.price && (
+//         <div key={`section-price${section.id}`}>
+//           (+$
+//           <input
+//             key={Math.random()}
+//             className="section-price"
+//             defaultValue={section.price}
+//             onChange={(e) => {
+//               section.price = e.target.value > 0 ? e.target.value : ""
+//               saveList.value.sections[section.id] = section
+//             }}
+//           />
+//           /person)
+//         </div>
+//       )}
+//       {Object.values(section.items)?.map((item, idx) => {
+//         return (
+//           <div key={`item${item.id}`}>
+//             <div key={`item-title${item.id}`}>
+//               <input
+//                 key={Math.random()}
+//                 className="item-title"
+//                 defaultValue={item.title}
+//                 onChange={(e) => {
+//                   item.title = e.target.value
+//                   saveList.value.items[item.id] = item
+//                 }}
+//               />
+//             </div>
+//             {!item.includes && (
+//               <Add
+//                 parent={item.section_id}
+//                 id={item.id}
+//                 type={"item-edit"}
+//                 obj={item}
+//                 tooltip={
+//                   "Add info about what is included with this item"
+//                 }
+//               />
+//             )}
+//             {item.includes && (
+//               <div key={`item-includes${item.id}`}>
+//                 <input
+//                   key={Math.random()}
+//                   className="item-includes"
+//                   defaultValue={item.includes}
+//                   onChange={(e) => {
+//                     item.includes = e.target.value
+//                     saveList.value.items[item.id] = item
+//                   }}
+//                 />
+//               </div>
+//             )}
+//             {Object.values(item.descs)?.map((desc, idx) => {
+//               return (
+//                 <div key={`desc${desc.id}`}>
+//                   <input
+//                     key={Math.random()}
+//                     className="desc-body"
+//                     defaultValue={desc.body}
+//                     onChange={(e) => {
+//                       desc.body = e.target.value
+//                       saveList.value.descs[desc.id] = desc
+//                     }}
+//                   />
+//                 </div>
+//               )
+//             })}
+//             <Add
+//               id={item.id}
+//               type={"desc"}
+//               tooltip={"Add description for this item"}
+//             />
+//           </div>
+//         )
+//       })}
+//       <Add
+//         id={section.id}
+//         type={"item"}
+//         tooltip={"Add item to this section"}
+//       />
+//       <h1>. . .</h1>
+//     </div>
+//   )
+// })}

@@ -29,6 +29,9 @@ export default function Add({ parent, id, type, obj, tooltip }) {
           ...menuState.value,
           [menuState.value.sections[parent].items[id]]: obj,
         }
+        break
+      case "item":
+        break
       default:
         return
     }
