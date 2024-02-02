@@ -105,13 +105,14 @@ export default function BuildArea() {
         {price.value && `/person)`}
       </div>
       <div>
-        {sections?.map((section, idx) => {
-          return (
-            <div key={section.id}>
-              <Section section={section} />
-            </div>
-          )
-        })}
+        {sections &&
+          sections[menu?.id]?.map((section, idx) => {
+            return (
+              <div key={section.id}>
+                <Section section={section} />
+              </div>
+            )
+          })}
         <Add id={menu?.id} type={"section"} tooltip={"Create a new section"} />
       </div>
       <button onClick={saveChanges}>save</button>

@@ -98,9 +98,14 @@ export function deleteSectionById(sectionId) {
   }
 }
 
+const sectionObj = {}
 export const sections = createReducer([], {
   [allSections(0).type]: (state, action) => {
-    return { ...state, sectionList: action.sectionList }
+    let menuId = action.sectionList[0]?.menu_id
+    if (menuId) {
+      sectionObj[menuId] = action.sectionList
+    }
+    return { ...state, sectionList: sectionObj }
   },
   [getSection(0).type]: (state, action) => {
     return { ...state, section: action.section }
