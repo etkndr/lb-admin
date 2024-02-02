@@ -11,11 +11,13 @@ export default function Item({ item }) {
   const descs = useSelector((state) => state.descs.descList)
   const title = useSignal(null)
   const includes = useSignal(null)
+  const itemChange = useSignal(null)
 
   useEffect(() => {
-    dispatch(getAllDescs(item?.id))
-    title.value = item?.title
-    includes.value = item?.includes
+    if (item) {
+      dispatch(getAllDescs(item?.id))
+      itemChange.value = item
+    }
   }, [item])
 
   return (
@@ -23,10 +25,14 @@ export default function Item({ item }) {
       <div>
         <input
           className="item-title"
-          defaultValue={title?.value}
+          defaultValue={item?.title}
           onChange={(e) => {
             title.value = e.target.value
-            saveList.value.items[item.id] = item
+            itemChange.value = { ...itemChange.value, title: title.value }
+            saveList.items.value = {
+              ...saveList.items.value,
+              [item?.id]: itemChange,
+            }
           }}
         />
       </div>
@@ -34,20 +40,25 @@ export default function Item({ item }) {
         <input
           className="item-includes"
           placeholder="Optional item description (e.g. 'Includes rolls')"
-          defaultValue={includes.value}
+          defaultValue={item?.includes}
           onChange={(e) => {
             includes.value = e.target.value
-            saveList.value.items[item.id] = item
+            itemChange.value = { ...itemChange.value, includes: includes.value }
+            saveList.items.value = {
+              ...saveList.items.value,
+              [item?.id]: itemChange,
+            }
           }}
         />
       </div>
-      {descs?.map((desc, idx) => {
-        return (
-          <div key={desc.id}>
-            <Desc desc={desc} />
-          </div>
-        )
-      })}
+      {descs &&
+        descs[item?.id]?.map((desc, idx) => {
+          return (
+            <div key={desc.id}>
+              <Desc desc={desc} />
+            </div>
+          )
+        })}
     </>
   )
 }

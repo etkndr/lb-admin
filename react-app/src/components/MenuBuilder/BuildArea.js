@@ -49,11 +49,11 @@ export default function BuildArea() {
         )
       }
     }
-    // if (Object.keys(saveList.items).length) {
-    //   for (let itemId in saveList.items) {
-    //     dispatch(itemActions.editItemById(itemId, saveList.items[itemId]))
-    //   }
-    // }
+    if (saveList.items.value) {
+      for (let itemId in saveList.items.value) {
+        dispatch(itemActions.editItemById(itemId, saveList.items.value[itemId]))
+      }
+    }
     // if (Object.keys(saveList.descs).length) {
     //   for (let descId in saveList.descs) {
     //     dispatch(descActions.editDescById(descId, saveList.descs[descId]))

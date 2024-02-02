@@ -15,6 +15,7 @@ export function getAllDescs(itemId) {
 
     if (res.ok) {
       dispatch(allDescs(data))
+      return data
     } else {
       if (data.errors) {
         return data.errors
@@ -98,9 +99,15 @@ export function deleteDescById(descId) {
   }
 }
 
+const descObj = {}
+
 export const descs = createReducer([], {
   [allDescs(0).type]: (state, action) => {
-    return { ...state, descList: action.descList }
+    let itemId = action.descList[0]?.item_id
+    if (itemId) {
+      descObj[itemId] = action.descList
+    }
+    return { ...state, descList: descObj }
   },
   [getDesc(0).type]: (state, action) => {
     return { ...state, desc: action.desc }
