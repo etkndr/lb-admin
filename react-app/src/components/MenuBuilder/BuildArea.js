@@ -28,9 +28,9 @@ export default function BuildArea() {
 
   function saveChanges() {
     // Dispatches any existing data from saveList
-    saving.value = true
-    const list = saveList.value
-    if (list.menu) {
+    saving.value = true // Used for displaying "Saving..." text
+
+    if (saveList.menu.value) {
       const changes = {
         id: menu?.id,
         title: title.value,
@@ -39,29 +39,32 @@ export default function BuildArea() {
       }
       dispatch(menuActions.editMenuById(menu?.id, changes))
     }
-    if (Object.keys(list.sections).length) {
-      for (let sectionId in list.sections) {
+    if (saveList.sections.value) {
+      for (let sectionId in saveList.sections.value) {
         dispatch(
-          sectionActions.editSectionById(sectionId, list.sections[sectionId])
+          sectionActions.editSectionById(
+            sectionId,
+            saveList.sections.value[sectionId]
+          )
         )
       }
     }
-    if (Object.keys(list.items).length) {
-      for (let itemId in list.items) {
-        dispatch(itemActions.editItemById(itemId, list.items[itemId]))
-      }
-    }
-    if (Object.keys(list.descs).length) {
-      for (let descId in list.descs) {
-        dispatch(descActions.editDescById(descId, list.descs[descId]))
-      }
-    }
-    saveList.value = {
-      menu: false,
-      sections: {},
-      items: {},
-      descs: {},
-    }
+    // if (Object.keys(saveList.items).length) {
+    //   for (let itemId in saveList.items) {
+    //     dispatch(itemActions.editItemById(itemId, saveList.items[itemId]))
+    //   }
+    // }
+    // if (Object.keys(saveList.descs).length) {
+    //   for (let descId in saveList.descs) {
+    //     dispatch(descActions.editDescById(descId, saveList.descs[descId]))
+    //   }
+    // }
+
+    saveList.menu.value = false
+    saveList.sections.value = null
+    saveList.items.value = null
+    saveList.descs.value = null
+
     setTimeout(() => {
       saving.value = false
       dispatch(menuActions.getUserMenus())

@@ -9,12 +9,12 @@ import MenuBuilder from "./components/MenuBuilder"
 export const menuId = signal(null)
 export const menuState = signal(null)
 export const menuListState = signal({})
-export const saveList = signal({
-  menu: false,
-  sections: {},
-  items: {},
-  descs: {},
-})
+export const saveList = {
+  menu: signal(false),
+  sections: signal(null),
+  items: signal(null),
+  descs: signal(null),
+}
 
 function App() {
   const dispatch = useDispatch()

@@ -11,14 +11,13 @@ export default function Section({ section }) {
   const items = useSelector((state) => state.items.itemList)
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
+  const sectionChange = useSignal(null)
 
   useEffect(() => {
-    dispatch(getAllItems(section?.id))
-    if (section?.price) {
+    if (section) {
+      dispatch(getAllItems(section?.id))
       price.value = section?.price
-    }
-    if (section?.choice_desc) {
-      choiceDesc.valu = section?.choice_desc
+      sectionChange.value = section
     }
   }, [section])
 
@@ -28,10 +27,17 @@ export default function Section({ section }) {
         <input
           className="section-choice"
           placeholder="Optional description for section (e.g. 'Pick one of the following:'"
-          defaultValue={choiceDesc.value}
+          defaultValue={section?.choice_desc}
           onChange={(e) => {
             choiceDesc.value = e.target.value
-            saveList.value.sections[section.id] = section
+            sectionChange.value = {
+              ...sectionChange.value,
+              choice_desc: choiceDesc.value,
+            }
+            saveList.sections.value = {
+              ...saveList.sections.value,
+              [section?.id]: sectionChange,
+            }
           }}
         />
       </div>
@@ -42,10 +48,17 @@ export default function Section({ section }) {
           placeholder="Optional additional price per person for items in this section"
           type="number"
           min={0.25}
-          defaultValue={price.value}
+          defaultValue={section?.price}
           onChange={(e) => {
             price.value = e.target.value > 0 ? e.target.value : false
-            saveList.value.sections[section.id] = section
+            sectionChange.value = {
+              ...sectionChange.value,
+              price: price.value,
+            }
+            saveList.sections.value = {
+              ...saveList.sections.value,
+              [section?.id]: sectionChange,
+            }
           }}
         />
         {price.value && `/person)`}
