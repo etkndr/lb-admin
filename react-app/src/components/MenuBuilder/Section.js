@@ -63,13 +63,14 @@ export default function Section({ section }) {
         />
         {price.value && `/person)`}
       </div>
-      {items?.map((item, idx) => {
-        return (
-          <div key={item.id}>
-            <Item item={item} />
-          </div>
-        )
-      })}
+      {items &&
+        items[section?.id]?.map((item, idx) => {
+          return (
+            <div key={item.id}>
+              <Item item={item} />
+            </div>
+          )
+        })}
       <Add id={section.id} type={"item"} tooltip={"Add item to this section"} />
       <h1>. . .</h1>
     </>

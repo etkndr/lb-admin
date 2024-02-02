@@ -100,7 +100,6 @@ export function deleteDescById(descId) {
 }
 
 const descObj = {}
-
 export const descs = createReducer([], {
   [allDescs(0).type]: (state, action) => {
     let itemId = action.descList[0]?.item_id
