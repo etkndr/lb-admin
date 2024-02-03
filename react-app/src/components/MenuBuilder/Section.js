@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
-import { saveList } from "../../App"
+import { saveList, newList } from "../../App"
 import Item from "./Item"
 import Add from "./Add"
 
@@ -14,12 +14,33 @@ export default function Section({ section }) {
   const sectionChange = useSignal(null)
 
   useEffect(() => {
-    if (section) {
-      dispatch(getAllItems(section?.id))
-      price.value = section?.price
+    if (section.id && section.id !== "new") {
+      // dispatch(getAllItems(section?.id))
       sectionChange.value = section
     }
+    price.value = section?.price
+    choiceDesc.value = section?.choice_desc
   }, [section])
+
+  function handleChange() {
+    sectionChange.value = {
+      ...sectionChange.value,
+      choice_desc: choiceDesc.value,
+      price: price.value,
+    }
+    if (section?.id !== "new") {
+      saveList.sections.value = {
+        ...saveList.sections.value,
+        [section?.id]: sectionChange,
+      }
+    } else {
+      newList.sections.value = {
+        ...newList.sections.value,
+        [section?.menu_id]: sectionChange,
+      }
+    }
+    console.log(section?.id)
+  }
 
   return (
     <>
@@ -30,14 +51,7 @@ export default function Section({ section }) {
           defaultValue={section?.choice_desc}
           onChange={(e) => {
             choiceDesc.value = e.target.value
-            sectionChange.value = {
-              ...sectionChange.value,
-              choice_desc: choiceDesc.value,
-            }
-            saveList.sections.value = {
-              ...saveList.sections.value,
-              [section?.id]: sectionChange,
-            }
+            handleChange()
           }}
         />
       </div>
@@ -50,15 +64,8 @@ export default function Section({ section }) {
           min={0.25}
           defaultValue={section?.price}
           onChange={(e) => {
-            price.value = e.target.value > 0 ? e.target.value : false
-            sectionChange.value = {
-              ...sectionChange.value,
-              price: price.value,
-            }
-            saveList.sections.value = {
-              ...saveList.sections.value,
-              [section?.id]: sectionChange,
-            }
+            price.value = e.target.value
+            handleChange()
           }}
         />
         {price.value && `/person)`}

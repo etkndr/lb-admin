@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList } from "../../App"
+import { saveList, newList } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
@@ -109,6 +109,14 @@ export default function BuildArea() {
           sections[menu?.id]?.map((section, idx) => {
             return (
               <div key={section.id}>
+                <Section section={section} />
+              </div>
+            )
+          })}
+        {newList.sections.value &&
+          Object.values(newList.sections.value)?.map((section, idx) => {
+            return (
+              <div key={idx}>
                 <Section section={section} />
               </div>
             )

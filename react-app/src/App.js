@@ -15,6 +15,11 @@ export const saveList = {
   items: signal(null),
   descs: signal(null),
 }
+export const newList = {
+  sections: signal(null),
+  items: signal(null),
+  descs: signal(null),
+}
 
 function App() {
   const dispatch = useDispatch()
