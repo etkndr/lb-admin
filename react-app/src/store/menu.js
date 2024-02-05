@@ -58,7 +58,7 @@ export function getMenuById(menuId) {
 
 export function createMenu(menu) {
   return async (dispatch) => {
-    const res = await fetch(`${baseUrl}/api/menus`, {
+    const res = await fetch(`${baseUrl}/api/menus/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(menu),
@@ -67,6 +67,7 @@ export function createMenu(menu) {
 
     if (res.ok) {
       dispatch(newMenu(data))
+      return data
     } else {
       if (data.errors) {
         return data.errors
@@ -121,13 +122,13 @@ export const menus = createReducer([], {
   [userMenus().type]: (state, action) => {
     return { ...state, menuList: action.menuList }
   },
-  [getMenu().type]: (state, action) => {
+  [getMenu(0).type]: (state, action) => {
     return { ...state, currMenu: action.menu }
   },
-  [editMenu().type]: (state, action) => {
+  [editMenu(0).type]: (state, action) => {
     return { ...state, menu: action.menu }
   },
-  [deleteMenu().type]: (state, action) => {
+  [deleteMenu(0).type]: (state, action) => {
     delete state[action.menu]
   },
 })

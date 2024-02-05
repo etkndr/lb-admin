@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import * as menuActions from "../../store/menu"
 import BuildArea from "./BuildArea"
-import { menuId, menuState, menuListState } from "../../App"
+import { menuId, menuListState } from "../../App"
 import { logout } from "../../store/session"
 
 export default function MenuBuilder() {
@@ -11,11 +11,25 @@ export default function MenuBuilder() {
   const menus = useSelector((state) => state.menus.menuList)
   const loading = useSignal(false)
 
+  useEffect(() => dispatch(menuActions.getUserMenus()), [dispatch])
+
   useEffect(() => {
     menus?.forEach((menu) => {
       menuListState.value = { ...menuListState.value, [menu.id]: menu }
     })
   }, [menus])
+
+  function handleCreate() {
+    const newMenu = {
+      title: "Menu title",
+      price: 10,
+      visible: "hidden",
+    }
+
+    dispatch(menuActions.createMenu(newMenu)).then(
+      (res) => (menuId.value = res.id)
+    )
+  }
 
   function handleVis(menu) {
     const vis = menuListState.value[menu.id]?.visible
@@ -50,7 +64,7 @@ export default function MenuBuilder() {
               </li>
             )
           })}
-        <button>New menu</button>
+        <button onClick={handleCreate}>New menu</button>
         <button onClick={() => dispatch(logout())}>Log out</button>
       </div>
       <div>

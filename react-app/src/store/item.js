@@ -15,6 +15,7 @@ export function getAllItems(sectionId) {
 
     if (res.ok) {
       dispatch(allItems(data))
+      return data
     } else {
       if (data.errors) {
         return data.errors
@@ -98,17 +99,22 @@ export function deleteItemById(itemId) {
   }
 }
 
+const itemObj = {}
 export const items = createReducer([], {
-  [getAllItems().type]: (state, action) => {
-    return { ...state, itemList: action.itemList }
+  [allItems(0).type]: (state, action) => {
+    let sectionId = action.itemList[0]?.section_id
+    if (sectionId) {
+      itemObj[sectionId] = action.itemList
+    }
+    return { ...state, itemList: itemObj }
   },
-  [getItem().type]: (state, action) => {
+  [getItem(0).type]: (state, action) => {
     return { ...state, item: action.item }
   },
-  [editItem().type]: (state, action) => {
+  [editItem(0).type]: (state, action) => {
     return { ...state, item: action.item }
   },
-  [deleteItem().type]: (state, action) => {
+  [deleteItem(0).type]: (state, action) => {
     delete state[action.item]
   },
 })

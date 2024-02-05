@@ -1,62 +1,74 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { menuState } from "../../App"
+import { saveList, newList } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
+import Add from "./Add"
+import Section from "./Section"
 
 export default function BuildArea() {
   const dispatch = useDispatch()
   const menu = useSelector((state) => state.menus.currMenu)
+  const sections = useSelector((state) => state.sections.sectionList)
+
+  const title = useSignal(null)
+  const price = useSignal(null)
   const saving = useSignal(false)
 
   useEffect(() => {
-    // Sets menuState to current menu when menu changes
-
     if (menu) {
-      menuState.value = menu
+      dispatch(sectionActions.getAllSections(menu?.id))
     }
+    title.value = menu?.title
+    price.value = menu?.price
   }, [menu])
 
-  function saveChanges(type, id, obj) {
-    // Function called when a fied loses focus, checks type of action to dispatch then passes id & data from menuState.
+  function saveChanges() {
+    // Dispatches any existing data from saveList
+    saving.value = true // Used for displaying "Saving..." text
 
-    saving.value = true
-
-    switch (type) {
-      case "menu":
-        dispatch(menuActions.editMenuById(id, obj)).then(() => {
-          setTimeout(() => {
-            saving.value = false
-            dispatch(menuActions.getUserMenus())
-          }, 500)
-        })
-        break
-      case "section":
-        dispatch(sectionActions.editSectionById(id, obj)).then(() => {
-          setTimeout(() => {
-            saving.value = false
-          }, 500)
-        })
-        break
-      case "item":
-        dispatch(itemActions.editItemById(id, obj)).then(() => {
-          setTimeout(() => {
-            saving.value = false
-          }, 500)
-        })
-        break
-      case "desc":
-        dispatch(descActions.editDescById(id, obj)).then(() => {
-          setTimeout(() => {
-            saving.value = false
-          }, 500)
-        })
-      default:
-        break
+    if (saveList.menu.value) {
+      const changes = {
+        id: menu?.id,
+        title: title.value,
+        price: price.value,
+        visible: menu?.visible,
+      }
+      dispatch(menuActions.editMenuById(menu?.id, changes))
     }
+    if (saveList.sections.value) {
+      for (let sectionId in saveList.sections.value) {
+        dispatch(
+          sectionActions.editSectionById(
+            sectionId,
+            saveList.sections.value[sectionId]
+          )
+        )
+      }
+    }
+    if (saveList.items.value) {
+      for (let itemId in saveList.items.value) {
+        dispatch(itemActions.editItemById(itemId, saveList.items.value[itemId]))
+      }
+    }
+    // if (Object.keys(saveList.descs).length) {
+    //   for (let descId in saveList.descs) {
+    //     dispatch(descActions.editDescById(descId, saveList.descs[descId]))
+    //   }
+    // }
+
+    saveList.menu.value = false
+    saveList.sections.value = null
+    saveList.items.value = null
+    saveList.descs.value = null
+
+    setTimeout(() => {
+      saving.value = false
+      dispatch(menuActions.getUserMenus())
+    }, 500)
   }
 
   if (!menu) {
@@ -64,102 +76,55 @@ export default function BuildArea() {
   }
 
   return (
-    menu &&
-    menuState.value && (
-      <>
-        <div>
-          <input
-            key={Math.random()}
-            className="menu-title"
-            defaultValue={menuState.value?.title}
-            onChange={(e) => (menuState.value.title = e.target.value)}
-            onBlur={() => saveChanges("menu", menu.id, menuState.value)}
-          />
-        </div>
-        <div>
-          ($
-          <input
-            key={Math.random()}
-            type="number"
-            className="menu-price"
-            defaultValue={menuState.value?.price}
-            onChange={(e) => (menuState.value.price = e.target.value)}
-            onBlur={() => saveChanges("menu", menu.id, menuState.value)}
-          />
-          /person)
-        </div>
-        <div>
-          {menuState.value?.sections?.map((section, idx) => {
+    <>
+      <div>
+        <input
+          className="menu-title"
+          placeholder="Menu title"
+          defaultValue={title.value}
+          onChange={(e) => {
+            title.value = e.target.value
+            saveList.value.menu = true
+          }}
+        />
+      </div>
+      <div>
+        {price.value && `($`}
+        <input
+          key={Math.random()}
+          placeholder="Price per person"
+          type="number"
+          min={1}
+          className="menu-price"
+          defaultValue={price.value}
+          onChange={(e) => {
+            price.value = e.target.value
+            saveList.value.menu = true
+          }}
+        />
+        {price.value && `/person)`}
+      </div>
+      <div>
+        {sections &&
+          sections[menu?.id]?.map((section, idx) => {
             return (
-              <div key={`section${section.id}`}>
-                {section.choice_desc && (
-                  <div key={`section-choice${section.id}`}>
-                    <input
-                      key={Math.random()}
-                      className="section-choice"
-                      defaultValue={section.choice_desc}
-                      onChange={(e) => (section.choice_desc = e.target.value)}
-                      onBlur={() => saveChanges("section", section.id, section)}
-                    />
-                  </div>
-                )}
-                <div key={`section-price${section.id}`}>
-                  (+$
-                  <input
-                    key={Math.random()}
-                    className="section-price"
-                    defaultValue={section.price}
-                    onChange={(e) => (section.price = e.target.value)}
-                    onBlur={() => saveChanges("section", section.id, section)}
-                  />
-                  /person)
-                </div>
-                {section.items?.map((item, idx) => {
-                  return (
-                    <div key={`item${item.id}`}>
-                      <div key={`item-title${item.id}`}>
-                        <input
-                          key={Math.random()}
-                          className="item-title"
-                          defaultValue={item.title}
-                          onChange={(e) => (item.title = e.target.value)}
-                          onBlur={() => saveChanges("item", item.id, item)}
-                        />
-                      </div>
-                      {item.includes && (
-                        <div key={`item-includes${item.id}`}>
-                          <input
-                            key={Math.random()}
-                            className="item-includes"
-                            defaultValue={item.includes}
-                            onChange={(e) => (item.includes = e.target.value)}
-                            onBlur={() => saveChanges("item", item.id, item)}
-                          />
-                        </div>
-                      )}
-                      {item.descs?.map((desc, idx) => {
-                        return (
-                          <div key={`desc${desc.id}`}>
-                            <input
-                              key={Math.random()}
-                              className="desc-body"
-                              defaultValue={desc.body}
-                              onChange={(e) => (desc.body = e.target.value)}
-                              onBlur={() => saveChanges("desc", desc.id, desc)}
-                            />
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )
-                })}
-                <h1>. . .</h1>
+              <div key={section.id}>
+                <Section section={section} />
               </div>
             )
           })}
-        </div>
-        {saving.value && "Saving changes.."}
-      </>
-    )
+        {newList.sections.value &&
+          Object.values(newList.sections.value)?.map((section, idx) => {
+            return (
+              <div key={idx}>
+                <Section section={section} />
+              </div>
+            )
+          })}
+        <Add id={menu?.id} type={"section"} tooltip={"Create a new section"} />
+      </div>
+      <button onClick={saveChanges}>save</button>
+      {saving.value && "Saving changes.."}
+    </>
   )
 }

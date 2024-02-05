@@ -42,18 +42,18 @@ def get_menu(id):
     
     menu_dict = menu.to_dict()
     sections = Section.query.filter(Section.menu_id == id)
-    section_list = [section.to_dict() for section in sections]
+    section_list = {section.id: section.to_dict() for section in sections}
     
     for section in section_list:
-        items = Item.query.filter(Item.section_id == section["id"])
-        item_list = [item.to_dict() for item in items]
+        items = Item.query.filter(Item.section_id == section)
+        item_list = {item.id: item.to_dict() for item in items}
         
         for item in item_list:
-            descs = Desc.query.filter(Desc.item_id == item["id"])
-            desc_list = [desc.to_dict() for desc in descs]
-            item["descs"] = desc_list
+            descs = Desc.query.filter(Desc.item_id == item)
+            desc_list = {desc.id: desc.to_dict() for desc in descs}
+            item_list[item]["descs"] = desc_list
         
-        section["items"] = item_list
+        section_list[section]["items"] = item_list
     
     menu_dict["sections"] = section_list
 
