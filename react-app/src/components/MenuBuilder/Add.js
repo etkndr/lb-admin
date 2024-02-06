@@ -9,18 +9,23 @@ export default function Add({ parent, id, type, obj, tooltip }) {
   const dispatch = useDispatch()
 
   function handleAdd() {
-    const list = newList
-
     switch (type) {
       case "section":
+        const tempId = newList.sections.value
+          ? Object.keys(newList.sections.value).length + 1
+          : 1
+
         const section = {
           new: true,
+          tempId,
           menu_id: id,
           choice_desc: "",
           price: "",
         }
-        console.log(id)
-        list.sections.value = { ...list.sections.value, [id]: section }
+        newList.sections.value = {
+          ...newList.sections.value,
+          [tempId]: section,
+        }
         break
       case "section-price":
         break

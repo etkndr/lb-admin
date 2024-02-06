@@ -27,9 +27,9 @@ export default function BuildArea() {
   }, [menu])
 
   function saveChanges() {
-    // Dispatches any existing data from saveList
     saving.value = true // Used for displaying "Saving..." text
 
+    // Check for data in saveList and send PUT requests
     if (saveList.menu.value) {
       const changes = {
         id: menu?.id,
@@ -54,16 +54,21 @@ export default function BuildArea() {
         dispatch(itemActions.editItemById(itemId, saveList.items.value[itemId]))
       }
     }
-    // if (Object.keys(saveList.descs).length) {
-    //   for (let descId in saveList.descs) {
-    //     dispatch(descActions.editDescById(descId, saveList.descs[descId]))
-    //   }
-    // }
+    if (saveList.descs.value) {
+      for (let descId in saveList.descs.value) {
+        dispatch(descActions.editDescById(descId, saveList.descs.value[descId]))
+      }
+    }
 
     saveList.menu.value = false
     saveList.sections.value = null
     saveList.items.value = null
     saveList.descs.value = null
+
+    // Check for data in newList and send POST requests
+    if (newList.sections.value) {
+      console.log(newList.sections.value)
+    }
 
     setTimeout(() => {
       saving.value = false

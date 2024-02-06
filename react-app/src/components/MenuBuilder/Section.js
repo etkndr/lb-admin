@@ -31,15 +31,17 @@ export default function Section({ section }) {
     if (section.new) {
       newList.sections.value = {
         ...newList.sections.value,
-        [section?.menu_id]: sectionChange.value,
+        [section?.tempId]: sectionChange.value,
+      }
+    } else {
+      saveList.sections.value = {
+        ...saveList.sections.value,
+        [section?.id]: sectionChange.value,
       }
     }
-    saveList.sections.value = {
-      ...saveList.sections.value,
-      [section?.id]: sectionChange.value,
-    }
-    console.log(newList.sections.value)
   }
+
+  console.log(newList.sections.value)
 
   return (
     <>
@@ -60,7 +62,7 @@ export default function Section({ section }) {
           className="section-price"
           placeholder="Optional additional price per person for items in this section"
           type="number"
-          min={0.25}
+          min={1}
           defaultValue={section?.price}
           onChange={(e) => {
             price.value = e.target.value
