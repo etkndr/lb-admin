@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, jsonify
 from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
@@ -41,7 +41,7 @@ def create_app():
     Migrate(app, db)
 
     # Application Security
-    CORS(app)
+    CORS(app, origins=['http://localhost:3000', 'http://localhost:5000', 'http://174.177.20.96', 'https://likebutterknox.com'], supports_credentials=True)
 
 
     # Since we are deploying with Docker and Flask,
@@ -59,15 +59,22 @@ def create_app():
 
 
     @app.after_request
-    def inject_csrf_token(response):
-        response.set_cookie(
-            'csrf_token',
-            generate_csrf(),
-            # secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
-            # samesite='Strict' if os.environ.get(
-            #     'FLASK_ENV') == 'production' else None,
-            httponly=True)
-        return response
+    @cross_origin(supports_credentials=True)
+    def add_cors(rv):
+        # rv.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+        rv.headers.add('Access-Control-Allow-Headers', 'X-CSRFToken')
+        # rv.headers.add('Access-Control-Allow-Credentials', 'true')
+        return rv
+    # def inject_csrf_token(response):
+
+        # response.set_cookie(
+        #     'csrf_token',
+        #     generate_csrf(),
+        #     secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
+        #     samesite='Strict' if os.environ.get(
+        #         'FLASK_ENV') == 'production' else None,
+        #     httponly=True)
+        # return response
 
 
     @app.route("/api/docs")
@@ -81,6 +88,12 @@ def create_app():
                         for rule in app.url_map.iter_rules() if rule.endpoint != 'static' }
         return route_list
 
+    @app.route('/', methods=['GET', 'POST', 'OPTIONS'])
+    @cross_origin(supports_credentials=True)
+    def token():
+        csrf_token = generate_csrf()
+        print("hello", jsonify(csrf_token=csrf_token))
+        return jsonify(csrf_token=csrf_token)
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
