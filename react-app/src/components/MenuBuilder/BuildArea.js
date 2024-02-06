@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, newList } from "../../App"
+import { saveList, newList, allLoaded } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
@@ -20,16 +20,18 @@ export default function BuildArea() {
 
   useEffect(() => {
     if (menu) {
-      dispatch(sectionActions.getAllSections(menu?.id))
+      dispatch(sectionActions.getAllSections(menu?.id)).then(
+        () => (allLoaded.sections.value = true)
+      )
     }
     title.value = menu?.title
     price.value = menu?.price
-  }, [menu])
+  }, [menu, dispatch])
 
   function saveChanges() {
-    // Dispatches any existing data from saveList
     saving.value = true // Used for displaying "Saving..." text
 
+    // Check for data in saveList and send PUT requests
     if (saveList.menu.value) {
       const changes = {
         id: menu?.id,
@@ -54,16 +56,28 @@ export default function BuildArea() {
         dispatch(itemActions.editItemById(itemId, saveList.items.value[itemId]))
       }
     }
-    // if (Object.keys(saveList.descs).length) {
-    //   for (let descId in saveList.descs) {
-    //     dispatch(descActions.editDescById(descId, saveList.descs[descId]))
-    //   }
-    // }
+    if (saveList.descs.value) {
+      for (let descId in saveList.descs.value) {
+        dispatch(descActions.editDescById(descId, saveList.descs.value[descId]))
+      }
+    }
 
     saveList.menu.value = false
     saveList.sections.value = null
     saveList.items.value = null
     saveList.descs.value = null
+
+    // Check for data in newList and send POST requests
+    if (newList.sections.value) {
+      for (let sectionId in newList.sections.value) {
+        dispatch(
+          sectionActions.createSection(
+            menu?.id,
+            newList.sections.value[sectionId]
+          )
+        )
+      }
+    }
 
     setTimeout(() => {
       saving.value = false
