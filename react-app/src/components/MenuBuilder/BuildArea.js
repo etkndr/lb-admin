@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, newList } from "../../App"
+import { saveList, newList, allLoaded } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
@@ -20,11 +20,13 @@ export default function BuildArea() {
 
   useEffect(() => {
     if (menu) {
-      dispatch(sectionActions.getAllSections(menu?.id))
+      dispatch(sectionActions.getAllSections(menu?.id)).then(
+        () => (allLoaded.sections.value = true)
+      )
     }
     title.value = menu?.title
     price.value = menu?.price
-  }, [menu])
+  }, [menu, dispatch])
 
   function saveChanges() {
     saving.value = true // Used for displaying "Saving..." text
