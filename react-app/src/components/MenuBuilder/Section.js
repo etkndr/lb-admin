@@ -18,8 +18,8 @@ export default function Section({ section }) {
     //   dispatch(getAllItems(section?.id))
     // }
     sectionChange.value = section
-    price.value = section?.price
-    choiceDesc.value = section?.choice_desc
+    price.value = section?.price || ""
+    choiceDesc.value = section?.choice_desc || ""
   }, [section])
 
   function handleChange() {
@@ -40,8 +40,6 @@ export default function Section({ section }) {
       }
     }
   }
-
-  console.log(saveList.sections.value)
 
   return (
     <>
@@ -65,7 +63,7 @@ export default function Section({ section }) {
           min={1}
           defaultValue={section?.price}
           onChange={(e) => {
-            price.value = e.target.value
+            price.value = e.target.value > 0 ? e.target.value : ""
             handleChange()
           }}
         />
