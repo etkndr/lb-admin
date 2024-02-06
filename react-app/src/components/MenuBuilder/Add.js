@@ -19,7 +19,8 @@ export default function Add({ parent, id, type, obj, tooltip }) {
           choice_desc: "",
           price: "",
         }
-        list.sections.value = { ...list.sections.value, id: section }
+        console.log(id)
+        list.sections.value = { ...list.sections.value, [id]: section }
         break
       case "section-price":
         break

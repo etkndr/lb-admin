@@ -14,10 +14,10 @@ export default function Section({ section }) {
   const sectionChange = useSignal(null)
 
   useEffect(() => {
-    if (section.id && section.id !== "new") {
-      // dispatch(getAllItems(section?.id))
-      sectionChange.value = section
-    }
+    // if (!section.new) {
+    //   dispatch(getAllItems(section?.id))
+    // }
+    sectionChange.value = section
     price.value = section?.price
     choiceDesc.value = section?.choice_desc
   }, [section])
@@ -28,18 +28,17 @@ export default function Section({ section }) {
       choice_desc: choiceDesc.value,
       price: price.value,
     }
-    if (section?.id !== "new") {
-      saveList.sections.value = {
-        ...saveList.sections.value,
-        [section?.id]: sectionChange,
-      }
-    } else {
+    if (section.new) {
       newList.sections.value = {
         ...newList.sections.value,
-        [section?.menu_id]: sectionChange,
+        [section?.menu_id]: sectionChange.value,
       }
     }
-    console.log(section?.id)
+    saveList.sections.value = {
+      ...saveList.sections.value,
+      [section?.id]: sectionChange.value,
+    }
+    console.log(newList.sections.value)
   }
 
   return (
