@@ -41,7 +41,7 @@ export default function Section({ section }) {
     }
   }
 
-  console.log(newList.sections.value)
+  console.log(saveList.sections.value)
 
   return (
     <>

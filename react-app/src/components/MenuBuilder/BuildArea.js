@@ -67,7 +67,14 @@ export default function BuildArea() {
 
     // Check for data in newList and send POST requests
     if (newList.sections.value) {
-      console.log(newList.sections.value)
+      for (let sectionId in newList.sections.value) {
+        dispatch(
+          sectionActions.createSection(
+            menu?.id,
+            newList.sections.value[sectionId]
+          )
+        )
+      }
     }
 
     setTimeout(() => {
