@@ -106,7 +106,7 @@ export const items = createReducer([], {
     if (sectionId) {
       itemObj[sectionId] = action.itemList
     }
-    return { ...state, itemList: itemObj }
+    return { ...state, itemList: { ...itemObj } }
   },
   [getItem(0).type]: (state, action) => {
     return { ...state, item: action.item }

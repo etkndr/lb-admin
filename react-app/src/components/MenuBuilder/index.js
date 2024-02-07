@@ -1,10 +1,11 @@
 import { useSignal, signal, useSignalEffect } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
-import * as menuActions from "../../store/menu"
 import BuildArea from "./BuildArea"
 import { menuId, menuListState } from "../../App"
 import { logout } from "../../store/session"
+import * as menuActions from "../../store/menu"
+import { getAllSections } from "../../store/section"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
@@ -53,7 +54,14 @@ export default function MenuBuilder() {
             return (
               <li key={Math.random()}>
                 {menu.title}
-                <button onClick={() => (menuId.value = menu.id)}>edit</button>
+                <button
+                  onClick={() => {
+                    dispatch(getAllSections(menu.id))
+                    dispatch(menuActions.getMenuById(menu.id))
+                  }}
+                >
+                  edit
+                </button>
                 Published
                 <input
                   key={Math.random()}

@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
-import { useSignal } from "@preact/signals-react"
+import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
 import { saveList, newList, allLoaded } from "../../App"
 import Item from "./Item"
 import Add from "./Add"
+import { allItems } from "../../store/actions"
 
 export default function Section({ section }) {
   const dispatch = useDispatch()
@@ -15,14 +16,16 @@ export default function Section({ section }) {
 
   useEffect(() => {
     if (!section.new) {
-      dispatch(getAllItems(section?.id)).then(
-        () => (allLoaded.items.value = true)
-      )
+      dispatch(getAllItems(section.id))
     }
+    console.log(section, items)
+  }, [section.id, dispatch])
+
+  useEffect(() => {
     sectionChange.value = section
     price.value = section?.price || ""
     choiceDesc.value = section?.choice_desc || ""
-  }, [section, dispatch])
+  }, [section])
 
   function handleChange() {
     sectionChange.value = {
@@ -44,49 +47,44 @@ export default function Section({ section }) {
   }
 
   return (
-    allLoaded.items.value && (
-      <>
-        <div>
-          <input
-            className="section-choice"
-            placeholder="Optional description for section (e.g. 'Pick one of the following:'"
-            defaultValue={section?.choice_desc}
-            onChange={(e) => {
-              choiceDesc.value = e.target.value
-              handleChange()
-            }}
-          />
-        </div>
-        <div>
-          {price.value && `(+$`}
-          <input
-            className="section-price"
-            placeholder="Optional additional price per person for items in this section"
-            type="number"
-            min={1}
-            defaultValue={section?.price}
-            onChange={(e) => {
-              price.value = e.target.value > 0 ? e.target.value : ""
-              handleChange()
-            }}
-          />
-          {price.value && `/person)`}
-        </div>
-        {items &&
-          items[section?.id]?.map((item, idx) => {
-            return (
-              <div key={item.id}>
-                <Item item={item} />
-              </div>
-            )
-          })}
-        <Add
-          id={section.id}
-          type={"item"}
-          tooltip={"Add item to this section"}
+    <>
+      <div>
+        <input
+          className="section-choice"
+          placeholder="Optional description for section (e.g. 'Pick one of the following:'"
+          defaultValue={section?.choice_desc}
+          onChange={(e) => {
+            choiceDesc.value = e.target.value
+            handleChange()
+          }}
         />
-        <h1>. . .</h1>
-      </>
-    )
+      </div>
+      <div>
+        {price.value && `(+$`}
+        <input
+          className="section-price"
+          placeholder="Optional additional price per person for items in this section"
+          type="number"
+          min={1}
+          defaultValue={section?.price}
+          onChange={(e) => {
+            price.value = e.target.value > 0 ? e.target.value : ""
+            handleChange()
+          }}
+        />
+        {price.value && `/person)`}
+      </div>
+      {!items && null}
+      {items &&
+        items[section?.id]?.map((item, idx) => {
+          return (
+            <div key={item.id}>
+              <Item item={item} />
+            </div>
+          )
+        })}
+      <Add id={section.id} type={"item"} tooltip={"Add item to this section"} />
+      <h1>. . .</h1>
+    </>
   )
 }
