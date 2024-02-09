@@ -38,12 +38,6 @@ function App() {
     dispatch(authenticate()).then(() => setIsLoaded(true))
   }, [dispatch])
 
-  useSignalEffect(() => {
-    if (menuId.value) {
-      dispatch(getMenuById(menuId.value))
-    }
-  })
-
   return (
     <>
       {isLoaded && !user && <LoginFormPage />}

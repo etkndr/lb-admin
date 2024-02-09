@@ -19,11 +19,6 @@ export default function BuildArea() {
   const saving = useSignal(false)
 
   useEffect(() => {
-    if (menu) {
-      dispatch(sectionActions.getAllSections(menu?.id)).then(
-        () => (allLoaded.sections.value = true)
-      )
-    }
     title.value = menu?.title
     price.value = menu?.price
   }, [menu, dispatch])
@@ -98,7 +93,7 @@ export default function BuildArea() {
           defaultValue={title.value}
           onChange={(e) => {
             title.value = e.target.value
-            saveList.value.menu = true
+            saveList.menu.value = true
           }}
         />
       </div>
@@ -113,12 +108,13 @@ export default function BuildArea() {
           defaultValue={price.value}
           onChange={(e) => {
             price.value = e.target.value
-            saveList.value.menu = true
+            saveList.menu.value = true
           }}
         />
         {price.value && `/person)`}
       </div>
       <div>
+        {!sections && null}
         {sections &&
           sections[menu?.id]?.map((section, idx) => {
             return (

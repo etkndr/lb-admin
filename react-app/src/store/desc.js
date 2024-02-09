@@ -106,7 +106,7 @@ export const descs = createReducer([], {
     if (itemId) {
       descObj[itemId] = action.descList
     }
-    return { ...state, descList: descObj }
+    return { ...state, descList: { ...descObj } }
   },
   [getDesc(0).type]: (state, action) => {
     return { ...state, desc: action.desc }

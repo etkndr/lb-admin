@@ -105,7 +105,7 @@ export const sections = createReducer([], {
     if (menuId) {
       sectionObj[menuId] = action.sectionList
     }
-    return { ...state, sectionList: sectionObj }
+    return { ...state, sectionList: { ...sectionObj } }
   },
   [getSection(0).type]: (state, action) => {
     return { ...state, section: action.section }
