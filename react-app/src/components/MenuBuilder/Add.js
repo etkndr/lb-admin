@@ -11,27 +11,37 @@ export default function Add({ parent, id, type, obj, tooltip }) {
   function handleAdd() {
     switch (type) {
       case "section":
-        const tempId = newList.sections.value
+        const tempSectionId = newList.sections.value
           ? Object.keys(newList.sections.value).length + 1
           : 1
 
         const section = {
           new: true,
-          tempId,
+          tempSectionId,
           menu_id: id,
           choice_desc: "",
           price: "",
         }
         newList.sections.value = {
           ...newList.sections.value,
-          [tempId]: section,
+          [tempSectionId]: section,
         }
         break
-      case "section-price":
-        break
-      case "item-edit":
-        break
       case "item":
+        const tempItemId = newList.items.value
+          ? Object.keys(newList.items.value).length + 1
+          : 1
+        const item = {
+          new: true,
+          tempItemId,
+          section_id: id,
+          title: "",
+          includes: "",
+        }
+        newList.items.value = {
+          ...newList.items.value,
+          [tempItemId]: item,
+        }
         break
       default:
         return

@@ -18,7 +18,6 @@ export default function Section({ section }) {
     if (!section.new) {
       dispatch(getAllItems(section.id))
     }
-    console.log(section, items)
   }, [section.id, dispatch])
 
   useEffect(() => {
@@ -36,7 +35,7 @@ export default function Section({ section }) {
     if (section.new) {
       newList.sections.value = {
         ...newList.sections.value,
-        [section?.tempId]: sectionChange.value,
+        [section?.tempSectionId]: sectionChange.value,
       }
     } else {
       saveList.sections.value = {
@@ -79,6 +78,14 @@ export default function Section({ section }) {
         items[section?.id]?.map((item, idx) => {
           return (
             <div key={item.id}>
+              <Item item={item} />
+            </div>
+          )
+        })}
+      {newList.items.value &&
+        Object.values(newList.items.value)?.map((item, idx) => {
+          return (
+            <div key={idx}>
               <Item item={item} />
             </div>
           )
