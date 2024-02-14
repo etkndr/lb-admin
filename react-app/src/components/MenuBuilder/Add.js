@@ -43,6 +43,22 @@ export default function Add({ parent, id, type, obj, tooltip }) {
           [tempItemId]: item,
         }
         break
+      case "desc":
+        const tempDescId = newList.descs.value
+          ? Object.keys(newList.descs.value).length + 1
+          : 1
+        const desc = {
+          new: true,
+          tempDescId,
+          section_id: id,
+          title: "",
+          includes: "",
+        }
+        newList.descs.value = {
+          ...newList.descs.value,
+          [tempDescId]: desc,
+        }
+        break
       default:
         return
     }
