@@ -50,9 +50,8 @@ export default function Add({ parent, id, type, obj, tooltip }) {
         const desc = {
           new: true,
           tempDescId,
-          section_id: id,
-          title: "",
-          includes: "",
+          item_id: id,
+          body: "",
         }
         newList.descs.value = {
           ...newList.descs.value,

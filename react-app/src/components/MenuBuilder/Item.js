@@ -79,6 +79,19 @@ export default function Item({ item }) {
             </div>
           )
         })}
+      {newList.descs.value &&
+        Object.values(newList.descs.value)?.map((desc, idx) => {
+          return (
+            <div key={idx}>
+              <Desc desc={desc} />
+            </div>
+          )
+        })}
+      <Add
+        id={item.id}
+        type={"desc"}
+        tooltip={"Add description for this item"}
+      />
     </>
   )
 }
