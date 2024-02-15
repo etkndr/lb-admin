@@ -1,4 +1,4 @@
-import { menuId, newList } from "../../App"
+import { menuId, newList, newSections, newItems, newDescs } from "../../App"
 import { useDispatch } from "react-redux"
 import { getMenuById } from "../../store/menu"
 import * as sectionActions from "../../store/section"
@@ -11,27 +11,55 @@ export default function Add({ parent, id, type, obj, tooltip }) {
   function handleAdd() {
     switch (type) {
       case "section":
-        const tempId = newList.sections.value
+        const tempSectionId = newList.sections.value
           ? Object.keys(newList.sections.value).length + 1
           : 1
 
         const section = {
           new: true,
-          tempId,
+          tempSectionId,
           menu_id: id,
           choice_desc: "",
           price: "",
         }
-        newList.sections.value = {
-          ...newList.sections.value,
-          [tempId]: section,
+        if (!newSections[id]) {
+          newSections[id] = [section]
+        } else {
+          newSections[id].push(section)
         }
         break
-      case "section-price":
-        break
-      case "item-edit":
-        break
       case "item":
+        const tempItemId = newList.items.value
+          ? Object.keys(newList.items.value).length + 1
+          : 1
+        const item = {
+          new: true,
+          tempItemId,
+          section_id: id,
+          title: "",
+          includes: "",
+        }
+        if (!newItems[id]) {
+          newItems[id] = [item]
+        } else {
+          newItems[id].push(item)
+        }
+        break
+      case "desc":
+        const tempDescId = newList.descs.value
+          ? Object.keys(newList.descs.value).length + 1
+          : 1
+        const desc = {
+          new: true,
+          tempDescId,
+          item_id: id,
+          body: "",
+        }
+        if (!newDescs[id]) {
+          newDescs[id] = [desc]
+        } else {
+          newDescs[id].push(desc)
+        }
         break
       default:
         return
@@ -40,7 +68,7 @@ export default function Add({ parent, id, type, obj, tooltip }) {
 
   return (
     <>
-      <button onClick={handleAdd}>+</button>
+      <button onClick={handleAdd}>+{type}</button>
     </>
   )
 }

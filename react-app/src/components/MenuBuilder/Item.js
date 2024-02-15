@@ -1,7 +1,7 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, allLoaded } from "../../App"
+import { saveList, newList, allLoaded, newDescs } from "../../App"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 import Add from "./Add"
@@ -14,28 +14,48 @@ export default function Item({ item }) {
   const itemChange = useSignal(null)
 
   useEffect(() => {
-    dispatch(getAllDescs(item?.id)).then((res) => {
-      console.log(res, descs)
-      allLoaded.descs.value = true
-    })
-    itemChange.value = item
-  }, [item, dispatch])
+    if (!item.new) {
+      dispatch(getAllDescs(item?.id)).then((res) => {
+        allLoaded.descs.value = true
+      })
+    }
+  }, [item.id, dispatch])
 
-  console.log(descs)
+  useEffect(() => {
+    itemChange.value = item
+    title.value = item?.title || ""
+    includes.value = item?.includes || ""
+  }, [item])
+
+  function handleChange() {
+    itemChange.value = {
+      ...itemChange.value,
+      title: title.value,
+      includes: includes.value,
+    }
+    if (item.new) {
+      newList.items.value = {
+        ...newList.items.value,
+        [item?.tempItemId]: itemChange.value,
+      }
+    } else {
+      saveList.items.value = {
+        ...saveList.items.value,
+        [item?.id]: itemChange.value,
+      }
+    }
+  }
 
   return (
     <>
       <div>
         <input
           className="item-title"
+          placeholder="Item title"
           defaultValue={item?.title}
           onChange={(e) => {
             title.value = e.target.value
-            itemChange.value = { ...itemChange.value, title: title.value }
-            saveList.items.value = {
-              ...saveList.items.value,
-              [item?.id]: itemChange,
-            }
+            handleChange()
           }}
         />
       </div>
@@ -46,14 +66,7 @@ export default function Item({ item }) {
           defaultValue={item?.includes}
           onChange={(e) => {
             includes.value = e.target.value
-            itemChange.value = {
-              ...itemChange.value,
-              includes: includes.value,
-            }
-            saveList.items.value = {
-              ...saveList.items.value,
-              [item?.id]: itemChange,
-            }
+            handleChange()
           }}
         />
       </div>
@@ -66,6 +79,20 @@ export default function Item({ item }) {
             </div>
           )
         })}
+      {item &&
+        newDescs[item.id] &&
+        newDescs[item.id].map((desc, idx) => {
+          return (
+            <div key={idx}>
+              <Desc desc={desc} />
+            </div>
+          )
+        })}
+      <Add
+        id={item.id}
+        type={"desc"}
+        tooltip={"Add description for this item"}
+      />
     </>
   )
 }
