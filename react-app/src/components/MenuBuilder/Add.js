@@ -55,9 +55,10 @@ export default function Add({ parent, id, type, obj, tooltip }) {
           item_id: id,
           body: "",
         }
-        newList.descs.value = {
-          ...newList.descs.value,
-          [tempDescId]: desc,
+        if (!newDescs[id]) {
+          newDescs[id] = [desc]
+        } else {
+          newDescs[id].push(desc)
         }
         break
       default:

@@ -5,7 +5,6 @@ import { getAllItems } from "../../store/item"
 import { saveList, newList, newItems, allLoaded } from "../../App"
 import Item from "./Item"
 import Add from "./Add"
-import { allItems, newItem } from "../../store/actions"
 
 export default function Section({ section }) {
   const dispatch = useDispatch()

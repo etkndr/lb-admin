@@ -1,7 +1,7 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, newList, allLoaded } from "../../App"
+import { saveList, newList, allLoaded, newDescs } from "../../App"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 import Add from "./Add"
@@ -79,8 +79,9 @@ export default function Item({ item }) {
             </div>
           )
         })}
-      {newList.descs.value &&
-        Object.values(newList.descs.value)?.map((desc, idx) => {
+      {item &&
+        newDescs[item.id] &&
+        newDescs[item.id].map((desc, idx) => {
           return (
             <div key={idx}>
               <Desc desc={desc} />
