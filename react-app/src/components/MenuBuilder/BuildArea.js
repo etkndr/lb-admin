@@ -142,8 +142,9 @@ export default function BuildArea() {
               </div>
             )
           })}
-        {newList.sections.value &&
-          Object.values(newList.sections.value)?.map((section, idx) => {
+        {menu &&
+          newSections[menu.id] &&
+          newSections[menu.id].map((section, idx) => {
             return (
               <div key={idx}>
                 <Section section={section} />

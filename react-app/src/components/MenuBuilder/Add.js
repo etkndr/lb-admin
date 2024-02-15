@@ -1,4 +1,4 @@
-import { menuId, newList, newItems } from "../../App"
+import { menuId, newList, newSections, newItems, newDescs } from "../../App"
 import { useDispatch } from "react-redux"
 import { getMenuById } from "../../store/menu"
 import * as sectionActions from "../../store/section"
@@ -22,9 +22,10 @@ export default function Add({ parent, id, type, obj, tooltip }) {
           choice_desc: "",
           price: "",
         }
-        newList.sections.value = {
-          ...newList.sections.value,
-          [tempSectionId]: section,
+        if (!newSections[id]) {
+          newSections[id] = [section]
+        } else {
+          newSections[id].push(section)
         }
         break
       case "item":
