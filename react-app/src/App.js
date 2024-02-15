@@ -29,7 +29,9 @@ export const saveList = {
   descs: signal(null),
 }
 
-export const newItems = {}
+export let newSections = {}
+export let newItems = {}
+export let newDescs = {}
 
 function App() {
   const dispatch = useDispatch()

@@ -1,7 +1,14 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, newList, allLoaded } from "../../App"
+import {
+  saveList,
+  newList,
+  allLoaded,
+  newSections,
+  newItems,
+  newDescs,
+} from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
@@ -17,11 +24,23 @@ export default function BuildArea() {
   const title = useSignal(null)
   const price = useSignal(null)
   const saving = useSignal(false)
+  const unsaved = useSignal(false)
 
   useEffect(() => {
     title.value = menu?.title
     price.value = menu?.price
   }, [menu, dispatch])
+
+  setInterval(() => {
+    if (saving.value) {
+      unsaved.value = false
+    }
+    if (newSections || newItems || newDescs || saveList.value) {
+      unsaved.value = true
+    } else {
+      unsaved.value = false
+    }
+  }, 3000)
 
   function saveChanges() {
     saving.value = true // Used for displaying "Saving..." text
@@ -134,6 +153,7 @@ export default function BuildArea() {
         <Add id={menu?.id} type={"section"} tooltip={"Create a new section"} />
       </div>
       <button onClick={saveChanges}>save</button>
+      {unsaved.value && "Unsaved changes"}
       {saving.value && "Saving changes.."}
     </>
   )
