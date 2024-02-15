@@ -40,7 +40,7 @@ export default function Add({ parent, id, type, obj, tooltip }) {
         }
         newList.items.value = {
           ...newList.items.value,
-          [tempItemId]: item,
+          [id]: [...newList.items.value[id], item],
         }
         break
       case "desc":
@@ -65,7 +65,7 @@ export default function Add({ parent, id, type, obj, tooltip }) {
 
   return (
     <>
-      <button onClick={handleAdd}>+</button>
+      <button onClick={handleAdd}>+{type}</button>
     </>
   )
 }
