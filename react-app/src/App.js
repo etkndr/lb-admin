@@ -29,6 +29,8 @@ export const saveList = {
   descs: signal(null),
 }
 
+export const newItems = {}
+
 function App() {
   const dispatch = useDispatch()
   const [isLoaded, setIsLoaded] = useState(false)

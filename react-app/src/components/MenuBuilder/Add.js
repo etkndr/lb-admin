@@ -1,4 +1,4 @@
-import { menuId, newList } from "../../App"
+import { menuId, newList, newItems } from "../../App"
 import { useDispatch } from "react-redux"
 import { getMenuById } from "../../store/menu"
 import * as sectionActions from "../../store/section"
@@ -38,9 +38,10 @@ export default function Add({ parent, id, type, obj, tooltip }) {
           title: "",
           includes: "",
         }
-        newList.items.value = {
-          ...newList.items.value,
-          [id]: [...newList.items.value[id], item],
+        if (!newItems[id]) {
+          newItems[id] = [item]
+        } else {
+          newItems[id].push(item)
         }
         break
       case "desc":

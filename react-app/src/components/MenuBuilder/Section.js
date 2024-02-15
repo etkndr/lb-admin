@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
-import { saveList, newList, allLoaded } from "../../App"
+import { saveList, newList, newItems, allLoaded } from "../../App"
 import Item from "./Item"
 import Add from "./Add"
-import { allItems } from "../../store/actions"
+import { allItems, newItem } from "../../store/actions"
 
 export default function Section({ section }) {
   const dispatch = useDispatch()
@@ -82,8 +82,9 @@ export default function Section({ section }) {
             </div>
           )
         })}
-      {newList.items.value &&
-        Object.values(newList.items.value)?.map((item, idx) => {
+      {section &&
+        newItems[section.id] &&
+        newItems[section.id].map((item, idx) => {
           return (
             <div key={idx}>
               <Item item={item} />
