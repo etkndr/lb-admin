@@ -6,13 +6,13 @@ import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 import Add from "./Add"
 
-export default function Item({ item }) {
+export default function Item({ item, tempId }) {
   const dispatch = useDispatch()
   const descs = useSelector((state) => state.descs.descList)
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChange = useSignal(null)
-  const tempId = Object.keys(newList.items).length + 1
+  console.log(tempId)
 
   useEffect(() => {
     if (!item.new) {

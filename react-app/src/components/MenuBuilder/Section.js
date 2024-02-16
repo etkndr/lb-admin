@@ -107,7 +107,7 @@ export default function Section({ section }) {
       {newItems.value.map((item, idx) => {
         return (
           <div key={idx}>
-            <Item item={item} />
+            <Item item={item} tempId={idx} />
           </div>
         )
       })}

@@ -1,14 +1,7 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  saveList,
-  newList,
-  allLoaded,
-  newSections,
-  newItems,
-  newDescs,
-} from "../../App"
+import { saveList, newList, newSections } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
