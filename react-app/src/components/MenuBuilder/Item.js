@@ -84,7 +84,7 @@ export default function Item({ item }) {
         newDescs[item.id].map((desc, idx) => {
           return (
             <div key={idx}>
-              <Desc desc={desc} />
+              <Desc desc={desc} itemTitle={item.title} />
             </div>
           )
         })}

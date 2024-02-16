@@ -2,7 +2,7 @@ import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { allLoaded, saveList, newList } from "../../App"
 
-export default function Desc({ desc }) {
+export default function Desc({ desc, itemTitle }) {
   const body = useSignal(null)
   const descChange = useSignal(null)
 
@@ -34,6 +34,11 @@ export default function Desc({ desc }) {
         <div>
           <input
             className="desc-body"
+            placeholder={
+              itemTitle
+                ? `Description/sub-item for ${itemTitle}`
+                : `Description/sub-item`
+            }
             defaultValue={body.value}
             onChange={(e) => {
               body.value = e.target.value
