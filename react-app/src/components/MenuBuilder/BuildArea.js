@@ -15,6 +15,7 @@ import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
 import Add from "./Add"
 import Section from "./Section"
+import Unsaved from "./Unsaved"
 
 export default function BuildArea() {
   const dispatch = useDispatch()
@@ -24,23 +25,11 @@ export default function BuildArea() {
   const title = useSignal(null)
   const price = useSignal(null)
   const saving = useSignal(false)
-  const unsaved = useSignal(false)
 
   useEffect(() => {
     title.value = menu?.title
     price.value = menu?.price
   }, [menu, dispatch])
-
-  setInterval(() => {
-    if (saving.value) {
-      unsaved.value = false
-    }
-    if (newSections || newItems || newDescs || saveList.value) {
-      unsaved.value = true
-    } else {
-      unsaved.value = false
-    }
-  }, 3000)
 
   function saveChanges() {
     saving.value = true // Used for displaying "Saving..." text
@@ -82,14 +71,10 @@ export default function BuildArea() {
     saveList.descs.value = null
 
     // Check for data in newList and send POST requests
-    if (newList.sections.value) {
-      for (let sectionId in newList.sections.value) {
-        dispatch(
-          sectionActions.createSection(
-            menu?.id,
-            newList.sections.value[sectionId]
-          )
-        )
+    if (Object.keys(newList.sections)) {
+      for (let sectionId in newList.sections) {
+        const section = newList.sections[sectionId]
+        dispatch(sectionActions.createSection(menu?.id, section))
       }
     }
 
@@ -99,6 +84,17 @@ export default function BuildArea() {
         dispatch(itemActions.createItem(item.section_id, item))
       }
     }
+
+    if (Object.keys(newList.descs)) {
+      for (let descId in newList.descs) {
+        const desc = newList.descs[descId]
+        dispatch(descActions.createDesc(desc.item_id, desc))
+      }
+    }
+
+    newList.sections = {}
+    newList.items = {}
+    newList.descs = {}
 
     setTimeout(() => {
       saving.value = false
@@ -161,7 +157,7 @@ export default function BuildArea() {
         <Add id={menu?.id} type={"section"} tooltip={"Create a new section"} />
       </div>
       <button onClick={saveChanges}>save</button>
-      {unsaved.value && "Unsaved changes"}
+      <Unsaved saving={saving.value} />
       {saving.value && "Saving changes.."}
     </>
   )
