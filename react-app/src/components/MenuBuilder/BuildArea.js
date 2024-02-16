@@ -93,6 +93,13 @@ export default function BuildArea() {
       }
     }
 
+    if (Object.keys(newList.items)) {
+      for (let itemId in newList.items) {
+        const item = newList.items[itemId]
+        dispatch(itemActions.createItem(item.section_id, item))
+      }
+    }
+
     setTimeout(() => {
       saving.value = false
       dispatch(menuActions.getUserMenus())

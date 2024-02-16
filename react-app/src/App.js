@@ -21,6 +21,7 @@ export const newList = {
   items: {},
   descs: {},
 }
+
 export const saveList = {
   // List of data for PUT requests
   menu: signal(false),
