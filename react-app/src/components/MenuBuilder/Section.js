@@ -27,6 +27,16 @@ export default function Section({ section, tempId }) {
     choiceDesc.value = section?.choice_desc || ""
   }, [section])
 
+  function handleAdd() {
+    const item = {
+      new: true,
+      section_id: section.id,
+      title: "",
+      includes: "",
+    }
+    newItems.value = [...newItems.value, item]
+  }
+
   function handleChange() {
     sectionChange.value = {
       ...sectionChange.value,
@@ -41,16 +51,6 @@ export default function Section({ section, tempId }) {
         [section?.id]: sectionChange.value,
       }
     }
-  }
-
-  function handleAdd() {
-    const item = {
-      new: true,
-      section_id: section.id,
-      title: "",
-      includes: "",
-    }
-    newItems.value = [...newItems.value, item]
   }
 
   return (

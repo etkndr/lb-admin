@@ -1,7 +1,7 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, newList, allLoaded, newDescs } from "../../App"
+import { saveList, newList, allLoaded } from "../../App"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 import Add from "./Add"
@@ -12,6 +12,8 @@ export default function Item({ item, tempId }) {
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChange = useSignal(null)
+
+  const newDescs = useSignal([])
 
   useEffect(() => {
     if (!item.new) {
@@ -26,6 +28,16 @@ export default function Item({ item, tempId }) {
     title.value = item?.title || ""
     includes.value = item?.includes || ""
   }, [item])
+
+  function handleAdd() {
+    const desc = {
+      new: true,
+      item_id: item.id,
+      body: "",
+    }
+
+    newDescs.value = [...newDescs.value, desc]
+  }
 
   function handleChange() {
     itemChange.value = {
@@ -76,20 +88,14 @@ export default function Item({ item, tempId }) {
             </div>
           )
         })}
-      {item &&
-        newDescs[item.id] &&
-        newDescs[item.id].map((desc, idx) => {
-          return (
-            <div key={idx}>
-              <Desc desc={desc} itemTitle={item.title} />
-            </div>
-          )
-        })}
-      <Add
-        id={item.id}
-        type={"desc"}
-        tooltip={"Add description for this item"}
-      />
+      {newDescs.value.map((desc, idx) => {
+        return (
+          <div key={idx}>
+            <Desc desc={desc} tempId={idx} itemTitle={item.title} />
+          </div>
+        )
+      })}
+      <button onClick={handleAdd}>+ desc</button>
     </>
   )
 }

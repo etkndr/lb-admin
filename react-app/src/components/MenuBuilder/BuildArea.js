@@ -93,6 +93,7 @@ export default function BuildArea() {
     if (Object.keys(newList.descs)) {
       for (let descId in newList.descs) {
         const desc = newList.descs[descId]
+        console.log(desc)
         dispatch(descActions.createDesc(desc.item_id, desc))
       }
     }
@@ -124,6 +125,7 @@ export default function BuildArea() {
           }}
         />
       </div>
+
       <div>
         {price.value && `($`}
         <input
@@ -140,6 +142,7 @@ export default function BuildArea() {
         />
         {price.value && `/person)`}
       </div>
+
       <div>
         {!sections && null}
         {sections &&
@@ -150,16 +153,7 @@ export default function BuildArea() {
               </div>
             )
           })}
-        {/* {menu &&
-          newSections[menu.id] &&
-          newSections[menu.id].map((section, idx) => {
-            return (
-              <div key={idx}>
-                <Section section={section} />
-              </div>
-            )
-          })}
-        <Add id={menu?.id} type={"section"} tooltip={"Create a new section"} /> */}
+
         {newSections.value.map((section, idx) => {
           return (
             <div key={idx}>
@@ -167,6 +161,7 @@ export default function BuildArea() {
             </div>
           )
         })}
+
         <button onClick={handleAdd}>+ section</button>
       </div>
 
