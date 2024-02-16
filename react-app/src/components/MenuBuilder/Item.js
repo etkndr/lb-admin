@@ -12,6 +12,7 @@ export default function Item({ item }) {
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChange = useSignal(null)
+  const tempId = Object.keys(newList.items).length + 1
 
   useEffect(() => {
     if (!item.new) {
@@ -34,10 +35,8 @@ export default function Item({ item }) {
       includes: includes.value,
     }
     if (item.new) {
-      newList.items.value = {
-        ...newList.items.value,
-        [item?.tempItemId]: itemChange.value,
-      }
+      newList.items[tempId] = itemChange.value
+      console.log(newList.items)
     } else {
       saveList.items.value = {
         ...saveList.items.value,
@@ -62,7 +61,7 @@ export default function Item({ item }) {
       <div>
         <input
           className="item-includes"
-          placeholder="Optional item description (e.g. 'Includes rolls')"
+          placeholder="Optional item sub-heading (e.g. 'Includes rolls')"
           defaultValue={item?.includes}
           onChange={(e) => {
             includes.value = e.target.value

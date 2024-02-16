@@ -17,9 +17,9 @@ export const allLoaded = {
 }
 export const newList = {
   // List of data for POST requests
-  sections: signal(null),
-  items: signal(null),
-  descs: signal(null),
+  sections: {},
+  items: {},
+  descs: {},
 }
 export const saveList = {
   // List of data for PUT requests

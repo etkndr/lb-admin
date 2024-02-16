@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
-import { saveList, newList, newItems, allLoaded } from "../../App"
+import { saveList, newList, allLoaded } from "../../App"
 import Item from "./Item"
 import Add from "./Add"
 
@@ -12,6 +12,8 @@ export default function Section({ section }) {
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
   const sectionChange = useSignal(null)
+
+  const newItems = useSignal([])
 
   useEffect(() => {
     if (!section.new) {
@@ -42,6 +44,16 @@ export default function Section({ section }) {
         [section?.id]: sectionChange.value,
       }
     }
+  }
+
+  function handleAdd() {
+    const item = {
+      new: true,
+      section_id: section.id,
+      title: "",
+      includes: "",
+    }
+    newItems.value = [...newItems.value, item]
   }
 
   return (
@@ -81,7 +93,7 @@ export default function Section({ section }) {
             </div>
           )
         })}
-      {section &&
+      {/* {section &&
         newItems[section.id] &&
         newItems[section.id].map((item, idx) => {
           return (
@@ -90,7 +102,16 @@ export default function Section({ section }) {
             </div>
           )
         })}
-      <Add id={section.id} type={"item"} tooltip={"Add item to this section"} />
+      <Add id={section.id} type={"item"} tooltip={"Add item to this section"} /> */}
+
+      {newItems.value.map((item, idx) => {
+        return (
+          <div key={idx}>
+            <Item item={item} />
+          </div>
+        )
+      })}
+      <button onClick={handleAdd}>+ item</button>
       <h1>. . .</h1>
     </>
   )
