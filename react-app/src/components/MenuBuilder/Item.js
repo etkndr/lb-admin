@@ -12,7 +12,6 @@ export default function Item({ item, tempId }) {
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChange = useSignal(null)
-  console.log(tempId)
 
   useEffect(() => {
     if (!item.new) {
@@ -36,7 +35,6 @@ export default function Item({ item, tempId }) {
     }
     if (item.new) {
       newList.items[tempId] = itemChange.value
-      console.log(newList.items)
     } else {
       saveList.items.value = {
         ...saveList.items.value,

@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, newList, newSections } from "../../App"
+import { saveList, newList } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
@@ -19,10 +19,22 @@ export default function BuildArea() {
   const price = useSignal(null)
   const saving = useSignal(false)
 
+  const newSections = useSignal([])
+
   useEffect(() => {
     title.value = menu?.title
     price.value = menu?.price
   }, [menu, dispatch])
+
+  function handleAdd() {
+    const section = {
+      new: true,
+      menu_id: menu.id,
+      choice_desc: "",
+      price: "",
+    }
+    newSections.value = [...newSections.value, section]
+  }
 
   function saveChanges() {
     saving.value = true // Used for displaying "Saving..." text
@@ -138,7 +150,7 @@ export default function BuildArea() {
               </div>
             )
           })}
-        {menu &&
+        {/* {menu &&
           newSections[menu.id] &&
           newSections[menu.id].map((section, idx) => {
             return (
@@ -147,10 +159,20 @@ export default function BuildArea() {
               </div>
             )
           })}
-        <Add id={menu?.id} type={"section"} tooltip={"Create a new section"} />
+        <Add id={menu?.id} type={"section"} tooltip={"Create a new section"} /> */}
+        {newSections.value.map((section, idx) => {
+          return (
+            <div key={idx}>
+              <Section section={section} tempId={idx} />
+            </div>
+          )
+        })}
+        <button onClick={handleAdd}>+ section</button>
       </div>
-      <button onClick={saveChanges}>save</button>
+
       <Unsaved saving={saving.value} />
+
+      <button onClick={saveChanges}>save</button>
       {saving.value && "Saving changes.."}
     </>
   )

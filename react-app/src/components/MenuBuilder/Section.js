@@ -6,7 +6,7 @@ import { saveList, newList, allLoaded } from "../../App"
 import Item from "./Item"
 import Add from "./Add"
 
-export default function Section({ section }) {
+export default function Section({ section, tempId }) {
   const dispatch = useDispatch()
   const items = useSelector((state) => state.items.itemList)
   const price = useSignal(null)
@@ -34,10 +34,7 @@ export default function Section({ section }) {
       price: price.value,
     }
     if (section.new) {
-      newList.sections.value = {
-        ...newList.sections.value,
-        [section?.tempSectionId]: sectionChange.value,
-      }
+      newList.sections[tempId] = sectionChange
     } else {
       saveList.sections.value = {
         ...saveList.sections.value,
@@ -69,6 +66,7 @@ export default function Section({ section }) {
           }}
         />
       </div>
+
       <div>
         {price.value && `(+$`}
         <input
@@ -84,7 +82,9 @@ export default function Section({ section }) {
         />
         {price.value && `/person)`}
       </div>
+
       {!items && null}
+
       {items &&
         items[section?.id]?.map((item, idx) => {
           return (
@@ -93,16 +93,6 @@ export default function Section({ section }) {
             </div>
           )
         })}
-      {/* {section &&
-        newItems[section.id] &&
-        newItems[section.id].map((item, idx) => {
-          return (
-            <div key={idx}>
-              <Item item={item} />
-            </div>
-          )
-        })}
-      <Add id={section.id} type={"item"} tooltip={"Add item to this section"} /> */}
 
       {newItems.value.map((item, idx) => {
         return (
@@ -111,6 +101,7 @@ export default function Section({ section }) {
           </div>
         )
       })}
+
       <button onClick={handleAdd}>+ item</button>
       <h1>. . .</h1>
     </>
