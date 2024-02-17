@@ -1,17 +1,19 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, newList, allLoaded, newDescs } from "../../App"
+import { saveList, newList, allLoaded } from "../../App"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 import Add from "./Add"
 
-export default function Item({ item }) {
+export default function Item({ item, tempId }) {
   const dispatch = useDispatch()
   const descs = useSelector((state) => state.descs.descList)
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChange = useSignal(null)
+
+  const newDescs = useSignal([])
 
   useEffect(() => {
     if (!item.new) {
@@ -27,6 +29,16 @@ export default function Item({ item }) {
     includes.value = item?.includes || ""
   }, [item])
 
+  function handleAdd() {
+    const desc = {
+      new: true,
+      item_id: item.id,
+      body: "",
+    }
+
+    newDescs.value = [...newDescs.value, desc]
+  }
+
   function handleChange() {
     itemChange.value = {
       ...itemChange.value,
@@ -34,10 +46,7 @@ export default function Item({ item }) {
       includes: includes.value,
     }
     if (item.new) {
-      newList.items.value = {
-        ...newList.items.value,
-        [item?.tempItemId]: itemChange.value,
-      }
+      newList.items[tempId] = itemChange.value
     } else {
       saveList.items.value = {
         ...saveList.items.value,
@@ -62,7 +71,7 @@ export default function Item({ item }) {
       <div>
         <input
           className="item-includes"
-          placeholder="Optional item description (e.g. 'Includes rolls')"
+          placeholder="Optional item sub-heading (e.g. 'Includes rolls')"
           defaultValue={item?.includes}
           onChange={(e) => {
             includes.value = e.target.value
@@ -79,20 +88,14 @@ export default function Item({ item }) {
             </div>
           )
         })}
-      {item &&
-        newDescs[item.id] &&
-        newDescs[item.id].map((desc, idx) => {
-          return (
-            <div key={idx}>
-              <Desc desc={desc} />
-            </div>
-          )
-        })}
-      <Add
-        id={item.id}
-        type={"desc"}
-        tooltip={"Add description for this item"}
-      />
+      {newDescs.value.map((desc, idx) => {
+        return (
+          <div key={idx}>
+            <Desc desc={desc} tempId={idx} itemTitle={item.title} />
+          </div>
+        )
+      })}
+      <button onClick={handleAdd}>+ desc</button>
     </>
   )
 }

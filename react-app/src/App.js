@@ -9,18 +9,21 @@ import MenuBuilder from "./components/MenuBuilder"
 export const menuId = signal(null)
 export const menuState = signal(null)
 export const menuListState = signal({})
+
 export const allLoaded = {
   // Check if sections, items, and descs have been fetched
   sections: signal(false),
   items: signal(false),
   descs: signal(false),
 }
+
 export const newList = {
   // List of data for POST requests
-  sections: signal(null),
-  items: signal(null),
-  descs: signal(null),
+  sections: {},
+  items: {},
+  descs: {},
 }
+
 export const saveList = {
   // List of data for PUT requests
   menu: signal(false),

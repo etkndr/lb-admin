@@ -2,16 +2,18 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
-import { saveList, newList, newItems, allLoaded } from "../../App"
+import { saveList, newList, allLoaded } from "../../App"
 import Item from "./Item"
 import Add from "./Add"
 
-export default function Section({ section }) {
+export default function Section({ section, tempId }) {
   const dispatch = useDispatch()
   const items = useSelector((state) => state.items.itemList)
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
   const sectionChange = useSignal(null)
+
+  const newItems = useSignal([])
 
   useEffect(() => {
     if (!section.new) {
@@ -25,6 +27,16 @@ export default function Section({ section }) {
     choiceDesc.value = section?.choice_desc || ""
   }, [section])
 
+  function handleAdd() {
+    const item = {
+      new: true,
+      section_id: section.id,
+      title: "",
+      includes: "",
+    }
+    newItems.value = [...newItems.value, item]
+  }
+
   function handleChange() {
     sectionChange.value = {
       ...sectionChange.value,
@@ -32,10 +44,7 @@ export default function Section({ section }) {
       price: price.value,
     }
     if (section.new) {
-      newList.sections.value = {
-        ...newList.sections.value,
-        [section?.tempSectionId]: sectionChange.value,
-      }
+      newList.sections[tempId] = sectionChange
     } else {
       saveList.sections.value = {
         ...saveList.sections.value,
@@ -57,6 +66,7 @@ export default function Section({ section }) {
           }}
         />
       </div>
+
       <div>
         {price.value && `(+$`}
         <input
@@ -72,7 +82,9 @@ export default function Section({ section }) {
         />
         {price.value && `/person)`}
       </div>
+
       {!items && null}
+
       {items &&
         items[section?.id]?.map((item, idx) => {
           return (
@@ -81,16 +93,16 @@ export default function Section({ section }) {
             </div>
           )
         })}
-      {section &&
-        newItems[section.id] &&
-        newItems[section.id].map((item, idx) => {
-          return (
-            <div key={idx}>
-              <Item item={item} />
-            </div>
-          )
-        })}
-      <Add id={section.id} type={"item"} tooltip={"Add item to this section"} />
+
+      {newItems.value.map((item, idx) => {
+        return (
+          <div key={idx}>
+            <Item item={item} tempId={idx} />
+          </div>
+        )
+      })}
+
+      <button onClick={handleAdd}>+ item</button>
       <h1>. . .</h1>
     </>
   )

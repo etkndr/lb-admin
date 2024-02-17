@@ -1,20 +1,14 @@
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  saveList,
-  newList,
-  allLoaded,
-  newSections,
-  newItems,
-  newDescs,
-} from "../../App"
+import { saveList, newList } from "../../App"
 import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
 import Add from "./Add"
 import Section from "./Section"
+import Unsaved from "./Unsaved"
 
 export default function BuildArea() {
   const dispatch = useDispatch()
@@ -24,23 +18,23 @@ export default function BuildArea() {
   const title = useSignal(null)
   const price = useSignal(null)
   const saving = useSignal(false)
-  const unsaved = useSignal(false)
+
+  const newSections = useSignal([])
 
   useEffect(() => {
     title.value = menu?.title
     price.value = menu?.price
   }, [menu, dispatch])
 
-  setInterval(() => {
-    if (saving.value) {
-      unsaved.value = false
+  function handleAdd() {
+    const section = {
+      new: true,
+      menu_id: menu.id,
+      choice_desc: "",
+      price: "",
     }
-    if (newSections || newItems || newDescs || saveList.value) {
-      unsaved.value = true
-    } else {
-      unsaved.value = false
-    }
-  }, 3000)
+    newSections.value = [...newSections.value, section]
+  }
 
   function saveChanges() {
     saving.value = true // Used for displaying "Saving..." text
@@ -82,16 +76,31 @@ export default function BuildArea() {
     saveList.descs.value = null
 
     // Check for data in newList and send POST requests
-    if (newList.sections.value) {
-      for (let sectionId in newList.sections.value) {
-        dispatch(
-          sectionActions.createSection(
-            menu?.id,
-            newList.sections.value[sectionId]
-          )
-        )
+    if (Object.keys(newList.sections)) {
+      for (let sectionId in newList.sections) {
+        const section = newList.sections[sectionId]
+        dispatch(sectionActions.createSection(menu?.id, section))
       }
     }
+
+    if (Object.keys(newList.items)) {
+      for (let itemId in newList.items) {
+        const item = newList.items[itemId]
+        dispatch(itemActions.createItem(item.section_id, item))
+      }
+    }
+
+    if (Object.keys(newList.descs)) {
+      for (let descId in newList.descs) {
+        const desc = newList.descs[descId]
+        console.log(desc)
+        dispatch(descActions.createDesc(desc.item_id, desc))
+      }
+    }
+
+    newList.sections = {}
+    newList.items = {}
+    newList.descs = {}
 
     setTimeout(() => {
       saving.value = false
@@ -116,6 +125,7 @@ export default function BuildArea() {
           }}
         />
       </div>
+
       <div>
         {price.value && `($`}
         <input
@@ -132,6 +142,7 @@ export default function BuildArea() {
         />
         {price.value && `/person)`}
       </div>
+
       <div>
         {!sections && null}
         {sections &&
@@ -142,19 +153,21 @@ export default function BuildArea() {
               </div>
             )
           })}
-        {menu &&
-          newSections[menu.id] &&
-          newSections[menu.id].map((section, idx) => {
-            return (
-              <div key={idx}>
-                <Section section={section} />
-              </div>
-            )
-          })}
-        <Add id={menu?.id} type={"section"} tooltip={"Create a new section"} />
+
+        {newSections.value.map((section, idx) => {
+          return (
+            <div key={idx}>
+              <Section section={section} tempId={idx} />
+            </div>
+          )
+        })}
+
+        <button onClick={handleAdd}>+ section</button>
       </div>
+
+      <Unsaved saving={saving.value} />
+
       <button onClick={saveChanges}>save</button>
-      {unsaved.value && "Unsaved changes"}
       {saving.value && "Saving changes.."}
     </>
   )

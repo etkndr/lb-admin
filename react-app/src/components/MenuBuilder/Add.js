@@ -64,6 +64,7 @@ export default function Add({ parent, id, type, obj, tooltip }) {
       default:
         return
     }
+    console.log(newSections, newItems, newDescs)
   }
 
   return (

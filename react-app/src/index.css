@@ -18,3 +18,7 @@ body {
   background-color: gainsboro;
   border-right: 1px solid gray;
 }
+
+input:not([type="checkbox"]) {
+  min-width: 100%;
+}
