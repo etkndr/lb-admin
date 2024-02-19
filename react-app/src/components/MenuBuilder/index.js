@@ -1,11 +1,12 @@
 import { useSignal, signal, useSignalEffect } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
-import BuildArea from "./BuildArea"
 import { menuId, menuListState } from "../../App"
 import { logout } from "../../store/session"
-import * as menuActions from "../../store/menu"
 import { getAllSections } from "../../store/section"
+import * as menuActions from "../../store/menu"
+import BuildArea from "./BuildArea"
+import "../../sass/main.scss"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
