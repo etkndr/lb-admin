@@ -1,7 +1,22 @@
-// <uniquifier>: Use a uniquifier for the class name
-// <weight>: Use a value from 300 to 700
-// <width>: Use a value from 75 to 125
+$green: #5a8967;
 
-body {
+* {
   font-family: "Nunito", sans-serif;
 }
+
+button {
+  background-color: black;
+  color: white;
+  font-size: 11pt;
+  border: 0;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+input {
+  color: $green;
+}
+
+// input::placeholder {
+//   color: $green;
+// }
