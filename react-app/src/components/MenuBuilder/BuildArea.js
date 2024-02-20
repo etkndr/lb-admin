@@ -113,7 +113,7 @@ export default function BuildArea() {
   }
 
   return (
-    <>
+    <div className="menu">
       <div>
         <input
           className="menu-title"
@@ -126,7 +126,7 @@ export default function BuildArea() {
         />
       </div>
 
-      <div>
+      <div className="price">
         {price.value && `($`}
         <input
           key={Math.random()}
@@ -169,6 +169,6 @@ export default function BuildArea() {
 
       <button onClick={saveChanges}>save</button>
       {saving.value && "Saving changes.."}
-    </>
+    </div>
   )
 }

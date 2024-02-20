@@ -76,7 +76,7 @@ export default function MenuBuilder() {
         <button onClick={handleCreate}>New menu</button>
         <button onClick={() => dispatch(logout())}>Log out</button>
       </div>
-      <div>
+      <div className="menu-container">
         <BuildArea />
       </div>
     </div>

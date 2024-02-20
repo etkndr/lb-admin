@@ -15,8 +15,27 @@ button {
 
 input {
   color: $green;
+  font-size: 16pt;
+}
+
+li {
+  list-style: none;
 }
 
 // input::placeholder {
 //   color: $green;
 // }
+
+.menu-container {
+  width: 100%;
+}
+
+.menu {
+  margin: 0 auto;
+  width: 80%;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+}

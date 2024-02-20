@@ -67,7 +67,7 @@ export default function Section({ section, tempId }) {
         />
       </div>
 
-      <div>
+      <div className="price">
         {price.value && `(+$`}
         <input
           className="section-price"
