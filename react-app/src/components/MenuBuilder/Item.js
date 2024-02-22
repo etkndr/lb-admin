@@ -60,6 +60,7 @@ export default function Item({ item, tempId }) {
       <div>
         <input
           className="item-title"
+          type="text"
           placeholder="Item title"
           defaultValue={item?.title}
           onChange={(e) => {
@@ -71,6 +72,7 @@ export default function Item({ item, tempId }) {
       <div>
         <input
           className="item-includes"
+          type="text"
           placeholder="Optional item sub-heading (e.g. 'Includes rolls')"
           defaultValue={item?.includes}
           onChange={(e) => {

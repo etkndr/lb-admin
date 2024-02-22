@@ -31,6 +31,7 @@ export default function Desc({ desc, tempId, itemTitle }) {
         <div>
           <input
             className="desc-body"
+            type="text"
             placeholder={
               itemTitle
                 ? `Description/sub-item for ${itemTitle}`

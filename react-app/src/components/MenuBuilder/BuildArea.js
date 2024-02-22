@@ -117,6 +117,7 @@ export default function BuildArea() {
       <div>
         <input
           className="menu-title"
+          type="text"
           placeholder="Menu title"
           defaultValue={title.value}
           onChange={(e) => {

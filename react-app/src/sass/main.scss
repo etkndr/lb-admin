@@ -11,31 +11,40 @@ button {
   border: 0;
   border-radius: 10px;
   padding: 5px 10px;
+  cursor: pointer;
 }
 
 input {
   color: $green;
   font-size: 16pt;
+  border: 0;
+}
+
+input:is([type="text"]) {
+  min-width: 100%;
 }
 
 li {
   list-style: none;
 }
 
-// input::placeholder {
-//   color: $green;
-// }
+.sidebar-container {
+  width: 20%;
+  min-height: 100%;
+  background-color: gainsboro;
+  border-right: 1px solid gray;
+}
 
 .menu-container {
   width: 100%;
-}
 
-.menu {
-  margin: 0 auto;
-  width: 80%;
-}
+  .menu {
+    margin: 0 auto;
+    width: 80%;
 
-.price {
-  display: flex;
-  align-items: baseline;
+    .price {
+      display: flex;
+      align-items: baseline;
+    }
+  }
 }
