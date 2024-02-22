@@ -114,7 +114,7 @@ export default function Menu() {
 
   return (
     <div className="menu">
-      <div>
+      <div className="menu-header">
         <input
           className="menu-title"
           type="text"
@@ -125,22 +125,22 @@ export default function Menu() {
             saveList.menu.value = true
           }}
         />
-      </div>
 
-      <div className="price">
-        {price.value && `($`}
-        <input
-          placeholder="Price per person"
-          type="number"
-          min={1}
-          className="menu-price"
-          defaultValue={price.value}
-          onChange={(e) => {
-            price.value = e.target.value
-            saveList.menu.value = true
-          }}
-        />
-        {price.value && `/person)`}
+        <div className="price">
+          {price.value && `($`}
+          <input
+            placeholder="Price per person"
+            type="number"
+            min={1}
+            className="menu-price"
+            defaultValue={price.value}
+            onChange={(e) => {
+              price.value = e.target.value
+              saveList.menu.value = true
+            }}
+          />
+          {price.value && `/person)`}
+        </div>
       </div>
 
       <div>
