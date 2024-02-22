@@ -24,6 +24,10 @@ input:is([type="text"]) {
   min-width: 100%;
 }
 
+input:is([type="number"]) {
+  width: 60px;
+}
+
 li {
   list-style: none;
 }

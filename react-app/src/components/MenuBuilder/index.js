@@ -5,8 +5,8 @@ import { menuId, menuListState } from "../../App"
 import { logout } from "../../store/session"
 import { getAllSections } from "../../store/section"
 import * as menuActions from "../../store/menu"
-import BuildArea from "./BuildArea"
 import "../../sass/main.scss"
+import Menu from "./Menu"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
@@ -77,7 +77,7 @@ export default function MenuBuilder() {
         <button onClick={() => dispatch(logout())}>Log out</button>
       </div>
       <div className="menu-container">
-        <BuildArea />
+        <Menu />
       </div>
     </div>
   )

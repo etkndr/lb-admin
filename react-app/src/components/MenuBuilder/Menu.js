@@ -10,7 +10,7 @@ import Add from "./Add"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
 
-export default function BuildArea() {
+export default function Menu() {
   const dispatch = useDispatch()
   const menu = useSelector((state) => state.menus.currMenu)
   const sections = useSelector((state) => state.sections.sectionList)
@@ -130,7 +130,6 @@ export default function BuildArea() {
       <div className="price">
         {price.value && `($`}
         <input
-          key={Math.random()}
           placeholder="Price per person"
           type="number"
           min={1}
