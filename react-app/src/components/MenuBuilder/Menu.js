@@ -36,7 +36,7 @@ export default function Menu() {
     newSections.value = [...newSections.value, section]
   }
 
-  function saveChanges() {
+  function handleSave() {
     saving.value = true // Used for displaying "Saving..." text
 
     // Check for data in saveList and send PUT requests
@@ -148,7 +148,7 @@ export default function Menu() {
         {sections &&
           sections[menu?.id]?.map((section, idx) => {
             return (
-              <div key={section.id}>
+              <div className="section" key={section.id}>
                 <Section section={section} />
               </div>
             )
@@ -156,7 +156,7 @@ export default function Menu() {
 
         {newSections.value.map((section, idx) => {
           return (
-            <div key={idx}>
+            <div className="section" key={idx}>
               <Section section={section} tempId={idx} />
             </div>
           )
@@ -167,7 +167,7 @@ export default function Menu() {
 
       <Unsaved saving={saving.value} />
 
-      <button onClick={saveChanges}>save</button>
+      <button onClick={handleSave}>save</button>
       {saving.value && "Saving changes.."}
     </div>
   )

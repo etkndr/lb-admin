@@ -104,7 +104,6 @@ export default function Section({ section, tempId }) {
       })}
 
       <button onClick={handleAdd}>+ item</button>
-      <h1>. . .</h1>
     </>
   )
 }
