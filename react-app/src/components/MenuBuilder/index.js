@@ -1,11 +1,12 @@
 import { useSignal, signal, useSignalEffect } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
-import BuildArea from "./BuildArea"
 import { menuId, menuListState } from "../../App"
 import { logout } from "../../store/session"
-import * as menuActions from "../../store/menu"
 import { getAllSections } from "../../store/section"
+import * as menuActions from "../../store/menu"
+import "../../sass/main.scss"
+import Menu from "./Menu"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
@@ -75,8 +76,8 @@ export default function MenuBuilder() {
         <button onClick={handleCreate}>New menu</button>
         <button onClick={() => dispatch(logout())}>Log out</button>
       </div>
-      <div>
-        <BuildArea />
+      <div className="menu-container">
+        <Menu />
       </div>
     </div>
   )

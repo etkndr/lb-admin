@@ -58,6 +58,7 @@ export default function Section({ section, tempId }) {
       <div>
         <input
           className="section-choice"
+          type="text"
           placeholder="Optional description for section (e.g. 'Pick one of the following:'"
           defaultValue={section?.choice_desc}
           onChange={(e) => {
@@ -67,7 +68,7 @@ export default function Section({ section, tempId }) {
         />
       </div>
 
-      <div>
+      <div className="price">
         {price.value && `(+$`}
         <input
           className="section-price"
@@ -103,7 +104,6 @@ export default function Section({ section, tempId }) {
       })}
 
       <button onClick={handleAdd}>+ item</button>
-      <h1>. . .</h1>
     </>
   )
 }

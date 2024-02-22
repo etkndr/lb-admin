@@ -10,7 +10,7 @@ import Add from "./Add"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
 
-export default function BuildArea() {
+export default function Menu() {
   const dispatch = useDispatch()
   const menu = useSelector((state) => state.menus.currMenu)
   const sections = useSelector((state) => state.sections.sectionList)
@@ -36,7 +36,7 @@ export default function BuildArea() {
     newSections.value = [...newSections.value, section]
   }
 
-  function saveChanges() {
+  function handleSave() {
     saving.value = true // Used for displaying "Saving..." text
 
     // Check for data in saveList and send PUT requests
@@ -113,10 +113,11 @@ export default function BuildArea() {
   }
 
   return (
-    <>
-      <div>
+    <div className="menu">
+      <div className="menu-header">
         <input
           className="menu-title"
+          type="text"
           placeholder="Menu title"
           defaultValue={title.value}
           onChange={(e) => {
@@ -124,23 +125,22 @@ export default function BuildArea() {
             saveList.menu.value = true
           }}
         />
-      </div>
 
-      <div>
-        {price.value && `($`}
-        <input
-          key={Math.random()}
-          placeholder="Price per person"
-          type="number"
-          min={1}
-          className="menu-price"
-          defaultValue={price.value}
-          onChange={(e) => {
-            price.value = e.target.value
-            saveList.menu.value = true
-          }}
-        />
-        {price.value && `/person)`}
+        <div className="price">
+          {price.value && `($`}
+          <input
+            placeholder="Price per person"
+            type="number"
+            min={1}
+            className="menu-price"
+            defaultValue={price.value}
+            onChange={(e) => {
+              price.value = e.target.value
+              saveList.menu.value = true
+            }}
+          />
+          {price.value && `/person)`}
+        </div>
       </div>
 
       <div>
@@ -148,7 +148,7 @@ export default function BuildArea() {
         {sections &&
           sections[menu?.id]?.map((section, idx) => {
             return (
-              <div key={section.id}>
+              <div className="section" key={section.id}>
                 <Section section={section} />
               </div>
             )
@@ -156,7 +156,7 @@ export default function BuildArea() {
 
         {newSections.value.map((section, idx) => {
           return (
-            <div key={idx}>
+            <div className="section" key={idx}>
               <Section section={section} tempId={idx} />
             </div>
           )
@@ -167,8 +167,8 @@ export default function BuildArea() {
 
       <Unsaved saving={saving.value} />
 
-      <button onClick={saveChanges}>save</button>
+      <button onClick={handleSave}>save</button>
       {saving.value && "Saving changes.."}
-    </>
+    </div>
   )
 }
