@@ -148,7 +148,7 @@ export default function Menu() {
         {sections &&
           sections[menu?.id]?.map((section, idx) => {
             return (
-              <div key={`container${section.id}`}>
+              <div className="gen-container" key={`container${section.id}`}>
                 <div className="section" key={section.id}>
                   <Section section={section} />
                 </div>
@@ -161,7 +161,7 @@ export default function Menu() {
 
         {newSections.value.map((section, idx) => {
           return (
-            <div key={`container${section.id}`}>
+            <div className="gen-container" key={`container${section.id}`}>
               <div className="section" key={idx}>
                 <Section section={section} tempId={idx} />
                 <button className="add-section" onClick={handleAdd}>
