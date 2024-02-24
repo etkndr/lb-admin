@@ -1,5 +1,6 @@
 $green: #5a8967;
 $lightgray: #f2f2f2;
+$darkgray: #c4c4c4;
 
 * {
   font-family: "Nunito", sans-serif;
@@ -43,23 +44,23 @@ li {
 .menu-container {
   width: 100%;
 
-  .menu-header {
-    max-width: min-content;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .menu-title {
-      font-size: 40pt;
-      text-align: center;
-    }
-  }
-
   .menu {
     margin: 0 auto;
     width: 80%;
     color: $green;
+
+    .menu-header {
+      max-width: min-content;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .menu-title {
+        font-size: 40pt;
+        text-align: center;
+      }
+    }
 
     .price {
       display: flex;
@@ -67,9 +68,12 @@ li {
     }
 
     .section {
-      background-color: $lightgray;
+      background-color: white;
       padding: 2%;
       margin: 10px auto;
+      border: 1px solid $darkgray;
+      border-radius: 10px;
+      box-shadow: 1px 1px 1px 2px $lightgray;
     }
   }
 }
