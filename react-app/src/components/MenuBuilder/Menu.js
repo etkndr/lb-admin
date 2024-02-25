@@ -148,21 +148,29 @@ export default function Menu() {
         {sections &&
           sections[menu?.id]?.map((section, idx) => {
             return (
-              <div className="section" key={section.id}>
-                <Section section={section} />
+              <div className="gen-container" key={`container${section.id}`}>
+                <div className="section" key={section.id}>
+                  <Section section={section} />
+                </div>
+                <button className="add-section" onClick={handleAdd}>
+                  + section
+                </button>
               </div>
             )
           })}
 
         {newSections.value.map((section, idx) => {
           return (
-            <div className="section" key={idx}>
-              <Section section={section} tempId={idx} />
+            <div className="gen-container" key={`container${section.id}`}>
+              <div className="section" key={idx}>
+                <Section section={section} tempId={idx} />
+                <button className="add-section" onClick={handleAdd}>
+                  + section
+                </button>
+              </div>
             </div>
           )
         })}
-
-        <button onClick={handleAdd}>+ section</button>
       </div>
 
       <Unsaved saving={saving.value} />
