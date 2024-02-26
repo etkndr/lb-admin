@@ -91,7 +91,7 @@ export default function Section({ section, tempId }) {
       {items &&
         items[section?.id]?.map((item, idx) => {
           return (
-            <div key={item.id}>
+            <div className="item" key={item.id}>
               <Item item={item} />
             </div>
           )
@@ -99,7 +99,7 @@ export default function Section({ section, tempId }) {
 
       {newItems.value.map((item, idx) => {
         return (
-          <div key={idx}>
+          <div className="item" key={idx}>
             <Item item={item} tempId={idx} />
           </div>
         )

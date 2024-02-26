@@ -85,14 +85,14 @@ export default function Item({ item, tempId }) {
       {descs &&
         descs[item?.id]?.map((desc, idx) => {
           return (
-            <div key={desc.id}>
+            <div className="desc" key={desc.id}>
               <Desc desc={desc} />
             </div>
           )
         })}
       {newDescs.value.map((desc, idx) => {
         return (
-          <div key={idx}>
+          <div className="desc" key={idx}>
             <Desc desc={desc} tempId={idx} itemTitle={item.title} />
           </div>
         )
