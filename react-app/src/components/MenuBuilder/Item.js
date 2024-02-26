@@ -97,7 +97,12 @@ export default function Item({ item, tempId }) {
           </div>
         )
       })}
-      <button onClick={handleAdd}>+ desc</button>
+
+      <div className="gen-container">
+        <button className="add" onClick={handleAdd}>
+          + desc
+        </button>
+      </div>
     </>
   )
 }

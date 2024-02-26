@@ -105,7 +105,11 @@ export default function Section({ section, tempId }) {
         )
       })}
 
-      <button onClick={handleAdd}>+ item</button>
+      <div className="gen-container">
+        <button className="add" onClick={handleAdd}>
+          + item
+        </button>
+      </div>
     </>
   )
 }
