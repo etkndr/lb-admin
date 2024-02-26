@@ -55,33 +55,35 @@ export default function Section({ section, tempId }) {
 
   return (
     <>
-      <div>
-        <input
-          className="section-choice"
-          type="text"
-          placeholder="Optional description for section (e.g. 'Pick one of the following:'"
-          defaultValue={section?.choice_desc}
-          onChange={(e) => {
-            choiceDesc.value = e.target.value
-            handleChange()
-          }}
-        />
-      </div>
+      <div className="gen-container">
+        <div>
+          <input
+            className="section-header"
+            type="text"
+            placeholder="Optional description for section (e.g. 'Pick one of the following:)'"
+            defaultValue={section?.choice_desc}
+            onChange={(e) => {
+              choiceDesc.value = e.target.value
+              handleChange()
+            }}
+          />
+        </div>
 
-      <div className="price">
-        {price.value && `(+$`}
-        <input
-          className="section-price"
-          placeholder="Optional additional price per person for items in this section"
-          type="number"
-          min={1}
-          defaultValue={section?.price}
-          onChange={(e) => {
-            price.value = e.target.value > 0 ? e.target.value : ""
-            handleChange()
-          }}
-        />
-        {price.value && `/person)`}
+        <div className="price">
+          {price.value && `(+$`}
+          <input
+            className="section-header"
+            placeholder="Optional additional price per person for items in this section"
+            type="number"
+            min={1}
+            defaultValue={section?.price}
+            onChange={(e) => {
+              price.value = e.target.value > 0 ? e.target.value : ""
+              handleChange()
+            }}
+          />
+          {price.value && `/person)`}
+        </div>
       </div>
 
       {!items && null}
