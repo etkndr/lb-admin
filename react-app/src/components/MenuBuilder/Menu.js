@@ -164,10 +164,10 @@ export default function Menu() {
             <div className="gen-container" key={`container${section.id}`}>
               <div className="section" key={idx}>
                 <Section section={section} tempId={idx} />
-                <button className="add" onClick={handleAdd}>
-                  + section
-                </button>
               </div>
+              <button className="add" onClick={handleAdd}>
+                + section
+              </button>
             </div>
           )
         })}
