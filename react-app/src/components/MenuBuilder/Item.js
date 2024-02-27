@@ -100,7 +100,7 @@ export default function Item({ item, tempId }) {
 
       <div className="gen-container">
         <button className="add" onClick={handleAdd}>
-          + desc
+          + description
         </button>
       </div>
     </>

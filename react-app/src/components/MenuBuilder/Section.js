@@ -55,7 +55,7 @@ export default function Section({ section, tempId }) {
 
   return (
     <>
-      <div className="gen-container">
+      <div>
         <div>
           <input
             className="section-header"
@@ -72,9 +72,9 @@ export default function Section({ section, tempId }) {
         <div className="price">
           {price.value && `(+$`}
           <input
-            className="section-header"
+            className={price.value ? "section-price" : "price-empty"}
             placeholder="Optional additional price per person for items in this section"
-            type="number"
+            type={price.value ? "number" : "text"}
             min={1}
             defaultValue={section?.price}
             onChange={(e) => {

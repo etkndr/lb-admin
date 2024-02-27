@@ -30,6 +30,7 @@ input:is([type="text"]) {
 input:is([type="number"]) {
   width: 60px;
   text-align: center;
+  font-size: 12pt;
 }
 
 li {
@@ -95,9 +96,17 @@ li {
       border: 1px solid $darkgray;
       border-radius: 10px;
       box-shadow: 2px 3px 4px 2px $lightgray;
+      display: flex;
+      flex-direction: column;
 
       .section-header {
         width: 100%;
+      }
+
+      .price-empty {
+        width: 100%;
+        text-align: center;
+        font-size: 9.5pt;
       }
 
       .item {
@@ -110,6 +119,7 @@ li {
         background-color: $lightgray;
         display: flex;
         flex-direction: column;
+        align-items: center;
 
         input {
           background-color: $lightgray;
