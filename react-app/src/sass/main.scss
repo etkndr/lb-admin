@@ -103,6 +103,17 @@ li {
         width: 100%;
       }
 
+      .price {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        font-size: 9.5pt;
+
+        .section-price {
+          font-size: 9.5pt;
+        }
+      }
+
       .price-empty {
         width: 100%;
         text-align: center;
@@ -119,7 +130,6 @@ li {
         background-color: $lightgray;
         display: flex;
         flex-direction: column;
-        align-items: center;
 
         input {
           background-color: $lightgray;
