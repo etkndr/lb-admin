@@ -94,9 +94,13 @@ li {
       border-radius: 10px;
       box-shadow: 3px 3px 1px 2px $lightgray;
 
+      .section-header {
+        width: 100%;
+      }
+
       .item {
         width: 100%;
-        margin: 5px;
+        margin: 5px auto;
         padding: 10px;
         box-sizing: border-box;
         border: 1px solid $darkgray;
@@ -112,7 +116,7 @@ li {
 
         .item-includes {
           width: 100%;
-          font-size: 9pt;
+          font-size: 9.5pt;
           text-align: center;
         }
 
@@ -124,7 +128,7 @@ li {
     }
 
     .add {
-      width: 30%;
+      padding: 5px 50px;
       margin: 10px auto;
     }
   }
