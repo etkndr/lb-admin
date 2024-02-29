@@ -28,9 +28,11 @@ export default function MenuBuilder() {
       visible: "hidden",
     }
 
-    dispatch(menuActions.createMenu(newMenu)).then(
-      (res) => (menuId.value = res.id)
-    )
+    dispatch(menuActions.createMenu(newMenu)).then((res) => {
+      menuListState.value = { ...menuListState.value, [res.id]: newMenu }
+      dispatch(getAllSections(res.id))
+      dispatch(menuActions.getMenuById(res.id))
+    })
   }
 
   function handleVis(menu) {
