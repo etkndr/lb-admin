@@ -60,7 +60,7 @@ export default function Section({ section, tempId }) {
           <input
             className="section-header"
             type="text"
-            placeholder="Optional description for section (e.g. 'Pick one of the following:)'"
+            placeholder="Optional description for section (e.g. 'Pick one of the following:')"
             defaultValue={section?.choice_desc}
             onChange={(e) => {
               choiceDesc.value = e.target.value
