@@ -7,10 +7,10 @@ export default function Visible({ id, vis, handleVis }) {
   useEffect(() => {
     vis
       ? (visIcon.value = (
-          <span class="material-symbols-outlined">visibility</span>
+          <span className="material-symbols-outlined">visibility</span>
         ))
       : (visIcon.value = (
-          <span class="material-symbols-outlined">visibility_off</span>
+          <span className="material-symbols-outlined">visibility_off</span>
         ))
   }, [vis])
 

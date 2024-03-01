@@ -67,7 +67,6 @@ export default function MenuBuilder() {
                   edit
                 </button>
                 <Visible
-                  key={Math.random()}
                   id={menu.id}
                   vis={menu.visible === "visible"}
                   handleVis={handleVis}
