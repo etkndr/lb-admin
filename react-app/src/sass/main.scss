@@ -66,8 +66,8 @@ li {
       justify-content: flex-end;
 
       input {
-        min-width: 50px;
-        display: none;
+        opacity: 0;
+        cursor: pointer;
       }
     }
   }

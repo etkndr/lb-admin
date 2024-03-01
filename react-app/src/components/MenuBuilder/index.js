@@ -7,6 +7,7 @@ import { getAllSections } from "../../store/section"
 import * as menuActions from "../../store/menu"
 import "../../sass/main.scss"
 import Menu from "./Menu"
+import Visible from "./Visible"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
@@ -35,15 +36,15 @@ export default function MenuBuilder() {
     })
   }
 
-  function handleVis(menu) {
-    const vis = menuListState.value[menu.id]?.visible
+  function handleVis(id) {
+    const vis = menuListState.value[id]?.visible
     if (vis === "visible") {
-      menuListState.value[menu.id].visible = "hidden"
+      menuListState.value[id].visible = "hidden"
     }
     if (vis === "hidden") {
-      menuListState.value[menu.id].visible = "visible"
+      menuListState.value[id].visible = "visible"
     }
-    dispatch(menuActions.editMenuById(menu.id, menuListState.value[menu.id]))
+    dispatch(menuActions.editMenuById(id, menuListState.value[id]))
   }
 
   return (
@@ -65,14 +66,11 @@ export default function MenuBuilder() {
                 >
                   edit
                 </button>
-                <span className="publish">
-                  <input
-                    key={Math.random()}
-                    type="checkbox"
-                    defaultChecked={menu.visible === "visible"}
-                    onChange={(e) => handleVis(menu)}
-                  />
-                </span>
+                <Visible
+                  id={menu.id}
+                  vis={menu.visible === "visible"}
+                  handleVis={handleVis}
+                />
               </div>
             )
           })}
