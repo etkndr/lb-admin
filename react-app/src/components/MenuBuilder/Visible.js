@@ -15,16 +15,8 @@ export default function Visible({ id, vis, handleVis }) {
   }, [vis])
 
   return (
-    <>
-      <span className="publish">
-        <input
-          key={Math.random()}
-          type="checkbox"
-          defaultChecked={vis}
-          onChange={(e) => handleVis(id)}
-        />
-        {visIcon.value}
-      </span>
-    </>
+    <div className="publish" onClick={() => handleVis(id)}>
+      {visIcon.value}
+    </div>
   )
 }
