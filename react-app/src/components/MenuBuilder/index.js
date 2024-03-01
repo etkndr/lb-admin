@@ -47,7 +47,7 @@ export default function MenuBuilder() {
   }
 
   return (
-    <div className="main-container">
+    <div className="gen-container">
       <div className="sidebar-container">
         <h3>MENUS</h3>
         {loading.value && "Loading menus"}
@@ -55,8 +55,8 @@ export default function MenuBuilder() {
           Object.values(menuListState.value) &&
           Object.values(menuListState.value)?.map((menu, idx) => {
             return (
-              <li key={Math.random()}>
-                {menu.title}
+              <div className="sidebar-item" key={Math.random()}>
+                <span className="title">{menu.title}</span>
                 <button
                   onClick={() => {
                     dispatch(getAllSections(menu.id))
@@ -65,18 +65,21 @@ export default function MenuBuilder() {
                 >
                   edit
                 </button>
-                Published
-                <input
-                  key={Math.random()}
-                  type="checkbox"
-                  defaultChecked={menu.visible === "visible"}
-                  onChange={(e) => handleVis(menu)}
-                />
-              </li>
+                <span className="publish">
+                  <input
+                    key={Math.random()}
+                    type="checkbox"
+                    defaultChecked={menu.visible === "visible"}
+                    onChange={(e) => handleVis(menu)}
+                  />
+                </span>
+              </div>
             )
           })}
-        <button onClick={handleCreate}>New menu</button>
-        <button onClick={() => dispatch(logout())}>Log out</button>
+        <div className="sidebar-controls">
+          <button onClick={handleCreate}>New menu</button>
+          <button onClick={() => dispatch(logout())}>Log out</button>
+        </div>
       </div>
       <div className="menu-container">
         <Menu />
