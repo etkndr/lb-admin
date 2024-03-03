@@ -152,9 +152,9 @@ export default function Menu() {
                 <div className="section" key={section.id}>
                   <Section section={section} />
                 </div>
-                <button className="add" onClick={handleAdd}>
+                {/* <button className="add" onClick={handleAdd}>
                   + section
-                </button>
+                </button> */}
               </div>
             )
           })}
@@ -165,15 +165,20 @@ export default function Menu() {
               <div className="section" key={idx}>
                 <Section section={section} tempId={idx} />
               </div>
-              <button className="add" onClick={handleAdd}>
+              {/* <button className="add" onClick={handleAdd}>
                 + section
-              </button>
+              </button> */}
             </div>
           )
         })}
+        <div className="gen-container">
+          <button className="add" onClick={handleAdd}>
+            + section
+          </button>
+        </div>
       </div>
 
-      <Unsaved saving={saving.value} />
+      {/* <Unsaved saving={saving.value} /> */}
 
       <button className="add" onClick={handleSave}>
         save

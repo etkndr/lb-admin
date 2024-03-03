@@ -1,6 +1,7 @@
 $green: #458656;
 $lightgray: #f2f2f2;
 $darkgray: #c4c4c4;
+$sidebar-width: 80%;
 
 * {
   font-family: "Nunito", sans-serif;
@@ -44,6 +45,57 @@ li {
   overflow: auto;
   background-color: gainsboro;
   border-right: 1px solid gray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+
+  button {
+    margin: 5px auto;
+  }
+
+  .sidebar-item {
+    width: $sidebar-width;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 2fr;
+    grid-template-rows: auto;
+    align-items: center;
+
+    .publish {
+      display: flex;
+      justify-content: flex-end;
+
+      //   input {
+      //     opacity: 0;
+      //   }
+
+      //   label::before {
+      //     content: "";
+      //     cursor: pointer;
+      //     display: inline-block;
+      //     width: 20px;
+      //     height: 20px;
+      //     border: 1px solid black;
+      //   }
+
+      //   label::after {
+      //     content: "";
+      //     display: inline-block;
+      //     height: 6px;
+      //     width: 9px;
+      //   }
+    }
+  }
+
+  .sidebar-controls {
+    width: $sidebar-width;
+    display: flex;
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
 }
 
 .menu-container {

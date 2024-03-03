@@ -7,6 +7,7 @@ import { getAllSections } from "../../store/section"
 import * as menuActions from "../../store/menu"
 import "../../sass/main.scss"
 import Menu from "./Menu"
+import Visible from "./Visible"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
@@ -28,24 +29,26 @@ export default function MenuBuilder() {
       visible: "hidden",
     }
 
-    dispatch(menuActions.createMenu(newMenu)).then(
-      (res) => (menuId.value = res.id)
-    )
+    dispatch(menuActions.createMenu(newMenu)).then((res) => {
+      menuListState.value = { ...menuListState.value, [res.id]: newMenu }
+      dispatch(getAllSections(res.id))
+      dispatch(menuActions.getMenuById(res.id))
+    })
   }
 
-  function handleVis(menu) {
-    const vis = menuListState.value[menu.id]?.visible
+  function handleVis(id) {
+    const vis = menuListState.value[id]?.visible
     if (vis === "visible") {
-      menuListState.value[menu.id].visible = "hidden"
+      menuListState.value[id].visible = "hidden"
     }
     if (vis === "hidden") {
-      menuListState.value[menu.id].visible = "visible"
+      menuListState.value[id].visible = "visible"
     }
-    dispatch(menuActions.editMenuById(menu.id, menuListState.value[menu.id]))
+    dispatch(menuActions.editMenuById(id, menuListState.value[id]))
   }
 
   return (
-    <div className="main-container">
+    <div className="gen-container">
       <div className="sidebar-container">
         <h3>MENUS</h3>
         {loading.value && "Loading menus"}
@@ -53,8 +56,8 @@ export default function MenuBuilder() {
           Object.values(menuListState.value) &&
           Object.values(menuListState.value)?.map((menu, idx) => {
             return (
-              <li key={Math.random()}>
-                {menu.title}
+              <div className="sidebar-item" key={Math.random()}>
+                <span className="title">{menu.title}</span>
                 <button
                   onClick={() => {
                     dispatch(getAllSections(menu.id))
@@ -63,18 +66,18 @@ export default function MenuBuilder() {
                 >
                   edit
                 </button>
-                Published
-                <input
-                  key={Math.random()}
-                  type="checkbox"
-                  defaultChecked={menu.visible === "visible"}
-                  onChange={(e) => handleVis(menu)}
+                <Visible
+                  id={menu.id}
+                  vis={menu.visible === "visible"}
+                  handleVis={handleVis}
                 />
-              </li>
+              </div>
             )
           })}
-        <button onClick={handleCreate}>New menu</button>
-        <button onClick={() => dispatch(logout())}>Log out</button>
+        <div className="sidebar-controls">
+          <button onClick={handleCreate}>New menu</button>
+          <button onClick={() => dispatch(logout())}>Log out</button>
+        </div>
       </div>
       <div className="menu-container">
         <Menu />
