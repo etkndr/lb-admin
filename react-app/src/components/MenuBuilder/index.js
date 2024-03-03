@@ -13,6 +13,7 @@ export default function MenuBuilder() {
   const dispatch = useDispatch()
   const menus = useSelector((state) => state.menus.menuList)
   const loading = useSignal(false)
+  const seed = useSignal(Math.random()) // try changing visible to its own signal instead
 
   useEffect(() => dispatch(menuActions.getUserMenus()), [dispatch])
 
@@ -45,6 +46,7 @@ export default function MenuBuilder() {
       menuListState.value[id].visible = "visible"
     }
     dispatch(menuActions.editMenuById(id, menuListState.value[id]))
+    seed.value = Math.random()
   }
 
   return (
@@ -67,8 +69,9 @@ export default function MenuBuilder() {
                   edit
                 </button>
                 <Visible
+                  key={seed.value}
                   id={menu.id}
-                  vis={menu.visible === "visible"}
+                  vis={menuListState.value[menu.id]?.visible === "visible"}
                   handleVis={handleVis}
                 />
               </div>
