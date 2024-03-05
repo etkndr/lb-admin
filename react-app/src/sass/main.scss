@@ -54,38 +54,38 @@ li {
     margin: 5px auto;
   }
 
-  .sidebar-item {
+  @mixin sidebar-item($weight) {
     width: $sidebar-width;
     display: flex;
     margin: 5px 0;
     padding-bottom: 10px;
-    border-bottom: 1px solid $lightgray;
+    border-bottom: $weight solid $lightgray;
+  }
 
-    .sidebar-title {
-      width: 60%;
-      font-weight: 600;
+  .sidebar-item-last {
+    @include sidebar-item(0px);
+    margin-bottom: 20px;
+  }
+
+  .sidebar-item {
+    @include sidebar-item(1px);
+  }
+
+  .sidebar-title {
+    width: 60%;
+    font-weight: 600;
+  }
+
+  .sidebar-buttons {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      cursor: pointer;
+      font-size: 15pt;
     }
-
-    .sidebar-buttons {
-      width: 40%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      span {
-        cursor: pointer;
-        font-size: 15pt;
-      }
-    }
-
-    // .publish {
-    //   display: flex;
-    //   justify-content: flex-end;
-
-    //   span {
-    //     cursor: pointer;
-    //   }
-    // }
   }
 
   .sidebar-controls {

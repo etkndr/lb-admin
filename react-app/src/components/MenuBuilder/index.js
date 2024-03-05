@@ -58,7 +58,14 @@ export default function MenuBuilder() {
           Object.values(menuListState.value) &&
           Object.values(menuListState.value)?.map((menu, idx) => {
             return (
-              <div className="sidebar-item" key={Math.random()}>
+              <div
+                className={
+                  idx !== Object.values(menuListState.value).length - 1
+                    ? "sidebar-item"
+                    : "sidebar-item-last"
+                }
+                key={Math.random()}
+              >
                 <div className="sidebar-title">{menu.title}</div>
                 <div className="sidebar-buttons">
                   <Visible
