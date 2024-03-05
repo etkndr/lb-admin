@@ -60,20 +60,32 @@ export default function MenuBuilder() {
             return (
               <div className="sidebar-item" key={Math.random()}>
                 <span className="title">{menu.title}</span>
-                <button
-                  onClick={() => {
-                    dispatch(getAllSections(menu.id))
-                    dispatch(menuActions.getMenuById(menu.id))
-                  }}
-                >
-                  edit
-                </button>
-                <Visible
-                  key={seed.value}
-                  id={menu.id}
-                  vis={menuListState.value[menu.id]?.visible === "visible"}
-                  handleVis={handleVis}
-                />
+                <div className="menu-buttons">
+                  <span
+                    className="material-symbols-outlined"
+                    onClick={() => {
+                      dispatch(getAllSections(menu.id))
+                      dispatch(menuActions.getMenuById(menu.id))
+                    }}
+                  >
+                    edit
+                  </span>
+                  <Visible
+                    key={seed.value}
+                    id={menu.id}
+                    vis={menuListState.value[menu.id]?.visible === "visible"}
+                    handleVis={handleVis}
+                  />
+                  <span
+                    className="material-symbols-outlined"
+                    onClick={() => {
+                      dispatch(getAllSections(menu.id))
+                      dispatch(menuActions.getMenuById(menu.id))
+                    }}
+                  >
+                    delete
+                  </span>
+                </div>
               </div>
             )
           })}
