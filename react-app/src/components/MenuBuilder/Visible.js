@@ -24,5 +24,5 @@ export default function Visible({ id, vis, handleVis }) {
         ))
   }, [vis])
 
-  return <div className="publish">{visIcon.value}</div>
+  return <>{visIcon.value}</>
 }
