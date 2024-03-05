@@ -89,9 +89,19 @@ li {
   }
 
   .sidebar-controls {
+    height: 100%;
     width: $sidebar-width;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    padding-bottom: 20px;
+
+    .logout {
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 10pt;
+    }
 
     button {
       width: 100%;
