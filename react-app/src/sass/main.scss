@@ -56,19 +56,32 @@ li {
 
   .sidebar-item {
     width: $sidebar-width;
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 2fr;
-    grid-template-rows: auto;
-    align-items: center;
+    display: flex;
+    margin: 0 0 10px 0;
 
-    .publish {
+    .sidebar-title {
+      width: 60%;
+    }
+
+    .sidebar-buttons {
+      width: 40%;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
 
       span {
         cursor: pointer;
+        font-size: 15pt;
       }
     }
+
+    // .publish {
+    //   display: flex;
+    //   justify-content: flex-end;
+
+    //   span {
+    //     cursor: pointer;
+    //   }
+    // }
   }
 
   .sidebar-controls {

@@ -59,8 +59,14 @@ export default function MenuBuilder() {
           Object.values(menuListState.value)?.map((menu, idx) => {
             return (
               <div className="sidebar-item" key={Math.random()}>
-                <span className="title">{menu.title}</span>
-                <div className="menu-buttons">
+                <div className="sidebar-title">{menu.title}</div>
+                <div className="sidebar-buttons">
+                  <Visible
+                    key={seed.value}
+                    id={menu.id}
+                    vis={menuListState.value[menu.id]?.visible === "visible"}
+                    handleVis={handleVis}
+                  />
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
@@ -70,12 +76,6 @@ export default function MenuBuilder() {
                   >
                     edit
                   </span>
-                  <Visible
-                    key={seed.value}
-                    id={menu.id}
-                    vis={menuListState.value[menu.id]?.visible === "visible"}
-                    handleVis={handleVis}
-                  />
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
