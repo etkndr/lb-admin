@@ -113,77 +113,84 @@ export default function Menu() {
   }
 
   return (
-    <div className="menu">
-      <div className="menu-header">
-        <input
-          className="menu-title"
-          type="text"
-          placeholder="Menu title"
-          defaultValue={title.value}
-          onChange={(e) => {
-            title.value = e.target.value
-            saveList.menu.value = true
-          }}
-        />
-
-        <div className="price">
-          {price.value && `($`}
+    <>
+      <div className="save" onClick={handleSave}>
+        {!saving.value && (
+          <span className="material-symbols-outlined">save</span>
+        )}
+        {saving.value && (
+          <span className="material-symbols-outlined">
+            published_with_changes
+          </span>
+        )}
+      </div>
+      <div className="menu">
+        <div className="menu-header">
           <input
-            placeholder="Price per person"
-            type="number"
-            min={1}
-            className="menu-price"
-            defaultValue={price.value}
+            className="menu-title"
+            type="text"
+            placeholder="Menu title"
+            defaultValue={title.value}
             onChange={(e) => {
-              price.value = e.target.value
+              title.value = e.target.value
               saveList.menu.value = true
             }}
           />
-          {price.value && `/person)`}
-        </div>
-      </div>
 
-      <div>
-        {!sections && null}
-        {sections &&
-          sections[menu?.id]?.map((section, idx) => {
-            return (
-              <div className="gen-container" key={`container${section.id}`}>
-                <div className="section" key={section.id}>
-                  <Section section={section} />
-                </div>
-                {/* <button className="add" onClick={handleAdd}>
+          <div className="price">
+            {price.value && `($`}
+            <input
+              placeholder="Price per person"
+              type="number"
+              min={1}
+              className="menu-price"
+              defaultValue={price.value}
+              onChange={(e) => {
+                price.value = e.target.value
+                saveList.menu.value = true
+              }}
+            />
+            {price.value && `/person)`}
+          </div>
+        </div>
+
+        <div>
+          {!sections && null}
+          {sections &&
+            sections[menu?.id]?.map((section, idx) => {
+              return (
+                <div className="gen-container" key={`container${section.id}`}>
+                  <div className="section" key={section.id}>
+                    <Section section={section} />
+                  </div>
+                  {/* <button className="add" onClick={handleAdd}>
                   + section
                 </button> */}
+                </div>
+              )
+            })}
+
+          {newSections.value.map((section, idx) => {
+            return (
+              <div className="gen-container" key={`container${section.id}`}>
+                <div className="section" key={idx}>
+                  <Section section={section} tempId={idx} />
+                </div>
+                {/* <button className="add" onClick={handleAdd}>
+                + section
+              </button> */}
               </div>
             )
           })}
-
-        {newSections.value.map((section, idx) => {
-          return (
-            <div className="gen-container" key={`container${section.id}`}>
-              <div className="section" key={idx}>
-                <Section section={section} tempId={idx} />
-              </div>
-              {/* <button className="add" onClick={handleAdd}>
-                + section
-              </button> */}
-            </div>
-          )
-        })}
-        <div className="gen-container">
-          <button className="add" onClick={handleAdd}>
-            + section
-          </button>
+          <div className="gen-container">
+            <button className="add" onClick={handleAdd}>
+              + section
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* <Unsaved saving={saving.value} /> */}
-
-      <div className="save" onClick={handleSave}>
-        <span className="material-symbols-outlined">save</span>
+        {/* <Unsaved saving={saving.value} /> */}
       </div>
-      {saving.value && "Saving changes.."}
-    </div>
+    </>
   )
 }
