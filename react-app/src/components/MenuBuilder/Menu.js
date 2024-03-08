@@ -180,9 +180,9 @@ export default function Menu() {
 
       {/* <Unsaved saving={saving.value} /> */}
 
-      <button className="add" onClick={handleSave}>
-        save
-      </button>
+      <div className="save" onClick={handleSave}>
+        <span className="material-symbols-outlined">save</span>
+      </div>
       {saving.value && "Saving changes.."}
     </div>
   )
