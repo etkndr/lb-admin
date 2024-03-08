@@ -119,9 +119,7 @@ export default function Menu() {
           <span className="material-symbols-outlined">save</span>
         )}
         {saving.value && (
-          <span className="material-symbols-outlined">
-            published_with_changes
-          </span>
+          <span className="material-symbols-outlined">check_circle</span>
         )}
       </div>
       <div className="menu">
@@ -188,8 +186,6 @@ export default function Menu() {
             </button>
           </div>
         </div>
-
-        {/* <Unsaved saving={saving.value} /> */}
       </div>
     </>
   )
