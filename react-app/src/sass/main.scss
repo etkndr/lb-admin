@@ -1,4 +1,5 @@
 $green: #458656;
+$nosave: #7ca386;
 $lightgray: #f2f2f2;
 $darkgray: #c4c4c4;
 $sidebar-width: 80%;
@@ -118,6 +119,7 @@ li {
     margin: 0 auto;
     width: 80%;
     color: $green;
+    overflow: auto;
 
     .menu-header {
       max-width: min-content;

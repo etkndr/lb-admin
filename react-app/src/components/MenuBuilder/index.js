@@ -38,15 +38,18 @@ export default function MenuBuilder() {
   }
 
   function handleVis(id) {
-    const vis = menuListState.value[id]?.visible
-    if (vis === "visible") {
-      menuListState.value[id].visible = "hidden"
+    const menu = menuListState.value[id]
+    const vis = menu?.visible
+    if (window.confirm(`Change status of menu '${menu.title}'?`)) {
+      if (vis === "visible") {
+        menuListState.value[id].visible = "hidden"
+      }
+      if (vis === "hidden") {
+        menuListState.value[id].visible = "visible"
+      }
+      dispatch(menuActions.editMenuById(id, menuListState.value[id]))
+      seed.value = Math.random()
     }
-    if (vis === "hidden") {
-      menuListState.value[id].visible = "visible"
-    }
-    dispatch(menuActions.editMenuById(id, menuListState.value[id]))
-    seed.value = Math.random()
   }
 
   return (
