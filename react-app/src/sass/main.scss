@@ -1,4 +1,5 @@
 $green: #458656;
+$darkgreen: #346641;
 $nosave: #7ca386;
 $lightgray: #f2f2f2;
 $darkgray: #c4c4c4;
@@ -237,7 +238,6 @@ li {
     position: sticky;
     top: 80%;
     left: 100%;
-    padding-right: 10px;
     justify-content: center;
     align-items: center;
     border-radius: 10px 0 0 10px;
@@ -245,9 +245,14 @@ li {
     color: white;
     cursor: pointer;
     box-shadow: 3px 3px $darkgray;
+    transition: 0.3s;
 
     span {
       font-size: 24pt;
     }
+  }
+
+  .save:hover {
+    padding-right: 10px;
   }
 }
