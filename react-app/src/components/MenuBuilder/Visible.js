@@ -7,16 +7,22 @@ export default function Visible({ id, vis, handleVis }) {
   useEffect(() => {
     vis
       ? (visIcon.value = (
-          <span className="material-symbols-outlined">visibility</span>
+          <span
+            className="material-symbols-outlined"
+            onClick={() => handleVis(id)}
+          >
+            visibility
+          </span>
         ))
       : (visIcon.value = (
-          <span className="material-symbols-outlined">visibility_off</span>
+          <span
+            className="material-symbols-outlined"
+            onClick={() => handleVis(id)}
+          >
+            visibility_off
+          </span>
         ))
   }, [vis])
 
-  return (
-    <div className="publish" onClick={() => handleVis(id)}>
-      {visIcon.value}
-    </div>
-  )
+  return <>{visIcon.value}</>
 }
