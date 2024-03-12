@@ -53,7 +53,7 @@ export default function MenuBuilder() {
   }
 
   return (
-    <div className="gen-container">
+    <div className="main-container">
       <div className="sidebar-container">
         <h3>MENUS</h3>
         {loading.value && "Loading menus"}
