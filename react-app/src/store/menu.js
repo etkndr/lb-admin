@@ -129,6 +129,7 @@ export const menus = createReducer([], {
     return { ...state, menu: action.menu }
   },
   [deleteMenu(0).type]: (state, action) => {
-    delete state[action.menu]
+    console.log(action)
+    return state
   },
 })

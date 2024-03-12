@@ -37,6 +37,10 @@ export default function MenuBuilder() {
     })
   }
 
+  function handleDelete(id) {
+    dispatch(menuActions.deleteMenuById(id))
+  }
+
   function handleVis(id) {
     const menu = menuListState.value[id]
     const vis = menu?.visible
@@ -89,8 +93,7 @@ export default function MenuBuilder() {
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
-                      dispatch(getAllSections(menu.id))
-                      dispatch(menuActions.getMenuById(menu.id))
+                      handleDelete(menu.id)
                     }}
                   >
                     delete
