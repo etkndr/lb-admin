@@ -11,16 +11,19 @@ import Visible from "./Visible"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
-  const menus = useSelector((state) => state.menus.menuList)
+  const menus = useSelector((state) => state.menus)
   const loading = useSignal(false)
   const seed = useSignal(Math.random()) // try changing visible to its own signal instead
 
   useEffect(() => dispatch(menuActions.getUserMenus()), [dispatch])
 
   useEffect(() => {
-    menus?.forEach((menu) => {
-      menuListState.value = { ...menuListState.value, [menu.id]: menu }
-    })
+    if (menus) {
+      console.log("test")
+      Object.values(menus).forEach((menu) => {
+        menuListState.value = { ...menuListState.value, [menu.id]: menu }
+      })
+    }
   }, [menus])
 
   function handleCreate() {

@@ -106,6 +106,7 @@ export function deleteMenuById(menuId) {
 
     if (res.ok) {
       dispatch(deleteMenu(data))
+      return data
     } else {
       if (data.errors) {
         return data.errors
@@ -120,7 +121,11 @@ export const menus = createReducer([], {
     return { ...state, menuList: action.menuList }
   },
   [userMenus().type]: (state, action) => {
-    return { ...state, menuList: action.menuList }
+    const newState = { ...state }
+    action.menuList.forEach((menu) => {
+      newState[menu.id] = menu
+    })
+    return newState
   },
   [getMenu(0).type]: (state, action) => {
     return { ...state, currMenu: action.menu }
@@ -129,7 +134,8 @@ export const menus = createReducer([], {
     return { ...state, menu: action.menu }
   },
   [deleteMenu(0).type]: (state, action) => {
-    console.log(action)
+    const newState = { ...state }
+    console.log(newState)
     return state
   },
 })
