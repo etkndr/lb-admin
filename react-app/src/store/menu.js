@@ -133,24 +133,20 @@ export function deleteMenuById(menuId) {
 const initialState = []
 
 export const menus = createReducer([], {
-  [visibleMenus().type]: (state, action) => {
-    return { ...state, menuList: action.menuList }
-  },
+  // [visibleMenus().type]: (state, action) => {
+  //   return { ...state, menuList: action.menuList }
+  // },
   [userMenus().type]: (state, action) => {
-    const newState = { ...state }
-    action.menuList.forEach((menu) => {
-      newState[menu.id] = menu
-    })
-    return newState
+    return action.menuList
   },
-  [getMenu(0).type]: (state, action) => {
-    return { ...state, currMenu: action.menu }
-  },
-  [editMenu(0).type]: (state, action) => {
-    return { ...state, menu: action.menu }
-  },
+  // [getMenu(0).type]: (state, action) => {
+  //   return { ...state, currMenu: action.menu }
+  // },
+  // [editMenu(0).type]: (state, action) => {
+  //   return { ...state, menu: action.menu }
+  // },
   [deleteMenu(0).type]: (state, action) => {
-    const menus = initialState
-    return menus.filter(({ id }) => id !== action.payload.id)
+    console.log(state)
+    return state.filter(({ id }) => id !== action.payload.id)
   },
 })
