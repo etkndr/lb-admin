@@ -33,7 +33,7 @@ export const userMenus = makeActionCreator(USER_MENUS, "menuList")
 export const getMenu = makeActionCreator(GET_MENU, "menu")
 export const newMenu = makeActionCreator(NEW_MENU, "menu")
 export const editMenu = makeActionCreator(EDIT_MENU, "menu")
-export const deleteMenu = makeActionCreator(DELETE_MENU, "delete")
+export const deleteMenu = makeActionCreator(DELETE_MENU, "menu")
 
 // SECTION ACTIONS
 const ALL_SECTIONS = "ALL_SECTIONS"

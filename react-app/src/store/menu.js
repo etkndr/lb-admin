@@ -134,8 +134,7 @@ export const menus = createReducer([], {
     return { ...state, menu: action.menu }
   },
   [deleteMenu(0).type]: (state, action) => {
-    const newState = { ...state }
-    console.log(newState)
-    return state
+    const menus = { ...state }
+    return Object.values(menus).filter((menu) => menu.id !== action.menu.id)
   },
 })

@@ -19,7 +19,6 @@ export default function MenuBuilder() {
 
   useEffect(() => {
     if (menus) {
-      console.log("test")
       Object.values(menus).forEach((menu) => {
         menuListState.value = { ...menuListState.value, [menu.id]: menu }
       })
