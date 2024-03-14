@@ -7,6 +7,7 @@ import {
   deleteMenu,
   createReducer,
   baseUrl,
+  DELETE_MENU,
 } from "./actions"
 
 export function getVisibleMenus() {
@@ -99,22 +100,37 @@ export function editMenuById(menuId, menu) {
 
 export function deleteMenuById(menuId) {
   return async (dispatch) => {
-    const res = await fetch(`${baseUrl}/api/menus/${menuId}`, {
-      method: "DELETE",
-    })
-    const data = await res.json()
+    //   const res = await fetch(`${baseUrl}/api/menus/${menuId}`, {
+    //     method: "DELETE",
+    //   })
+    //   const data = await res.json()
 
-    if (res.ok) {
-      dispatch(deleteMenu(data))
-      return data
-    } else {
-      if (data.errors) {
-        return data.errors
-      }
-      return ["Error occured, please try again"]
+    //   if (res.ok) {
+    //     dispatch(deleteMenu(data))
+    //     return data
+    //   } else {
+    //     if (data.errors) {
+    //       return data.errors
+    //     }
+    //     return ["Error occured, please try again"]
+    //   }
+    // }
+    try {
+      await fetch(`${baseUrl}/api/menus/${menuId}`, {
+        method: "DELETE",
+      })
+
+      dispatch({
+        type: DELETE_MENU,
+        payload: { menuId },
+      })
+    } catch (err) {
+      console.log(err)
     }
   }
 }
+
+const initialState = []
 
 export const menus = createReducer([], {
   [visibleMenus().type]: (state, action) => {
@@ -134,7 +150,7 @@ export const menus = createReducer([], {
     return { ...state, menu: action.menu }
   },
   [deleteMenu(0).type]: (state, action) => {
-    const menus = { ...state }
-    return Object.values(menus).filter((menu) => menu.id !== action.menu.id)
+    const menus = initialState
+    return menus.filter(({ id }) => id !== action.payload.id)
   },
 })
