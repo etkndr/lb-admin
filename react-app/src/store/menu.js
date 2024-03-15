@@ -7,6 +7,10 @@ import {
   deleteMenu,
   createReducer,
   baseUrl,
+  GET_MENU,
+  VISIBLE_MENUS,
+  NEW_MENU,
+  EDIT_MENU,
   USER_MENUS,
   DELETE_MENU,
 } from "./actions"
@@ -137,7 +141,7 @@ export function menus(menus = initialState, action) {
 
   switch (type) {
     case USER_MENUS:
-      return { ...menus, menuList: payload }
+      return { ...menus, ...payload }
     default:
       return menus
   }

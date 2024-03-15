@@ -21,11 +21,11 @@ export function createReducer(initialState, handlers) {
 }
 
 // MENU ACTIONS
-const VISIBLE_MENUS = "VISIBLE_MENUS"
+export const VISIBLE_MENUS = "VISIBLE_MENUS"
 export const USER_MENUS = "USER_MENUS"
-const GET_MENU = "GET_MENU"
-const NEW_MENU = "NEW_MENU"
-const EDIT_MENU = "EDIT_MENU"
+export const GET_MENU = "GET_MENU"
+export const NEW_MENU = "NEW_MENU"
+export const EDIT_MENU = "EDIT_MENU"
 export const DELETE_MENU = "DELETE_MENU"
 
 export const visibleMenus = makeActionCreator(VISIBLE_MENUS, "menuList")

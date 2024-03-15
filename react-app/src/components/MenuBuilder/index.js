@@ -11,7 +11,7 @@ import Visible from "./Visible"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
-  const menus = useSelector((state) => state.menus.menuList)
+  const menus = useSelector((state) => state.menus)
   const loading = useSignal(false)
   const seed = useSignal(Math.random()) // try changing visible to its own signal instead
 
