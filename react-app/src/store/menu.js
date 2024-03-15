@@ -7,6 +7,7 @@ import {
   deleteMenu,
   createReducer,
   baseUrl,
+  USER_MENUS,
   DELETE_MENU,
 } from "./actions"
 
@@ -27,16 +28,15 @@ export function getVisibleMenus() {
 
 export function getUserMenus() {
   return async (dispatch) => {
-    const res = await fetch(`${baseUrl}/api/menus/`)
-    const data = await res.json()
-
-    if (res.ok) {
-      dispatch(userMenus(data))
-    } else {
-      if (data.errors) {
-        return data.errors
-      }
-      return ["Error occured, please try again"]
+    try {
+      const res = await fetch(`${baseUrl}/api/menus/`)
+      const data = await res.json()
+      dispatch({
+        type: USER_MENUS,
+        payload: data,
+      })
+    } catch (err) {
+      console.log(err)
     }
   }
 }
@@ -132,21 +132,32 @@ export function deleteMenuById(menuId) {
 
 const initialState = []
 
-export const menus = createReducer([], {
-  // [visibleMenus().type]: (state, action) => {
-  //   return { ...state, menuList: action.menuList }
-  // },
-  [userMenus().type]: (state, action) => {
-    return action.menuList
-  },
-  // [getMenu(0).type]: (state, action) => {
-  //   return { ...state, currMenu: action.menu }
-  // },
-  // [editMenu(0).type]: (state, action) => {
-  //   return { ...state, menu: action.menu }
-  // },
-  [deleteMenu(0).type]: (state, action) => {
-    console.log(state)
-    return state.filter(({ id }) => id !== action.payload.id)
-  },
-})
+export function menus(menus = initialState, action) {
+  const { type, payload } = action
+
+  switch (type) {
+    case USER_MENUS:
+      return { ...menus, menuList: payload }
+    default:
+      return menus
+  }
+}
+
+// export const menus = createReducer([], {
+//   // [visibleMenus().type]: (state, action) => {
+//   //   return { ...state, menuList: action.menuList }
+//   // },
+//   [userMenus().type]: (state, action) => {
+//     return action.menuList
+//   },
+//   // [getMenu(0).type]: (state, action) => {
+//   //   return { ...state, currMenu: action.menu }
+//   // },
+//   // [editMenu(0).type]: (state, action) => {
+//   //   return { ...state, menu: action.menu }
+//   // },
+//   [deleteMenu(0).type]: (state, action) => {
+//     console.log(state)
+//     return state.filter(({ id }) => id !== action.payload.id)
+//   },
+// })

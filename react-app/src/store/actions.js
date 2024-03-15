@@ -22,7 +22,7 @@ export function createReducer(initialState, handlers) {
 
 // MENU ACTIONS
 const VISIBLE_MENUS = "VISIBLE_MENUS"
-const USER_MENUS = "USER_MENUS"
+export const USER_MENUS = "USER_MENUS"
 const GET_MENU = "GET_MENU"
 const NEW_MENU = "NEW_MENU"
 const EDIT_MENU = "EDIT_MENU"
