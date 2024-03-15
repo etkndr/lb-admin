@@ -47,37 +47,35 @@ export function getUserMenus() {
 
 export function getMenuById(menuId) {
   return async (dispatch) => {
-    const res = await fetch(`${baseUrl}/api/menus/${menuId}`)
-    const data = await res.json()
+    try {
+      const res = await fetch(`${baseUrl}/api/menus/${menuId}`)
+      const data = await res.json()
 
-    if (res.ok) {
-      dispatch(getMenu(data))
-    } else {
-      if (data.errors) {
-        return data.errors
-      }
-      return ["Error occured, please try again"]
+      dispatch({
+        type: GET_MENU,
+        payload: data,
+      })
+    } catch (err) {
+      console.log(err)
     }
   }
 }
 
 export function createMenu(menu) {
   return async (dispatch) => {
-    const res = await fetch(`${baseUrl}/api/menus/`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(menu),
-    })
-    const data = await res.json()
-
-    if (res.ok) {
-      dispatch(newMenu(data))
-      return data
-    } else {
-      if (data.errors) {
-        return data.errors
-      }
-      return ["Error occured, please try again"]
+    try {
+      const res = await fetch(`${baseUrl}/api/menus/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(menu),
+      })
+      const data = await res.json()
+      dispatch({
+        type: NEW_MENU,
+        payload: data,
+      })
+    } catch (err) {
+      console.log(err)
     }
   }
 }
@@ -141,7 +139,12 @@ export function menus(menus = initialState, action) {
 
   switch (type) {
     case USER_MENUS:
-      return { ...menus, ...payload }
+      const obj = Object.fromEntries(payload.map((menu) => [menu.id, menu]))
+      return { ...menus, ...obj }
+    case NEW_MENU:
+      return { ...menus, [payload.id]: payload }
+    case GET_MENU:
+      return { ...payload }
     default:
       return menus
   }
