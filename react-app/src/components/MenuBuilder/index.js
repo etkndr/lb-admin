@@ -11,16 +11,19 @@ import Visible from "./Visible"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
-  const menus = useSelector((state) => state.menus.menuList)
+  const menus = useSelector((state) => state.menus)
   const loading = useSignal(false)
   const seed = useSignal(Math.random()) // try changing visible to its own signal instead
 
   useEffect(() => dispatch(menuActions.getUserMenus()), [dispatch])
 
   useEffect(() => {
-    menus?.forEach((menu) => {
-      menuListState.value = { ...menuListState.value, [menu.id]: menu }
-    })
+    if (menus) {
+      Object.values(menus).forEach((menu) => {
+        menuListState.value = { ...menuListState.value, [menu.id]: menu }
+      })
+    }
+    console.log(menuListState.value)
   }, [menus])
 
   function handleCreate() {
@@ -31,10 +34,14 @@ export default function MenuBuilder() {
     }
 
     dispatch(menuActions.createMenu(newMenu)).then((res) => {
-      menuListState.value = { ...menuListState.value, [res.id]: newMenu }
+      menuListState.value = { ...menuListState.value, [res.id]: res }
       dispatch(getAllSections(res.id))
       dispatch(menuActions.getMenuById(res.id))
     })
+  }
+
+  function handleDelete(id) {
+    dispatch(menuActions.deleteMenuById(id))
   }
 
   function handleVis(id) {
@@ -89,8 +96,7 @@ export default function MenuBuilder() {
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
-                      dispatch(getAllSections(menu.id))
-                      dispatch(menuActions.getMenuById(menu.id))
+                      handleDelete(menu.id)
                     }}
                   >
                     delete

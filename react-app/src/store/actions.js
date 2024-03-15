@@ -21,19 +21,19 @@ export function createReducer(initialState, handlers) {
 }
 
 // MENU ACTIONS
-const VISIBLE_MENUS = "VISIBLE_MENUS"
-const USER_MENUS = "USER_MENUS"
-const GET_MENU = "GET_MENU"
-const NEW_MENU = "NEW_MENU"
-const EDIT_MENU = "EDIT_MENU"
-const DELETE_MENU = "DELETE_MENU"
+export const VISIBLE_MENUS = "VISIBLE_MENUS"
+export const USER_MENUS = "USER_MENUS"
+export const GET_MENU = "GET_MENU"
+export const NEW_MENU = "NEW_MENU"
+export const EDIT_MENU = "EDIT_MENU"
+export const DELETE_MENU = "DELETE_MENU"
 
 export const visibleMenus = makeActionCreator(VISIBLE_MENUS, "menuList")
 export const userMenus = makeActionCreator(USER_MENUS, "menuList")
 export const getMenu = makeActionCreator(GET_MENU, "menu")
 export const newMenu = makeActionCreator(NEW_MENU, "menu")
 export const editMenu = makeActionCreator(EDIT_MENU, "menu")
-export const deleteMenu = makeActionCreator(DELETE_MENU, "delete")
+export const deleteMenu = makeActionCreator(DELETE_MENU, "payload")
 
 // SECTION ACTIONS
 const ALL_SECTIONS = "ALL_SECTIONS"
