@@ -39,6 +39,7 @@ export function getUserMenus() {
         type: USER_MENUS,
         payload: data,
       })
+      return data
     } catch (err) {
       console.log(err)
     }
@@ -55,6 +56,7 @@ export function getMenuById(menuId) {
         type: GET_MENU,
         payload: data,
       })
+      return data
     } catch (err) {
       console.log(err)
     }
@@ -74,6 +76,7 @@ export function createMenu(menu) {
         type: NEW_MENU,
         payload: data,
       })
+      return data
     } catch (err) {
       console.log(err)
     }
@@ -132,7 +135,7 @@ export function deleteMenuById(menuId) {
   }
 }
 
-const initialState = []
+const initialState = {}
 
 export function menus(menus = initialState, action) {
   const { type, payload } = action
@@ -145,6 +148,9 @@ export function menus(menus = initialState, action) {
       return { ...menus, [payload.id]: payload }
     case GET_MENU:
       return { ...payload }
+    case DELETE_MENU:
+      delete menus[payload]
+      return { ...menus }
     default:
       return menus
   }

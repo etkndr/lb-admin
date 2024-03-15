@@ -23,6 +23,7 @@ export default function MenuBuilder() {
         menuListState.value = { ...menuListState.value, [menu.id]: menu }
       })
     }
+    console.log(menuListState.value)
   }, [menus])
 
   function handleCreate() {
@@ -33,7 +34,7 @@ export default function MenuBuilder() {
     }
 
     dispatch(menuActions.createMenu(newMenu)).then((res) => {
-      menuListState.value = { ...menuListState.value, [res.id]: newMenu }
+      menuListState.value = { ...menuListState.value, [res.id]: res }
       dispatch(getAllSections(res.id))
       dispatch(menuActions.getMenuById(res.id))
     })
