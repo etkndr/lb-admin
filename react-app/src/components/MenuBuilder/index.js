@@ -23,7 +23,6 @@ export default function MenuBuilder() {
         menuListState.value = { ...menuListState.value, [menu.id]: menu }
       })
     }
-    console.log(menuListState.value)
   }, [menus])
 
   function handleCreate() {
@@ -59,18 +58,20 @@ export default function MenuBuilder() {
     }
   }
 
+  console.log("MEN", menus)
+
   return (
     <div className="main-container">
       <div className="sidebar-container">
         <h3>MENUS</h3>
         {loading.value && "Loading menus"}
         {!loading.value &&
-          Object.values(menuListState.value) &&
-          Object.values(menuListState.value)?.map((menu, idx) => {
+          Object.values(menus) &&
+          Object.values(menus)?.map((menu, idx) => {
             return (
               <div
                 className={
-                  idx !== Object.values(menuListState.value).length - 1
+                  idx !== Object.values(menus).length - 1
                     ? "sidebar-item"
                     : "sidebar-item-last"
                 }

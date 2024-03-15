@@ -127,7 +127,7 @@ export function deleteMenuById(menuId) {
 
       dispatch({
         type: DELETE_MENU,
-        payload: { menuId },
+        payload: menuId,
       })
     } catch (err) {
       console.log(err)
@@ -150,6 +150,7 @@ export function menus(menus = initialState, action) {
       return { ...payload }
     case DELETE_MENU:
       delete menus[payload]
+      console.log(payload)
       return { ...menus }
     default:
       return menus
