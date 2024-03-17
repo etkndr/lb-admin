@@ -143,35 +143,16 @@ export function menus(menus = initialState, action) {
   switch (type) {
     case USER_MENUS:
       const obj = Object.fromEntries(payload.map((menu) => [menu.id, menu]))
-      return { ...menus, ...obj }
+      return { ...menus, menuList: obj }
     case NEW_MENU:
       return { ...menus, [payload.id]: payload }
     case GET_MENU:
-      return { ...payload }
+      return { ...menus, currMenu: payload }
     case DELETE_MENU:
-      delete menus[payload]
-      console.log(payload)
-      return { ...menus }
+      const list = { ...menus.menuList }
+      delete list[payload]
+      return { ...menus, ...list }
     default:
       return menus
   }
 }
-
-// export const menus = createReducer([], {
-//   // [visibleMenus().type]: (state, action) => {
-//   //   return { ...state, menuList: action.menuList }
-//   // },
-//   [userMenus().type]: (state, action) => {
-//     return action.menuList
-//   },
-//   // [getMenu(0).type]: (state, action) => {
-//   //   return { ...state, currMenu: action.menu }
-//   // },
-//   // [editMenu(0).type]: (state, action) => {
-//   //   return { ...state, menu: action.menu }
-//   // },
-//   [deleteMenu(0).type]: (state, action) => {
-//     console.log(state)
-//     return state.filter(({ id }) => id !== action.payload.id)
-//   },
-// })

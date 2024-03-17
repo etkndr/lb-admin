@@ -11,19 +11,11 @@ import Visible from "./Visible"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
-  const menus = useSelector((state) => state.menus)
+  const menus = useSelector((state) => state.menus.menuList)
   const loading = useSignal(false)
   const seed = useSignal(Math.random()) // try changing visible to its own signal instead
 
   useEffect(() => dispatch(menuActions.getUserMenus()), [dispatch])
-
-  useEffect(() => {
-    if (menus) {
-      Object.values(menus).forEach((menu) => {
-        menuListState.value = { ...menuListState.value, [menu.id]: menu }
-      })
-    }
-  }, [menus])
 
   function handleCreate() {
     const newMenu = {
@@ -33,7 +25,6 @@ export default function MenuBuilder() {
     }
 
     dispatch(menuActions.createMenu(newMenu)).then((res) => {
-      menuListState.value = { ...menuListState.value, [res.id]: res }
       dispatch(getAllSections(res.id))
       dispatch(menuActions.getMenuById(res.id))
     })
@@ -44,16 +35,16 @@ export default function MenuBuilder() {
   }
 
   function handleVis(id) {
-    const menu = menuListState.value[id]
+    const menu = menus[id]
     const vis = menu?.visible
     if (window.confirm(`Change status of menu '${menu.title}'?`)) {
       if (vis === "visible") {
-        menuListState.value[id].visible = "hidden"
+        menus[id].visible = "hidden"
       }
       if (vis === "hidden") {
-        menuListState.value[id].visible = "visible"
+        menus[id].visible = "visible"
       }
-      dispatch(menuActions.editMenuById(id, menuListState.value[id]))
+      dispatch(menuActions.editMenuById(id, menus[id]))
       seed.value = Math.random()
     }
   }
@@ -66,7 +57,7 @@ export default function MenuBuilder() {
         <h3>MENUS</h3>
         {loading.value && "Loading menus"}
         {!loading.value &&
-          Object.values(menus) &&
+          menus &&
           Object.values(menus)?.map((menu, idx) => {
             return (
               <div
@@ -82,7 +73,7 @@ export default function MenuBuilder() {
                   <Visible
                     key={seed.value}
                     id={menu.id}
-                    vis={menuListState.value[menu.id]?.visible === "visible"}
+                    vis={menus[menu.id]?.visible === "visible"}
                     handleVis={handleVis}
                   />
                   <span
