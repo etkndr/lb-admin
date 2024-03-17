@@ -5,17 +5,18 @@ import { menuId, menuListState } from "../../App"
 import { logout } from "../../store/session"
 import { getAllSections } from "../../store/section"
 import * as menuActions from "../../store/menu"
+import { fetchUserMenus } from "../../store/features/menusSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
 import Visible from "./Visible"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
-  const menus = useSelector((state) => state.menus.menuList)
+  const menus = useSelector((state) => state.menusSlice.menuList)
   const loading = useSignal(false)
   const seed = useSignal(Math.random()) // try changing visible to its own signal instead
 
-  useEffect(() => dispatch(menuActions.getUserMenus()), [dispatch])
+  useEffect(() => dispatch(fetchUserMenus()), [dispatch])
 
   function handleCreate() {
     const newMenu = {
