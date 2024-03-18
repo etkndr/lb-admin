@@ -7,7 +7,10 @@ import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
 import { editMenu } from "../../store/features/menusSlice"
-import { fetchMenuSections } from "../../store/features/sectionsSlice"
+import {
+  fetchMenuSections,
+  createSection,
+} from "../../store/features/sectionsSlice"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
 
@@ -36,7 +39,7 @@ export default function Menu() {
       choice_desc: "",
       price: "",
     }
-    newSections.value = [...newSections.value, section]
+    newList.sections = { ...newList.sections, section }
   }
 
   function handleSave() {
@@ -82,7 +85,7 @@ export default function Menu() {
     if (Object.keys(newList.sections)) {
       for (let sectionId in newList.sections) {
         const section = newList.sections[sectionId]
-        dispatch(sectionActions.createSection(menu?.id, section))
+        dispatch(createSection(menu?.id, section))
       }
     }
 
@@ -96,7 +99,6 @@ export default function Menu() {
     if (Object.keys(newList.descs)) {
       for (let descId in newList.descs) {
         const desc = newList.descs[descId]
-        console.log(desc)
         dispatch(descActions.createDesc(desc.item_id, desc))
       }
     }

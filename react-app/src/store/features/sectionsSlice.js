@@ -15,6 +15,14 @@ export const fetchMenuSections = createAsyncThunk(
   }
 )
 
+export const createSection = createAsyncThunk(
+  "sections/newSection",
+  async (id, section) => {
+    const res = await axios.post(`/api/menus/${id}/sections/`, section)
+    return res.data
+  }
+)
+
 const sectionsSlice = createSlice({
   name: "sections",
   initialState,
@@ -40,6 +48,18 @@ const sectionsSlice = createSlice({
         state.status = "Section load failed"
         state.sectionList = {}
         state.error = action.error
+      })
+
+      // createSection
+      .addCase(createSection.fulfilled, (state, action) => {
+        const section = action.payload
+        state.status = "Success"
+        state.sectionList[section.id] = section
+      })
+      .addCase(createSection.rejected, (state, action) => {
+        state.status = "Error"
+        state.error = action.error
+        console.log(action.error)
       })
   },
 })
