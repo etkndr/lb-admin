@@ -17,6 +17,11 @@ export const fetchUserMenus = createAsyncThunk(
   }
 )
 
+export const createMenu = createAsyncThunk("menus/createMenu", async (menu) => {
+  const res = await axios.post(`${baseUrl}/api/menus/`, menu)
+  return res.data
+})
+
 export const deleteFromMenuList = createAsyncThunk(
   "menus/deleteFromMenuList",
   async (id) => {
@@ -37,7 +42,7 @@ const menusSlice = createSlice({
     builder
       // fetchUserMenus
       .addCase(fetchUserMenus.pending, (state, action) => {
-        state.status = "loading"
+        state.status = "Loading menus"
       })
       .addCase(fetchUserMenus.fulfilled, (state, action) => {
         state.status = "succeeded"
@@ -47,14 +52,22 @@ const menusSlice = createSlice({
       })
       .addCase(fetchUserMenus.rejected, (state, action) => {
         state.status = "failed"
-        state.menus = []
+        state.menuList = {}
         state.error = action.error
+      })
+
+      // createMenu
+      .addCase(createMenu.fulfilled, (state, action) => {
+        const menu = action.payload
+        state.menuList[menu.id] = menu
+        state.currMenu = menu
       })
 
       // deleteFromMenuList
       .addCase(deleteFromMenuList.fulfilled, (state, action) => {
         const { id } = action.payload
         delete state.menuList[id]
+        if (id === state.currMenu.id) state.currMenu = null
       })
       .addCase(deleteFromMenuList.rejected, (state, action) => {
         state.status = "delete failed"

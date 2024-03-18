@@ -8,6 +8,7 @@ import * as menuActions from "../../store/menu"
 import {
   fetchUserMenus,
   menuSelected,
+  createMenu,
   deleteFromMenuList,
 } from "../../store/features/menusSlice"
 import "../../sass/main.scss"
@@ -31,10 +32,7 @@ export default function MenuBuilder() {
       visible: "hidden",
     }
 
-    dispatch(menuActions.createMenu(newMenu)).then((res) => {
-      dispatch(getAllSections(res.id))
-      dispatch(menuActions.getMenuById(res.id))
-    })
+    dispatch(createMenu(newMenu)).then((res) => menuSelected(res))
   }
 
   function handleDelete(id) {
