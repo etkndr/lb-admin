@@ -2,7 +2,6 @@ import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { logout } from "../../store/session"
-import { getAllSections } from "../../store/section"
 import {
   fetchUserMenus,
   menuSelected,
@@ -70,7 +69,6 @@ export default function MenuBuilder() {
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
-                      dispatch(getAllSections(menu.id))
                       dispatch(menuSelected(menu))
                     }}
                   >

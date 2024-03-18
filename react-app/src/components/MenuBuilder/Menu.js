@@ -7,13 +7,14 @@ import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
 import { editMenu } from "../../store/features/menusSlice"
+import { fetchMenuSections } from "../../store/features/sectionsSlice"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
 
 export default function Menu() {
   const dispatch = useDispatch()
   const menu = useSelector((state) => state.menusSlice.currMenu)
-  const sections = useSelector((state) => state.sections.sectionList)
+  const sections = useSelector((state) => state.sectionsSlice.sectionList)
 
   const title = useSignal(null)
   const price = useSignal(null)
@@ -24,7 +25,9 @@ export default function Menu() {
   useEffect(() => {
     title.value = menu?.title
     price.value = menu?.price
-  }, [menu, dispatch])
+
+    if (menu) dispatch(fetchMenuSections(menu.id))
+  }, [menu?.id, dispatch])
 
   function handleAdd() {
     const section = {
@@ -155,7 +158,7 @@ export default function Menu() {
         <div>
           {!sections && null}
           {sections &&
-            sections[menu?.id]?.map((section, idx) => {
+            Object.values(sections)?.map((section, idx) => {
               return (
                 <div className="gen-container" key={`container${section.id}`}>
                   <div className="section" key={section.id}>
