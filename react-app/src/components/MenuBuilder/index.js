@@ -5,7 +5,11 @@ import { menuId, menuListState } from "../../App"
 import { logout } from "../../store/session"
 import { getAllSections } from "../../store/section"
 import * as menuActions from "../../store/menu"
-import { fetchUserMenus, menuSelected } from "../../store/features/menusSlice"
+import {
+  fetchUserMenus,
+  menuSelected,
+  deleteFromMenuList,
+} from "../../store/features/menusSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
 import Visible from "./Visible"
@@ -34,7 +38,7 @@ export default function MenuBuilder() {
   }
 
   function handleDelete(id) {
-    dispatch(menuActions.deleteMenuById(id))
+    dispatch(deleteFromMenuList(id))
   }
 
   function handleVis(id) {
@@ -51,8 +55,6 @@ export default function MenuBuilder() {
       seed.value = Math.random()
     }
   }
-
-  console.log(menu)
 
   return (
     <div className="main-container">

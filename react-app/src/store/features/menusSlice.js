@@ -3,7 +3,7 @@ import axios from "axios"
 import { baseUrl } from "../actions"
 
 const initialState = {
-  menuList: [],
+  menuList: {},
   currMenu: null,
   status: null,
   error: null,
@@ -41,11 +41,23 @@ const menusSlice = createSlice({
       })
       .addCase(fetchUserMenus.fulfilled, (state, action) => {
         state.status = "succeeded"
-        state.menuList = action.payload
+        action.payload.forEach((menu) => {
+          state.menuList[menu.id] = menu
+        })
       })
       .addCase(fetchUserMenus.rejected, (state, action) => {
         state.status = "failed"
         state.menus = []
+        state.error = action.error
+      })
+
+      // deleteFromMenuList
+      .addCase(deleteFromMenuList.fulfilled, (state, action) => {
+        const { id } = action.payload
+        delete state.menuList[id]
+      })
+      .addCase(deleteFromMenuList.rejected, (state, action) => {
+        state.status = "delete failed"
         state.error = action.error
       })
   },
