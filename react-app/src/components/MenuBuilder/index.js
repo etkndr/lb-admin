@@ -9,7 +9,7 @@ import {
   fetchUserMenus,
   menuSelected,
   createMenu,
-  deleteFromMenuList,
+  deleteMenu,
 } from "../../store/features/menusSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
@@ -36,7 +36,7 @@ export default function MenuBuilder() {
   }
 
   function handleDelete(id) {
-    dispatch(deleteFromMenuList(id))
+    dispatch(deleteMenu(id))
   }
 
   function handleVis(id) {

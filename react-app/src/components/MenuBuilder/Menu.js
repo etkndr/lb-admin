@@ -6,6 +6,7 @@ import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
+import { editMenu } from "../../store/features/menusSlice"
 import Add from "./Add"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
@@ -47,7 +48,7 @@ export default function Menu() {
         price: price.value,
         visible: menu?.visible,
       }
-      dispatch(menuActions.editMenuById(menu?.id, changes))
+      dispatch(editMenu(changes))
     }
     if (saveList.sections.value) {
       for (let sectionId in saveList.sections.value) {
@@ -111,8 +112,6 @@ export default function Menu() {
   if (!menu) {
     return null
   }
-
-  console.log("MENU", menu)
 
   return (
     <>

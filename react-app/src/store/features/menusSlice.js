@@ -22,13 +22,15 @@ export const createMenu = createAsyncThunk("menus/createMenu", async (menu) => {
   return res.data
 })
 
-export const deleteFromMenuList = createAsyncThunk(
-  "menus/deleteFromMenuList",
-  async (id) => {
-    const res = await axios.delete(`${baseUrl}/api/menus/${id}`)
-    return res.data
-  }
-)
+export const editMenu = createAsyncThunk("menus/editMenu", async (menu) => {
+  const res = await axios.put(`${baseUrl}/api/menus/${menu.id}`, menu)
+  return res.data
+})
+
+export const deleteMenu = createAsyncThunk("menus/deleteMenu", async (id) => {
+  const res = await axios.delete(`${baseUrl}/api/menus/${id}`)
+  return res.data
+})
 
 const menusSlice = createSlice({
   name: "menus",
@@ -45,13 +47,13 @@ const menusSlice = createSlice({
         state.status = "Loading menus"
       })
       .addCase(fetchUserMenus.fulfilled, (state, action) => {
-        state.status = "succeeded"
+        state.status = "Succeess"
         action.payload.forEach((menu) => {
           state.menuList[menu.id] = menu
         })
       })
       .addCase(fetchUserMenus.rejected, (state, action) => {
-        state.status = "failed"
+        state.status = "Menu load failed"
         state.menuList = {}
         state.error = action.error
       })
@@ -62,15 +64,29 @@ const menusSlice = createSlice({
         state.menuList[menu.id] = menu
         state.currMenu = menu
       })
+      .addCase(createMenu.rejected, (state, action) => {
+        state.status = "Menu not added"
+        state.error = action.error
+      })
 
-      // deleteFromMenuList
-      .addCase(deleteFromMenuList.fulfilled, (state, action) => {
+      // editMenu
+      .addCase(editMenu.fulfilled, (state, action) => {
+        const menu = action.payload
+        state.menuList[menu.id] = menu
+      })
+      .addCase(editMenu.rejected, (state, action) => {
+        state.status = "Menu not saved"
+        state.error = action.error
+      })
+
+      // deleteMenu
+      .addCase(deleteMenu.fulfilled, (state, action) => {
         const { id } = action.payload
         delete state.menuList[id]
         if (id === state.currMenu.id) state.currMenu = null
       })
-      .addCase(deleteFromMenuList.rejected, (state, action) => {
-        state.status = "delete failed"
+      .addCase(deleteMenu.rejected, (state, action) => {
+        state.status = "Delete failed"
         state.error = action.error
       })
   },
