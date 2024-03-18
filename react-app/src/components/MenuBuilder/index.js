@@ -5,7 +5,7 @@ import { menuId, menuListState } from "../../App"
 import { logout } from "../../store/session"
 import { getAllSections } from "../../store/section"
 import * as menuActions from "../../store/menu"
-import { fetchUserMenus } from "../../store/features/menusSlice"
+import { fetchUserMenus, menuSelected } from "../../store/features/menusSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
 import Visible from "./Visible"
@@ -13,6 +13,8 @@ import Visible from "./Visible"
 export default function MenuBuilder() {
   const dispatch = useDispatch()
   const menus = useSelector((state) => state.menusSlice.menuList)
+  const menu = useSelector((state) => state.menusSlice.currMenu)
+  const status = useSelector((state) => state.menusSlice.status)
   const loading = useSignal(false)
   const seed = useSignal(Math.random()) // try changing visible to its own signal instead
 
@@ -50,7 +52,7 @@ export default function MenuBuilder() {
     }
   }
 
-  console.log("MEN", menus)
+  console.log(menu)
 
   return (
     <div className="main-container">
@@ -81,7 +83,7 @@ export default function MenuBuilder() {
                     className="material-symbols-outlined"
                     onClick={() => {
                       dispatch(getAllSections(menu.id))
-                      dispatch(menuActions.getMenuById(menu.id))
+                      dispatch(menuSelected(menu))
                     }}
                   >
                     edit

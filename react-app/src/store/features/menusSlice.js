@@ -5,6 +5,7 @@ import { baseUrl } from "../actions"
 const initialState = {
   menuList: [],
   currMenu: null,
+  status: null,
   error: null,
 }
 
@@ -16,26 +17,29 @@ export const fetchUserMenus = createAsyncThunk(
   }
 )
 
+export const deleteFromMenuList = createAsyncThunk(
+  "menus/deleteFromMenuList",
+  async (id) => {
+    const res = await axios.delete(`${baseUrl}/api/menus/${id}`)
+    return res.data
+  }
+)
+
 const menusSlice = createSlice({
   name: "menus",
   initialState,
-  // reducers: {
-  //   // Give case reducers meaningful past-tense "event"-style names
-  //   menusFetched(state, action) {
-  //     // "Mutating" update syntax thanks to Immer, and no `return` needed
-  //     state.menus.push(action.payload)
-  //   },
-  // },
+  reducers: {
+    menuSelected(state, action) {
+      state.currMenu = action.payload
+    },
+  },
   extraReducers: (builder) => {
-    // Use `extraReducers` to handle actions that were generated
-    // _outside_ of the slice, such as thunks or in other slices
     builder
+      // fetchUserMenus
       .addCase(fetchUserMenus.pending, (state, action) => {
         state.status = "loading"
       })
-      // Pass the generated action creators to `.addCase()`
       .addCase(fetchUserMenus.fulfilled, (state, action) => {
-        // Same "mutating" update syntax thanks to Immer
         state.status = "succeeded"
         state.menuList = action.payload
       })
@@ -49,7 +53,7 @@ const menusSlice = createSlice({
 
 // `createSlice` automatically generated action creators with these names.
 // export them as named exports from this "slice" file
-// export const { menusFetched } = menusSlice.actions
+export const { menuSelected } = menusSlice.actions
 
 // Export the slice reducer as the default export
 export default menusSlice.reducer

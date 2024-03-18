@@ -12,7 +12,7 @@ import Unsaved from "./Unsaved"
 
 export default function Menu() {
   const dispatch = useDispatch()
-  const menu = useSelector((state) => state.menus.currMenu)
+  const menu = useSelector((state) => state.menusSlice.currMenu)
   const sections = useSelector((state) => state.sections.sectionList)
 
   const title = useSignal(null)
@@ -111,6 +111,8 @@ export default function Menu() {
   if (!menu) {
     return null
   }
+
+  console.log("MENU", menu)
 
   return (
     <>
