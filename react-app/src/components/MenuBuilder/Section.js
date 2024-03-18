@@ -4,7 +4,6 @@ import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
 import { saveList, newList, allLoaded } from "../../App"
 import Item from "./Item"
-import Add from "./Add"
 
 export default function Section({ section, tempId }) {
   const dispatch = useDispatch()

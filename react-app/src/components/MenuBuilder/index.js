@@ -1,10 +1,8 @@
-import { useSignal, signal, useSignalEffect } from "@preact/signals-react"
+import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
-import { menuId, menuListState } from "../../App"
 import { logout } from "../../store/session"
 import { getAllSections } from "../../store/section"
-import * as menuActions from "../../store/menu"
 import {
   fetchUserMenus,
   menuSelected,
@@ -14,15 +12,11 @@ import {
 } from "../../store/features/menusSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
-import Visible from "./Visible"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
   const menus = useSelector((state) => state.menusSlice.menuList)
-  const menu = useSelector((state) => state.menusSlice.currMenu)
-  const status = useSelector((state) => state.menusSlice.status)
   const loading = useSignal(false)
-  const seed = useSignal(Math.random()) // try changing visible to its own signal instead
 
   useEffect(() => dispatch(fetchUserMenus()), [dispatch])
 
@@ -33,7 +27,7 @@ export default function MenuBuilder() {
       visible: "hidden",
     }
 
-    dispatch(createMenu(newMenu)).then((res) => menuSelected(res))
+    dispatch(createMenu(newMenu))
   }
 
   function handleVis(id) {

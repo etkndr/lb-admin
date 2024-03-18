@@ -7,7 +7,6 @@ import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
 import { editMenu } from "../../store/features/menusSlice"
-import Add from "./Add"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
 
