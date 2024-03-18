@@ -83,7 +83,7 @@ const menusSlice = createSlice({
       .addCase(deleteMenu.fulfilled, (state, action) => {
         const { id } = action.payload
         delete state.menuList[id]
-        if (id === state.currMenu.id) state.currMenu = null
+        if (id === state.currMenu?.id) state.currMenu = null
       })
       .addCase(deleteMenu.rejected, (state, action) => {
         state.status = "Delete failed"

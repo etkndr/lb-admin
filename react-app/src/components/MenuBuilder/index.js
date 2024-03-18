@@ -10,6 +10,7 @@ import {
   menuSelected,
   createMenu,
   deleteMenu,
+  editMenu,
 } from "../../store/features/menusSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
@@ -35,22 +36,13 @@ export default function MenuBuilder() {
     dispatch(createMenu(newMenu)).then((res) => menuSelected(res))
   }
 
-  function handleDelete(id) {
-    dispatch(deleteMenu(id))
-  }
-
   function handleVis(id) {
-    const menu = menus[id]
-    const vis = menu?.visible
-    if (window.confirm(`Change status of menu '${menu.title}'?`)) {
-      if (vis === "visible") {
-        menus[id].visible = "hidden"
-      }
-      if (vis === "hidden") {
-        menus[id].visible = "visible"
-      }
-      dispatch(menuActions.editMenuById(id, menus[id]))
-      seed.value = Math.random()
+    const menu = { ...menus[id] }
+    menu.visible === "hidden"
+      ? (menu.visible = "visible")
+      : (menu.visible = "hidden")
+    if (window.confirm(`Change visibility of menu '${menu.title}'?`)) {
+      dispatch(editMenu(menu))
     }
   }
 
@@ -73,12 +65,14 @@ export default function MenuBuilder() {
               >
                 <div className="sidebar-title">{menu.title}</div>
                 <div className="sidebar-buttons">
-                  <Visible
-                    key={seed.value}
-                    id={menu.id}
-                    vis={menus[menu.id]?.visible === "visible"}
-                    handleVis={handleVis}
-                  />
+                  <span
+                    className="material-symbols-outlined"
+                    onClick={() => handleVis(menu.id)}
+                  >
+                    {menu.visible === "hidden"
+                      ? "visibility_off"
+                      : "visibility"}
+                  </span>
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
@@ -91,7 +85,7 @@ export default function MenuBuilder() {
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
-                      handleDelete(menu.id)
+                      dispatch(deleteMenu(menu.id))
                     }}
                   >
                     delete
