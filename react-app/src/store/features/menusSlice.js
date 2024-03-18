@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
-import { baseUrl } from "../actions"
 
 const initialState = {
   menuList: {},
@@ -12,23 +11,23 @@ const initialState = {
 export const fetchUserMenus = createAsyncThunk(
   "menus/fetchUserMenus",
   async () => {
-    const res = await axios.get(`${baseUrl}/api/menus/`)
+    const res = await axios.get(`/api/menus/`)
     return res.data
   }
 )
 
 export const createMenu = createAsyncThunk("menus/createMenu", async (menu) => {
-  const res = await axios.post(`${baseUrl}/api/menus/`, menu)
+  const res = await axios.post(`/api/menus/`, menu)
   return res.data
 })
 
 export const editMenu = createAsyncThunk("menus/editMenu", async (menu) => {
-  const res = await axios.put(`${baseUrl}/api/menus/${menu.id}`, menu)
+  const res = await axios.put(`/api/menus/${menu.id}`, menu)
   return res.data
 })
 
 export const deleteMenu = createAsyncThunk("menus/deleteMenu", async (id) => {
-  const res = await axios.delete(`${baseUrl}/api/menus/${id}`)
+  const res = await axios.delete(`/api/menus/${id}`)
   return res.data
 })
 
