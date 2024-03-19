@@ -4,8 +4,10 @@ const initialState = {
   menu: {},
   sections: [],
   newSections: [],
-  items: {},
-  descs: {},
+  items: [],
+  newItems: [],
+  descs: [],
+  newDescs: [],
 }
 
 const saveSlice = createSlice({
@@ -13,7 +15,13 @@ const saveSlice = createSlice({
   initialState,
   reducers: {
     clearChanges(state, action) {
+      state.menu = {}
+      state.sections = []
       state.newSections = []
+      state.items = []
+      state.newItems = []
+      state.descs = []
+      state.newDescs = []
     },
     menuChanged(state, action) {
       state.menu = action.payload
