@@ -1,35 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-  editList: {
-    menu: {},
-    sections: {},
-    items: {},
-    descs: {},
-  },
-  createList: {
-    sections: {},
-    items: {},
-    descs: {},
-  },
+  menu: {},
+  sections: [],
+  newSections: [],
+  items: {},
+  descs: {},
 }
 
 const saveSlice = createSlice({
   name: "save",
   initialState,
   reducers: {
-    menuEdited(state, action) {
-      state.editList.menu = action.payload
+    menuChanged(state, action) {
+      state.menu = action.payload
     },
-    sectionEdited(state, action) {
-      state.editList.sections[action.payload.id] = action.payload
-    },
-    sectionCreated(state, action) {
-      const list = state.createList.sections
-      const len = Object.keys(list).length()
-      list[len] = action.payload
+    sectionChanged(state, action) {
+      const section = action.payload
+      if (section.new) {
+        state.newSections.push(section)
+      } else {
+        state.sections.push(action.payload)
+      }
     },
   },
 })
+
+export const { menuChanged, sectionChanged } = saveSlice.actions
 
 export default saveSlice.reducer

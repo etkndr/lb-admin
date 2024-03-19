@@ -11,6 +11,7 @@ import {
   fetchMenuSections,
   createSection,
 } from "../../store/features/sectionsSlice"
+import { menuChanged, sectionChanged } from "../../store/features/saveSlice"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
 
@@ -18,12 +19,11 @@ export default function Menu() {
   const dispatch = useDispatch()
   const menu = useSelector((state) => state.menusSlice.currMenu)
   const sections = useSelector((state) => state.sectionsSlice.sectionList)
-
+  const savedList = useSelector((state) => state.saveSlice)
+  const newSections = useSelector((state) => state.saveSlice.newSections)
   const title = useSignal(null)
   const price = useSignal(null)
   const saving = useSignal(false)
-
-  const newSections = useSignal([])
 
   useEffect(() => {
     title.value = menu?.title
@@ -39,73 +39,73 @@ export default function Menu() {
       choice_desc: "",
       price: "",
     }
-    newList.sections = { ...newList.sections, section }
+    dispatch(sectionChanged(section))
   }
 
   function handleSave() {
-    saving.value = true // Used for displaying "Saving..." text
+    // saving.value = true // Used for displaying "Saving..." text
 
-    // Check for data in saveList and send PUT requests
-    if (saveList.menu.value) {
-      const changes = {
-        id: menu?.id,
-        title: title.value,
-        price: price.value,
-        visible: menu?.visible,
-      }
-      dispatch(editMenu(changes))
-    }
-    if (saveList.sections.value) {
-      for (let sectionId in saveList.sections.value) {
-        dispatch(
-          sectionActions.editSectionById(
-            sectionId,
-            saveList.sections.value[sectionId]
-          )
-        )
-      }
-    }
-    if (saveList.items.value) {
-      for (let itemId in saveList.items.value) {
-        dispatch(itemActions.editItemById(itemId, saveList.items.value[itemId]))
-      }
-    }
-    if (saveList.descs.value) {
-      for (let descId in saveList.descs.value) {
-        dispatch(descActions.editDescById(descId, saveList.descs.value[descId]))
-      }
-    }
+    // // Check for data in  and send PUT requests
+    // if (.menu.value) {
+    //   const changes = {
+    //     id: menu?.id,
+    //     title: title.value,
+    //     price: price.value,
+    //     visible: menu?.visible,
+    //   }
+    //   dispatch(editMenu(changes))
+    // }
+    // if (saveList.sections.value) {
+    //   for (let sectionId in saveList.sections.value) {
+    //     dispatch(
+    //       sectionActions.editSectionById(
+    //         sectionId,
+    //         saveList.sections.value[sectionId]
+    //       )
+    //     )
+    //   }
+    // }
+    // if (saveList.items.value) {
+    //   for (let itemId in saveList.items.value) {
+    //     dispatch(itemActions.editItemById(itemId, saveList.items.value[itemId]))
+    //   }
+    // }
+    // if (saveList.descs.value) {
+    //   for (let descId in saveList.descs.value) {
+    //     dispatch(descActions.editDescById(descId, saveList.descs.value[descId]))
+    //   }
+    // }
 
-    saveList.menu.value = false
-    saveList.sections.value = null
-    saveList.items.value = null
-    saveList.descs.value = null
+    // saveList.menu.value = false
+    // saveList.sections.value = null
+    // saveList.items.value = null
+    // saveList.descs.value = null
 
-    // Check for data in newList and send POST requests
-    if (Object.keys(newList.sections)) {
-      for (let sectionId in newList.sections) {
-        const section = newList.sections[sectionId]
-        dispatch(createSection(menu?.id, section))
-      }
-    }
+    // // Check for data in newList and send POST requests
+    // if (Object.keys(newList.sections)) {
+    //   for (let sectionId in newList.sections) {
+    //     const section = newList.sections[sectionId]
+    //     dispatch(createSection(menu?.id, section))
+    //   }
+    // }
 
-    if (Object.keys(newList.items)) {
-      for (let itemId in newList.items) {
-        const item = newList.items[itemId]
-        dispatch(itemActions.createItem(item.section_id, item))
-      }
-    }
+    // if (Object.keys(newList.items)) {
+    //   for (let itemId in newList.items) {
+    //     const item = newList.items[itemId]
+    //     dispatch(itemActions.createItem(item.section_id, item))
+    //   }
+    // }
 
-    if (Object.keys(newList.descs)) {
-      for (let descId in newList.descs) {
-        const desc = newList.descs[descId]
-        dispatch(descActions.createDesc(desc.item_id, desc))
-      }
-    }
+    // if (Object.keys(newList.descs)) {
+    //   for (let descId in newList.descs) {
+    //     const desc = newList.descs[descId]
+    //     dispatch(descActions.createDesc(desc.item_id, desc))
+    //   }
+    // }
 
-    newList.sections = {}
-    newList.items = {}
-    newList.descs = {}
+    // newList.sections = {}
+    // newList.items = {}
+    // newList.descs = {}
 
     setTimeout(() => {
       saving.value = false
@@ -116,6 +116,8 @@ export default function Menu() {
   if (!menu) {
     return null
   }
+
+  console.log(savedList)
 
   return (
     <>
@@ -173,7 +175,7 @@ export default function Menu() {
               )
             })}
 
-          {newSections.value.map((section, idx) => {
+          {newSections.map((section, idx) => {
             return (
               <div className="gen-container" key={`container${section.id}`}>
                 <div className="section" key={idx}>
