@@ -12,6 +12,9 @@ const saveSlice = createSlice({
   name: "save",
   initialState,
   reducers: {
+    clearChanges(state, action) {
+      state.newSections = []
+    },
     menuChanged(state, action) {
       state.menu = action.payload
     },
@@ -26,6 +29,6 @@ const saveSlice = createSlice({
   },
 })
 
-export const { menuChanged, sectionChanged } = saveSlice.actions
+export const { clearChanges, menuChanged, sectionChanged } = saveSlice.actions
 
 export default saveSlice.reducer

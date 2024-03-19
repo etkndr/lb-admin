@@ -9,6 +9,7 @@ import {
   deleteMenu,
   editMenu,
 } from "../../store/features/menusSlice"
+import { clearChanges } from "../../store/features/saveSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
 
@@ -69,6 +70,7 @@ export default function MenuBuilder() {
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
+                      dispatch(clearChanges())
                       dispatch(menuSelected(menu))
                     }}
                   >
