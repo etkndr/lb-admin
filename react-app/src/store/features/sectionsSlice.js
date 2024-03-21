@@ -23,6 +23,14 @@ export const createSection = createAsyncThunk(
   }
 )
 
+export const editSection = createAsyncThunk(
+  "sections/editSection",
+  async (id, section) => {
+    const res = await axios.put(`/api/sections/${id}`, section)
+    return res.data
+  }
+)
+
 const sectionsSlice = createSlice({
   name: "sections",
   initialState,
@@ -57,7 +65,18 @@ const sectionsSlice = createSlice({
         state.sectionList[section.id] = section
       })
       .addCase(createSection.rejected, (state, action) => {
-        state.status = "Error"
+        state.status = "Not created"
+        state.error = action.error
+        console.log(action.error)
+      })
+
+      // editSection
+      .addCase(editSection.fulfilled, (state, action) => {
+        const { id } = action.payload
+        state.sectionList[id] = action.payload
+      })
+      .addCase(editSection.rejected, (state, action) => {
+        state.status = "Not edited"
         state.error = action.error
         console.log(action.error)
       })
