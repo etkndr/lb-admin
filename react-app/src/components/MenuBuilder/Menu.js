@@ -52,6 +52,10 @@ export default function Menu() {
       })
     }
 
+    // for (let section of Object.values(sections)) {
+    //   dispatch
+    // }
+
     // // Check for data in  and send PUT requests
     // if (.menu.value) {
     //   const changes = {
@@ -123,6 +127,8 @@ export default function Menu() {
   if (!menu) {
     return null
   }
+
+  console.log(sections, newSections)
 
   return (
     <>
