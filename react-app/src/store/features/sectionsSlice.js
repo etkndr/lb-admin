@@ -35,9 +35,9 @@ const sectionsSlice = createSlice({
   name: "sections",
   initialState,
   reducers: {
-    //   menuSelected(state, action) {
-    //     state.currMenu = action.payload
-    //   },
+    sectionChanged(state, action) {
+      state.sectionList[action.payload.id] = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -70,16 +70,16 @@ const sectionsSlice = createSlice({
         console.log(action.error)
       })
 
-      // editSection
-      .addCase(editSection.fulfilled, (state, action) => {
-        const { id } = action.payload
-        state.sectionList[id] = action.payload
-      })
-      .addCase(editSection.rejected, (state, action) => {
-        state.status = "Not edited"
-        state.error = action.error
-        console.log(action.error)
-      })
+    // editSection
+    //   .addCase(editSection.fulfilled, (state, action) => {
+    //     const { id } = action.payload
+    //     state.sectionList[id] = action.payload
+    //   })
+    //   .addCase(editSection.rejected, (state, action) => {
+    //     state.status = "Not edited"
+    //     state.error = action.error
+    //     console.log(action.error)
+    //   })
   },
 })
 

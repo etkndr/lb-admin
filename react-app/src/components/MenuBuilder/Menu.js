@@ -11,7 +11,6 @@ import {
   fetchMenuSections,
   createSection,
 } from "../../store/features/sectionsSlice"
-import { menuChanged, sectionChanged } from "../../store/features/saveSlice"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
 
@@ -43,7 +42,7 @@ export default function Menu() {
   }
 
   function handleSave() {
-    // saving.value = true // Used for displaying "Saving..." text
+    saving.value = true // Used for displaying "Saving..." text
 
     // // Check for data in  and send PUT requests
     // if (.menu.value) {

@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
 
 const initialState = {
   menu: {},
@@ -9,6 +10,10 @@ const initialState = {
   descs: [],
   newDescs: [],
 }
+
+export const commitSave = createAsyncThunk("save/commitSave", async (list) => {
+  const { menu, sections, newSections } = list
+})
 
 const saveSlice = createSlice({
   name: "save",
