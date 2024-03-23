@@ -19,7 +19,7 @@ export const fetchMenuSections = createAsyncThunk(
 export const createSection = createAsyncThunk(
   "sections/newSection",
   async (id, section) => {
-    const res = await axios.post(`/api/menus/${id}/sections/`, section)
+    const res = await axios.post(`/api/menus/${id}/sections`, section)
     return res.data
   }
 )
@@ -42,6 +42,9 @@ const sectionsSlice = createSlice({
       } else {
         state.sectionList[action.payload.id] = action.payload
       }
+    },
+    newSectionCleared(state, action) {
+      delete state.newList[action.payload]
     },
   },
   extraReducers: (builder) => {
@@ -88,6 +91,6 @@ const sectionsSlice = createSlice({
   },
 })
 
-export const { sectionChanged } = sectionsSlice.actions
+export const { sectionChanged, newSectionCleared } = sectionsSlice.actions
 
 export default sectionsSlice.reducer

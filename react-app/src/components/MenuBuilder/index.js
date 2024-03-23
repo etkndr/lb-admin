@@ -8,7 +8,7 @@ import {
   createMenu,
   deleteMenu,
   editMenu,
-} from "../../store/features/menusSlice"
+} from "../../store/features/menus"
 import { clearChanges } from "../../store/features/saveSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"

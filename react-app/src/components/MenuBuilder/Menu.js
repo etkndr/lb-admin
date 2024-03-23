@@ -6,11 +6,12 @@ import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
-import { editMenu } from "../../store/features/menusSlice"
+import { editMenu } from "../../store/features/menus"
 import {
   fetchMenuSections,
   createSection,
   sectionChanged,
+  newSectionCleared,
 } from "../../store/features/sectionsSlice"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
@@ -44,6 +45,12 @@ export default function Menu() {
 
   function handleSave() {
     saving.value = true // Used for displaying "Saving..." text
+
+    for (let section of Object.values(newSections)) {
+      dispatch(createSection(menu.id, section)).then(() => {
+        dispatch(newSectionCleared(section.id))
+      })
+    }
 
     // // Check for data in  and send PUT requests
     // if (.menu.value) {
