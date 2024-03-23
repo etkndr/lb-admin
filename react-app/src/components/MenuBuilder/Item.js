@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { saveList, newList, allLoaded } from "../../App"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
-import Add from "./Add"
 
 export default function Item({ item, tempId }) {
   const dispatch = useDispatch()
