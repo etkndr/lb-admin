@@ -10,6 +10,7 @@ import { editMenu } from "../../store/features/menusSlice"
 import {
   fetchMenuSections,
   createSection,
+  sectionChanged,
 } from "../../store/features/sectionsSlice"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
@@ -18,8 +19,7 @@ export default function Menu() {
   const dispatch = useDispatch()
   const menu = useSelector((state) => state.menusSlice.currMenu)
   const sections = useSelector((state) => state.sectionsSlice.sectionList)
-  const savedList = useSelector((state) => state.saveSlice)
-  const newSections = useSelector((state) => state.saveSlice.newSections)
+  const newSections = useSelector((state) => state.sectionsSlice.newList)
   const title = useSignal(null)
   const price = useSignal(null)
   const saving = useSignal(false)
@@ -33,6 +33,7 @@ export default function Menu() {
 
   function handleAdd() {
     const section = {
+      id: Object.keys(newSections).length + 1,
       new: true,
       menu_id: menu.id,
       choice_desc: "",
@@ -116,8 +117,6 @@ export default function Menu() {
     return null
   }
 
-  console.log(savedList)
-
   return (
     <>
       <div className="save" onClick={handleSave}>
@@ -174,18 +173,19 @@ export default function Menu() {
               )
             })}
 
-          {newSections.map((section, idx) => {
-            return (
-              <div className="gen-container" key={`container${section.id}`}>
-                <div className="section" key={idx}>
-                  <Section section={section} tempId={idx} />
-                </div>
-                {/* <button className="add" onClick={handleAdd}>
+          {newSections &&
+            Object.values(newSections)?.map((section, idx) => {
+              return (
+                <div className="gen-container" key={`container${section.id}`}>
+                  <div className="section" key={idx}>
+                    <Section section={section} tempId={idx} />
+                  </div>
+                  {/* <button className="add" onClick={handleAdd}>
                 + section
               </button> */}
-              </div>
-            )
-          })}
+                </div>
+              )
+            })}
           <div className="gen-container">
             <button className="add" onClick={handleAdd}>
               + section

@@ -3,6 +3,7 @@ import axios from "axios"
 
 const initialState = {
   sectionList: {},
+  newList: {},
   status: null,
   error: null,
 }
@@ -36,7 +37,11 @@ const sectionsSlice = createSlice({
   initialState,
   reducers: {
     sectionChanged(state, action) {
-      state.sectionList[action.payload.id] = action.payload
+      if (action.payload.new) {
+        state.newList[action.payload.id] = action.payload
+      } else {
+        state.sectionList[action.payload.id] = action.payload
+      }
     },
   },
   extraReducers: (builder) => {
@@ -82,5 +87,7 @@ const sectionsSlice = createSlice({
     //   })
   },
 })
+
+export const { sectionChanged } = sectionsSlice.actions
 
 export default sectionsSlice.reducer
