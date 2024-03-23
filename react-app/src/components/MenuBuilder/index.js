@@ -2,14 +2,14 @@ import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { logout } from "../../store/session"
-import { getAllSections } from "../../store/section"
 import {
   fetchUserMenus,
   menuSelected,
   createMenu,
   deleteMenu,
   editMenu,
-} from "../../store/features/menusSlice"
+} from "../../store/features/menus"
+import { clearChanges } from "../../store/features/saveSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
 
@@ -70,7 +70,7 @@ export default function MenuBuilder() {
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
-                      dispatch(getAllSections(menu.id))
+                      dispatch(clearChanges())
                       dispatch(menuSelected(menu))
                     }}
                   >
