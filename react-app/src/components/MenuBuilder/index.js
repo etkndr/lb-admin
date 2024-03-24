@@ -35,9 +35,8 @@ export default function MenuBuilder() {
     menu.visible === "hidden"
       ? (menu.visible = "visible")
       : (menu.visible = "hidden")
-    if (window.confirm(`Change visibility of menu '${menu.title}'?`)) {
-      dispatch(editMenu(menu))
-    }
+
+    dispatch(editMenu(menu))
   }
 
   return (
@@ -79,7 +78,9 @@ export default function MenuBuilder() {
                   <span
                     className="material-symbols-outlined"
                     onClick={() => {
-                      dispatch(deleteMenu(menu.id))
+                      if (window.confirm(`Delete menu '${menu.title}'?`)) {
+                        dispatch(deleteMenu(menu.id))
+                      }
                     }}
                   >
                     delete

@@ -2,29 +2,28 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
-import { saveList, newList, allLoaded } from "../../App"
+import { editSection, deleteSection } from "../../store/features/sectionsSlice"
 import Item from "./Item"
 
-export default function Section({ section, tempId }) {
+export default function Section({ sectionId }) {
   const dispatch = useDispatch()
+  const section = useSelector(
+    (state) => state.sectionsSlice.sectionList[sectionId]
+  )
   const items = useSelector((state) => state.items.itemList)
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
-  const sectionChange = useSignal(null)
+  const sectionChanges = useSignal(null)
 
-  const newItems = useSignal([])
-
-  useEffect(() => {
-    if (!section.new) {
-      dispatch(getAllItems(section.id))
-    }
-  }, [section.id, dispatch])
+  // useEffect(() => {
+  // }, [sectionId, dispatch])
 
   useEffect(() => {
-    sectionChange.value = section
+    dispatch(getAllItems(section?.id))
+    sectionChanges.value = section
     price.value = section?.price || ""
     choiceDesc.value = section?.choice_desc || ""
-  }, [section])
+  }, [sectionId, dispatch])
 
   function handleAdd() {
     const item = {
@@ -33,28 +32,38 @@ export default function Section({ section, tempId }) {
       title: "",
       includes: "",
     }
-    newItems.value = [...newItems.value, item]
   }
 
+  let autosave // variable only assigned on field change
   function handleChange() {
-    sectionChange.value = {
-      ...sectionChange.value,
+    sectionChanges.value = {
+      ...sectionChanges.value,
       choice_desc: choiceDesc.value,
       price: price.value,
     }
-    if (section.new) {
-      newList.sections[tempId] = sectionChange
-    } else {
-      saveList.sections.value = {
-        ...saveList.sections.value,
-        [section?.id]: sectionChange.value,
-      }
-    }
+
+    clearTimeout(autosave) // reset timer
+
+    autosave = setTimeout(() => {
+      dispatch(editSection(sectionChanges.value))
+    }, 1000)
   }
 
   return (
     <>
       <div>
+        <div className="delete-section">
+          <span
+            className="material-symbols-outlined"
+            onClick={() => {
+              if (window.confirm(`Delete section?`)) {
+                dispatch(deleteSection(section.id))
+              }
+            }}
+          >
+            delete
+          </span>
+        </div>
         <div>
           <input
             className="section-header"
@@ -95,14 +104,6 @@ export default function Section({ section, tempId }) {
             </div>
           )
         })}
-
-      {newItems.value.map((item, idx) => {
-        return (
-          <div className="item" key={idx}>
-            <Item item={item} tempId={idx} />
-          </div>
-        )
-      })}
 
       <div className="gen-container">
         <button className="add" onClick={handleAdd}>
