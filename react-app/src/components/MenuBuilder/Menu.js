@@ -10,8 +10,6 @@ import { editMenu } from "../../store/features/menus"
 import {
   fetchMenuSections,
   createSection,
-  sectionChanged,
-  newSectionCleared,
 } from "../../store/features/sectionsSlice"
 import Section from "./Section"
 import Unsaved from "./Unsaved"
@@ -20,7 +18,6 @@ export default function Menu() {
   const dispatch = useDispatch()
   const menu = useSelector((state) => state.menusSlice.currMenu)
   const sections = useSelector((state) => state.sectionsSlice.sectionList)
-  const newSections = useSelector((state) => state.sectionsSlice.newList)
   const title = useSignal(null)
   const price = useSignal(null)
   const saving = useSignal(false)
@@ -34,89 +31,15 @@ export default function Menu() {
 
   function handleAdd() {
     const section = {
-      id: Object.keys(newSections).length + 1,
-      new: true,
       menu_id: menu.id,
       choice_desc: "",
       price: "",
     }
-    dispatch(sectionChanged(section))
+    dispatch(createSection(section))
   }
 
   function handleSave() {
     saving.value = true // Used for displaying "Saving..." text
-
-    for (let section of Object.values(newSections)) {
-      dispatch(createSection(menu.id, section)).then(() => {
-        dispatch(newSectionCleared(section.id))
-      })
-    }
-
-    // for (let section of Object.values(sections)) {
-    //   dispatch
-    // }
-
-    // // Check for data in  and send PUT requests
-    // if (.menu.value) {
-    //   const changes = {
-    //     id: menu?.id,
-    //     title: title.value,
-    //     price: price.value,
-    //     visible: menu?.visible,
-    //   }
-    //   dispatch(editMenu(changes))
-    // }
-    // if (saveList.sections.value) {
-    //   for (let sectionId in saveList.sections.value) {
-    //     dispatch(
-    //       sectionActions.editSectionById(
-    //         sectionId,
-    //         saveList.sections.value[sectionId]
-    //       )
-    //     )
-    //   }
-    // }
-    // if (saveList.items.value) {
-    //   for (let itemId in saveList.items.value) {
-    //     dispatch(itemActions.editItemById(itemId, saveList.items.value[itemId]))
-    //   }
-    // }
-    // if (saveList.descs.value) {
-    //   for (let descId in saveList.descs.value) {
-    //     dispatch(descActions.editDescById(descId, saveList.descs.value[descId]))
-    //   }
-    // }
-
-    // saveList.menu.value = false
-    // saveList.sections.value = null
-    // saveList.items.value = null
-    // saveList.descs.value = null
-
-    // // Check for data in newList and send POST requests
-    // if (Object.keys(newList.sections)) {
-    //   for (let sectionId in newList.sections) {
-    //     const section = newList.sections[sectionId]
-    //     dispatch(createSection(menu?.id, section))
-    //   }
-    // }
-
-    // if (Object.keys(newList.items)) {
-    //   for (let itemId in newList.items) {
-    //     const item = newList.items[itemId]
-    //     dispatch(itemActions.createItem(item.section_id, item))
-    //   }
-    // }
-
-    // if (Object.keys(newList.descs)) {
-    //   for (let descId in newList.descs) {
-    //     const desc = newList.descs[descId]
-    //     dispatch(descActions.createDesc(desc.item_id, desc))
-    //   }
-    // }
-
-    // newList.sections = {}
-    // newList.items = {}
-    // newList.descs = {}
 
     setTimeout(() => {
       saving.value = false
@@ -127,8 +50,6 @@ export default function Menu() {
   if (!menu) {
     return null
   }
-
-  console.log(sections, newSections)
 
   return (
     <>
@@ -182,20 +103,6 @@ export default function Menu() {
                   {/* <button className="add" onClick={handleAdd}>
                   + section
                 </button> */}
-                </div>
-              )
-            })}
-
-          {newSections &&
-            Object.values(newSections)?.map((section, idx) => {
-              return (
-                <div className="gen-container" key={`container${section.id}`}>
-                  <div className="section" key={idx}>
-                    <Section section={section} tempId={idx} />
-                  </div>
-                  {/* <button className="add" onClick={handleAdd}>
-                + section
-              </button> */}
                 </div>
               )
             })}

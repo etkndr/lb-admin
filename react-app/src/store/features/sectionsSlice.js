@@ -25,8 +25,11 @@ export const fetchMenuSections = createAsyncThunk(
 
 export const createSection = createAsyncThunk(
   "sections/newSection",
-  async (id, section) => {
-    const res = await axios.post(`/api/menus/${id}/sections`, section)
+  async (section) => {
+    const res = await axios.post(
+      `/api/menus/${section.menu_id}/sections`,
+      section
+    )
     return res.data
   }
 )
@@ -42,18 +45,7 @@ export const editSection = createAsyncThunk(
 const sectionsSlice = createSlice({
   name: "sections",
   initialState,
-  reducers: {
-    sectionChanged(state, action) {
-      if (action.payload.new) {
-        state.newList[action.payload.id] = action.payload
-      } else {
-        state.sectionList[action.payload.id] = action.payload
-      }
-    },
-    newSectionCleared(state, action) {
-      delete state.newList[action.payload]
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // fetchMenuSections
@@ -85,19 +77,17 @@ const sectionsSlice = createSlice({
         console.log(action.error)
       })
 
-    // editSection
-    //   .addCase(editSection.fulfilled, (state, action) => {
-    //     const { id } = action.payload
-    //     state.sectionList[id] = action.payload
-    //   })
-    //   .addCase(editSection.rejected, (state, action) => {
-    //     state.status = "Not edited"
-    //     state.error = action.error
-    //     console.log(action.error)
-    //   })
+      // editSection
+      .addCase(editSection.fulfilled, (state, action) => {
+        const { id } = action.payload
+        state.sectionList[id] = action.payload
+      })
+      .addCase(editSection.rejected, (state, action) => {
+        state.status = "Not edited"
+        state.error = action.error
+        console.log(action.error)
+      })
   },
 })
-
-export const { sectionChanged, newSectionCleared } = sectionsSlice.actions
 
 export default sectionsSlice.reducer

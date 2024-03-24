@@ -3,7 +3,6 @@ import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
 import { saveList, newList, allLoaded } from "../../App"
-import { sectionChanged } from "../../store/features/sectionsSlice"
 import Item from "./Item"
 
 export default function Section({ section, tempId }) {
@@ -58,7 +57,6 @@ export default function Section({ section, tempId }) {
               choiceDesc.value = e.target.value
               handleChange()
             }}
-            onBlur={() => dispatch(sectionChanged(sectionChange.value))}
           />
         </div>
 
@@ -74,7 +72,6 @@ export default function Section({ section, tempId }) {
               price.value = e.target.value > 0 ? e.target.value : ""
               handleChange()
             }}
-            onBlur={() => dispatch(sectionChanged(sectionChange.value))}
           />
           {price.value && `/person)`}
         </div>
