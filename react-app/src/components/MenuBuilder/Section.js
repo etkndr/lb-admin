@@ -19,7 +19,7 @@ export default function Section({ sectionId }) {
   // }, [sectionId, dispatch])
 
   useEffect(() => {
-    dispatch(getAllItems(section?.id))
+    dispatch(getAllItems(sectionId))
     sectionChanges.value = section
     price.value = section?.price || ""
     choiceDesc.value = section?.choice_desc || ""
@@ -97,10 +97,10 @@ export default function Section({ sectionId }) {
       {!items && null}
 
       {items &&
-        items[section?.id]?.map((item, idx) => {
+        items[sectionId]?.map((item, idx) => {
           return (
             <div className="item" key={item.id}>
-              <Item item={item} />
+              <Item itemId={item.id} />
             </div>
           )
         })}

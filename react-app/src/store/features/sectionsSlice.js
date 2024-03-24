@@ -3,17 +3,9 @@ import axios from "axios"
 
 const initialState = {
   sectionList: {},
-  newList: {},
   status: null,
   error: null,
 }
-
-// POST REQ ON CHILD CREATE
-// POST REQ ON CHILD CREATE
-// POST REQ ON CHILD CREATE
-// POST REQ ON CHILD CREATE
-// POST REQ ON CHILD CREATE
-// POST REQ ON CHILD CREATE
 
 export const fetchMenuSections = createAsyncThunk(
   "sections/fetchMenuSections",
