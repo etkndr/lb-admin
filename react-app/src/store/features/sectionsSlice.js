@@ -42,6 +42,14 @@ export const editSection = createAsyncThunk(
   }
 )
 
+export const deleteSection = createAsyncThunk(
+  "sections/deleteSection",
+  async (id) => {
+    const res = await axios.delete(`/api/sections/${id}`)
+    return { message: res.data, id }
+  }
+)
+
 const sectionsSlice = createSlice({
   name: "sections",
   initialState,
@@ -79,11 +87,20 @@ const sectionsSlice = createSlice({
 
       // editSection
       .addCase(editSection.fulfilled, (state, action) => {
-        const { id } = action.payload
-        state.sectionList[id] = action.payload
+        state.sectionList[action.payload.id] = action.payload
       })
       .addCase(editSection.rejected, (state, action) => {
         state.status = "Not edited"
+        state.error = action.error
+        console.log(action.error)
+      })
+
+      // deleteSection
+      .addCase(deleteSection.fulfilled, (state, action) => {
+        delete state.sectionList[action.payload.id]
+      })
+      .addCase(deleteSection.rejected, (state, action) => {
+        state.status = "Not deleted"
         state.error = action.error
         console.log(action.error)
       })

@@ -2,8 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
-import { saveList, newList, allLoaded } from "../../App"
-import { editSection } from "../../store/features/sectionsSlice"
+import { editSection, deleteSection } from "../../store/features/sectionsSlice"
 import Item from "./Item"
 
 export default function Section({ section, tempId }) {
@@ -12,8 +11,6 @@ export default function Section({ section, tempId }) {
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
   const sectionChanges = useSignal(null)
-
-  const newItems = useSignal([])
 
   useEffect(() => {
     if (!section.new) {
@@ -34,7 +31,6 @@ export default function Section({ section, tempId }) {
       title: "",
       includes: "",
     }
-    newItems.value = [...newItems.value, item]
   }
 
   let autosave // variable only assigned on field change
@@ -49,13 +45,24 @@ export default function Section({ section, tempId }) {
 
     autosave = setTimeout(() => {
       dispatch(editSection(sectionChanges.value))
-      console.log("now")
     }, 1000)
   }
 
   return (
     <>
       <div>
+        <div className="delete-section">
+          <span
+            className="material-symbols-outlined"
+            onClick={() => {
+              if (window.confirm(`Delete section?`)) {
+                dispatch(deleteSection(section.id))
+              }
+            }}
+          >
+            delete
+          </span>
+        </div>
         <div>
           <input
             className="section-header"
@@ -96,14 +103,6 @@ export default function Section({ section, tempId }) {
             </div>
           )
         })}
-
-      {newItems.value.map((item, idx) => {
-        return (
-          <div className="item" key={idx}>
-            <Item item={item} tempId={idx} />
-          </div>
-        )
-      })}
 
       <div className="gen-container">
         <button className="add" onClick={handleAdd}>
