@@ -5,24 +5,25 @@ import { getAllItems } from "../../store/item"
 import { editSection, deleteSection } from "../../store/features/sectionsSlice"
 import Item from "./Item"
 
-export default function Section({ section, tempId }) {
+export default function Section({ sectionId }) {
   const dispatch = useDispatch()
+  const section = useSelector(
+    (state) => state.sectionsSlice.sectionList[sectionId]
+  )
   const items = useSelector((state) => state.items.itemList)
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
   const sectionChanges = useSignal(null)
 
-  useEffect(() => {
-    if (!section.new) {
-      dispatch(getAllItems(section.id))
-    }
-  }, [section.id, dispatch])
+  // useEffect(() => {
+  // }, [sectionId, dispatch])
 
   useEffect(() => {
+    dispatch(getAllItems(section?.id))
     sectionChanges.value = section
     price.value = section?.price || ""
     choiceDesc.value = section?.choice_desc || ""
-  }, [section])
+  }, [sectionId, dispatch])
 
   function handleAdd() {
     const item = {

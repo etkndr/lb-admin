@@ -98,7 +98,7 @@ export default function Menu() {
               return (
                 <div className="gen-container" key={`container${section.id}`}>
                   <div className="section" key={section.id}>
-                    <Section section={section} />
+                    <Section section={section.id} />
                   </div>
                   {/* <button className="add" onClick={handleAdd}>
                   + section
