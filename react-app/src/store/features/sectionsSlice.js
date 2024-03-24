@@ -36,8 +36,8 @@ export const createSection = createAsyncThunk(
 
 export const editSection = createAsyncThunk(
   "sections/editSection",
-  async (id, section) => {
-    const res = await axios.put(`/api/sections/${id}`, section)
+  async (section) => {
+    const res = await axios.put(`/api/sections/${section.id}`, section)
     return res.data
   }
 )

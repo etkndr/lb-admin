@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { getAllItems } from "../../store/item"
 import { saveList, newList, allLoaded } from "../../App"
+import { editSection } from "../../store/features/sectionsSlice"
 import Item from "./Item"
 
 export default function Section({ section, tempId }) {
@@ -10,7 +11,7 @@ export default function Section({ section, tempId }) {
   const items = useSelector((state) => state.items.itemList)
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
-  const sectionChange = useSignal(null)
+  const sectionChanges = useSignal(null)
 
   const newItems = useSignal([])
 
@@ -21,7 +22,7 @@ export default function Section({ section, tempId }) {
   }, [section.id, dispatch])
 
   useEffect(() => {
-    sectionChange.value = section
+    sectionChanges.value = section
     price.value = section?.price || ""
     choiceDesc.value = section?.choice_desc || ""
   }, [section])
@@ -36,12 +37,20 @@ export default function Section({ section, tempId }) {
     newItems.value = [...newItems.value, item]
   }
 
+  let autosave // variable only assigned on field change
   function handleChange() {
-    sectionChange.value = {
-      ...sectionChange.value,
+    sectionChanges.value = {
+      ...sectionChanges.value,
       choice_desc: choiceDesc.value,
       price: price.value,
     }
+
+    clearTimeout(autosave) // reset timer
+
+    autosave = setTimeout(() => {
+      dispatch(editSection(sectionChanges.value))
+      console.log("now")
+    }, 1000)
   }
 
   return (
