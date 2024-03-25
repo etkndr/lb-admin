@@ -10,7 +10,7 @@ export default function Section({ sectionId }) {
   const section = useSelector(
     (state) => state.sectionsSlice.sectionList[sectionId]
   )
-  const items = useSelector((state) => state.itemsSlice.itemList)
+  const items = useSelector((state) => state.itemsSlice[sectionId])
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
   const sectionChanges = useSignal(null)
@@ -45,6 +45,8 @@ export default function Section({ sectionId }) {
       dispatch(editSection(sectionChanges.value))
     }, 1000)
   }
+
+  console.log(items)
 
   return (
     <>
@@ -97,7 +99,7 @@ export default function Section({ sectionId }) {
         Object.values(items)?.map((item, idx) => {
           return (
             <div className="item" key={item.id}>
-              <Item itemId={item.id} />
+              <Item item={item} />
             </div>
           )
         })}

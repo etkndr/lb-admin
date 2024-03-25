@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
 const initialState = {
-  itemList: {},
   status: null,
   error: null,
 }
@@ -50,7 +49,6 @@ const itemsSlice = createSlice({
             state[id][item.id] = item
           })
         }
-        console.log(state[id])
       })
       .addCase(fetchSectionItems.rejected, (state, action) => {
         state.status = "item load failed"

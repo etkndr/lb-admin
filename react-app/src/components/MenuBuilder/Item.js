@@ -5,20 +5,19 @@ import { saveList, newList, allLoaded } from "../../App"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 
-export default function Item({ itemId }) {
+export default function Item({ item }) {
   const dispatch = useDispatch()
-  const item = useSelector((state) => state.itemsSlice.itemList[itemId])
   const descs = useSelector((state) => state.descs.descList)
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChange = useSignal(null)
 
   useEffect(() => {
-    dispatch(getAllDescs(itemId))
+    dispatch(getAllDescs(item.id))
     itemChange.value = item
     title.value = item?.title || ""
     includes.value = item?.includes || ""
-  }, [itemId, dispatch])
+  }, [item, dispatch])
 
   function handleAdd() {
     const desc = {
@@ -35,8 +34,6 @@ export default function Item({ itemId }) {
       includes: includes.value,
     }
   }
-
-  console.log(item)
 
   return (
     <>
