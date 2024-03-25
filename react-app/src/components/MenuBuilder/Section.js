@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
-import { getAllItems } from "../../store/item"
 import { editSection, deleteSection } from "../../store/features/sectionsSlice"
+import { fetchSectionItems } from "../../store/features/itemsSlice"
 import Item from "./Item"
 
 export default function Section({ sectionId }) {
@@ -10,16 +10,13 @@ export default function Section({ sectionId }) {
   const section = useSelector(
     (state) => state.sectionsSlice.sectionList[sectionId]
   )
-  const items = useSelector((state) => state.items.itemList)
+  const items = useSelector((state) => state.itemsSlice.itemList)
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
   const sectionChanges = useSignal(null)
 
-  // useEffect(() => {
-  // }, [sectionId, dispatch])
-
   useEffect(() => {
-    dispatch(getAllItems(sectionId))
+    dispatch(fetchSectionItems(sectionId))
     sectionChanges.value = section
     price.value = section?.price || ""
     choiceDesc.value = section?.choice_desc || ""
@@ -97,7 +94,7 @@ export default function Section({ sectionId }) {
       {!items && null}
 
       {items &&
-        items[sectionId]?.map((item, idx) => {
+        Object.values(items)?.map((item, idx) => {
           return (
             <div className="item" key={item.id}>
               <Item itemId={item.id} />

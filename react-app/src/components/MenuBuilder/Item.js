@@ -5,28 +5,20 @@ import { saveList, newList, allLoaded } from "../../App"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 
-export default function Item({ item, tempId }) {
+export default function Item({ itemId }) {
   const dispatch = useDispatch()
+  const item = useSelector((state) => state.itemsSlice.itemList[itemId])
   const descs = useSelector((state) => state.descs.descList)
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChange = useSignal(null)
 
-  const newDescs = useSignal([])
-
   useEffect(() => {
-    if (!item.new) {
-      dispatch(getAllDescs(item?.id)).then((res) => {
-        allLoaded.descs.value = true
-      })
-    }
-  }, [item.id, dispatch])
-
-  useEffect(() => {
+    dispatch(getAllDescs(itemId))
     itemChange.value = item
     title.value = item?.title || ""
     includes.value = item?.includes || ""
-  }, [item])
+  }, [itemId, dispatch])
 
   function handleAdd() {
     const desc = {
@@ -34,8 +26,6 @@ export default function Item({ item, tempId }) {
       item_id: item.id,
       body: "",
     }
-
-    newDescs.value = [...newDescs.value, desc]
   }
 
   function handleChange() {
@@ -44,15 +34,9 @@ export default function Item({ item, tempId }) {
       title: title.value,
       includes: includes.value,
     }
-    if (item.new) {
-      newList.items[tempId] = itemChange.value
-    } else {
-      saveList.items.value = {
-        ...saveList.items.value,
-        [item?.id]: itemChange.value,
-      }
-    }
   }
+
+  console.log(item)
 
   return (
     <>
@@ -89,13 +73,6 @@ export default function Item({ item, tempId }) {
             </div>
           )
         })}
-      {newDescs.value.map((desc, idx) => {
-        return (
-          <div className="desc" key={idx}>
-            <Desc desc={desc} tempId={idx} itemTitle={item.title} />
-          </div>
-        )
-      })}
 
       <div className="gen-container">
         <button className="add" onClick={handleAdd}>
