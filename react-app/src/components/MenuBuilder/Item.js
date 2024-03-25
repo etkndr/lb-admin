@@ -1,7 +1,7 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, newList, allLoaded } from "../../App"
+import { editItem } from "../../store/features/itemsSlice"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 
@@ -33,6 +33,8 @@ export default function Item({ item }) {
       title: title.value,
       includes: includes.value,
     }
+
+    dispatch(editItem(itemChange.value))
   }
 
   return (

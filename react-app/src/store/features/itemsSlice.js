@@ -70,7 +70,8 @@ const itemsSlice = createSlice({
 
       // editItem
       .addCase(editItem.fulfilled, (state, action) => {
-        state.itemList[action.payload.id] = action.payload
+        const item = action.payload
+        state[item.section_id][item.id] = action.payload
       })
       .addCase(editItem.rejected, (state, action) => {
         state.status = "Not edited"
@@ -80,12 +81,12 @@ const itemsSlice = createSlice({
 
       // deleteItem
       .addCase(deleteItem.fulfilled, (state, action) => {
-        delete state.itemList[action.payload.id]
+        const { sectionId, itemId } = action.payload
+        delete state[sectionId][itemId]
       })
       .addCase(deleteItem.rejected, (state, action) => {
         state.status = "Not deleted"
         state.error = action.error
-
         console.log(action.error)
       })
   },
