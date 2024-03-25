@@ -60,12 +60,12 @@ const itemsSlice = createSlice({
       .addCase(createItem.fulfilled, (state, action) => {
         const item = action.payload
         state.status = "Success"
-        state.itemList[item.id] = item
+        state[item.section_id][item.id] = item
       })
       .addCase(createItem.rejected, (state, action) => {
         state.status = "Not created"
         state.error = action.error
-        console.log(action.error)
+        console.log(state.error)
       })
 
       // editItem

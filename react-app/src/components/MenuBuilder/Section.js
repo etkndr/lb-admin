@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { editSection, deleteSection } from "../../store/features/sectionsSlice"
-import { fetchSectionItems } from "../../store/features/itemsSlice"
+import { fetchSectionItems, createItem } from "../../store/features/itemsSlice"
 import Item from "./Item"
 
 export default function Section({ sectionId }) {
@@ -24,11 +24,12 @@ export default function Section({ sectionId }) {
 
   function handleAdd() {
     const item = {
-      new: true,
-      section_id: section.id,
-      title: "",
+      section_id: sectionId,
+      title: "New item",
       includes: "",
     }
+
+    dispatch(createItem(item))
   }
 
   let autosave // variable only assigned on field change
