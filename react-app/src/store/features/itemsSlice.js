@@ -17,16 +17,14 @@ export const fetchSectionItems = createAsyncThunk(
 export const createItem = createAsyncThunk("items/newItem", async (data) => {
   const { sectionId, item } = data
   const res = await axios.post(`/api/sections/${sectionId}/items`, item)
-  return { data: res.data, sectionId }
+  return { item: res.data, sectionId }
 })
 
-export const editItem = createAsyncThunk(
-  "items/editItem",
-  async (sectionId, item) => {
-    const res = await axios.put(`/api/items/${item.id}`, item)
-    return { data: res.data, sectionId }
-  }
-)
+export const editItem = createAsyncThunk("items/editItem", async (data) => {
+  const { sectionId, item } = data
+  const res = await axios.put(`/api/items/${item.id}`, item)
+  return { item: res.data, sectionId }
+})
 
 export const deleteItem = createAsyncThunk(
   "items/deleteItem",
@@ -65,9 +63,9 @@ const itemsSlice = createSlice({
 
       // createItem
       .addCase(createItem.fulfilled, (state, action) => {
-        const { data, sectionId } = action.payload
+        const { item, sectionId } = action.payload
         state.status = "Success"
-        state[sectionId][data.id] = data
+        state[sectionId][item.id] = item
       })
       .addCase(createItem.rejected, (state, action) => {
         state.status = "Not created"
@@ -77,8 +75,8 @@ const itemsSlice = createSlice({
 
       // editItem
       .addCase(editItem.fulfilled, (state, action) => {
-        const item = action.payload
-        state[item.section_id][item.id] = action.payload
+        const { item, sectionId } = action.payload
+        state[sectionId][item.id] = item
       })
       .addCase(editItem.rejected, (state, action) => {
         state.status = "Not edited"
