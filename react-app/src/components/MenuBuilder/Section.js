@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
-import { getAllItems } from "../../store/item"
 import { editSection, deleteSection } from "../../store/features/sectionsSlice"
+import { fetchSectionItems, createItem } from "../../store/features/itemsSlice"
 import Item from "./Item"
 
 export default function Section({ sectionId }) {
@@ -10,16 +10,13 @@ export default function Section({ sectionId }) {
   const section = useSelector(
     (state) => state.sectionsSlice.sectionList[sectionId]
   )
-  const items = useSelector((state) => state.items.itemList)
+  const items = useSelector((state) => state.itemsSlice[sectionId])
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
   const sectionChanges = useSignal(null)
 
-  // useEffect(() => {
-  // }, [sectionId, dispatch])
-
   useEffect(() => {
-    dispatch(getAllItems(section?.id))
+    dispatch(fetchSectionItems(sectionId))
     sectionChanges.value = section
     price.value = section?.price || ""
     choiceDesc.value = section?.choice_desc || ""
@@ -27,11 +24,12 @@ export default function Section({ sectionId }) {
 
   function handleAdd() {
     const item = {
-      new: true,
-      section_id: section.id,
-      title: "",
+      section_id: sectionId,
+      title: "New item",
       includes: "",
     }
+
+    dispatch(createItem({ sectionId, item }))
   }
 
   let autosave // variable only assigned on field change
@@ -57,11 +55,11 @@ export default function Section({ sectionId }) {
             className="material-symbols-outlined"
             onClick={() => {
               if (window.confirm(`Delete section?`)) {
-                dispatch(deleteSection(section.id))
+                dispatch(deleteSection(section?.id))
               }
             }}
           >
-            delete
+            close
           </span>
         </div>
         <div>
@@ -97,10 +95,10 @@ export default function Section({ sectionId }) {
       {!items && null}
 
       {items &&
-        items[section?.id]?.map((item, idx) => {
+        Object.values(items)?.map((item, idx) => {
           return (
             <div className="item" key={item.id}>
-              <Item item={item} />
+              <Item sectionId={section?.id} itemId={item.id} />
             </div>
           )
         })}

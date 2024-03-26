@@ -1,32 +1,24 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { saveList, newList, allLoaded } from "../../App"
+import { editItem, deleteItem } from "../../store/features/itemsSlice"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 
-export default function Item({ item, tempId }) {
+export default function Item({ sectionId, itemId }) {
   const dispatch = useDispatch()
+  const item = useSelector((state) => state.itemsSlice[sectionId][itemId])
   const descs = useSelector((state) => state.descs.descList)
   const title = useSignal(null)
   const includes = useSignal(null)
-  const itemChange = useSignal(null)
-
-  const newDescs = useSignal([])
+  const itemChanges = useSignal(null)
 
   useEffect(() => {
-    if (!item.new) {
-      dispatch(getAllDescs(item?.id)).then((res) => {
-        allLoaded.descs.value = true
-      })
-    }
-  }, [item.id, dispatch])
-
-  useEffect(() => {
-    itemChange.value = item
+    dispatch(getAllDescs(item?.id))
+    itemChanges.value = item
     title.value = item?.title || ""
     includes.value = item?.includes || ""
-  }, [item])
+  }, [itemId, dispatch])
 
   function handleAdd() {
     const desc = {
@@ -34,29 +26,38 @@ export default function Item({ item, tempId }) {
       item_id: item.id,
       body: "",
     }
-
-    newDescs.value = [...newDescs.value, desc]
   }
 
+  let autosave // variable only assigned on field change
   function handleChange() {
-    itemChange.value = {
-      ...itemChange.value,
+    itemChanges.value = {
+      ...itemChanges.value,
       title: title.value,
       includes: includes.value,
     }
-    if (item.new) {
-      newList.items[tempId] = itemChange.value
-    } else {
-      saveList.items.value = {
-        ...saveList.items.value,
-        [item?.id]: itemChange.value,
-      }
-    }
+
+    clearTimeout(autosave) // reset timer
+
+    autosave = setTimeout(() => {
+      dispatch(editItem({ sectionId, item: itemChanges.value }))
+    }, 1000)
   }
 
   return (
     <>
       <div>
+        <div className="delete-item">
+          <span
+            className="material-symbols-outlined"
+            onClick={() => {
+              if (window.confirm(`Delete item?`)) {
+                dispatch(deleteItem({ sectionId, itemId }))
+              }
+            }}
+          >
+            close
+          </span>
+        </div>
         <input
           className="item-title"
           type="text"
@@ -89,13 +90,6 @@ export default function Item({ item, tempId }) {
             </div>
           )
         })}
-      {newDescs.value.map((desc, idx) => {
-        return (
-          <div className="desc" key={idx}>
-            <Desc desc={desc} tempId={idx} itemTitle={item.title} />
-          </div>
-        )
-      })}
 
       <div className="gen-container">
         <button className="add" onClick={handleAdd}>
