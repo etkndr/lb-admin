@@ -47,8 +47,6 @@ export default function Section({ sectionId }) {
     }, 1000)
   }
 
-  console.log(items)
-
   return (
     <>
       <div>

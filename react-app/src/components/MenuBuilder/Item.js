@@ -10,11 +10,11 @@ export default function Item({ item }) {
   const descs = useSelector((state) => state.descs.descList)
   const title = useSignal(null)
   const includes = useSignal(null)
-  const itemChange = useSignal(null)
+  const itemChanges = useSignal(null)
 
   useEffect(() => {
     dispatch(getAllDescs(item.id))
-    itemChange.value = item
+    itemChanges.value = item
     title.value = item?.title || ""
     includes.value = item?.includes || ""
   }, [item, dispatch])
@@ -27,14 +27,21 @@ export default function Item({ item }) {
     }
   }
 
+  let autosave // variable only assigned on field change
   function handleChange() {
-    itemChange.value = {
-      ...itemChange.value,
+    itemChanges.value = {
+      ...itemChanges.value,
       title: title.value,
       includes: includes.value,
     }
 
-    dispatch(editItem(itemChange.value))
+    clearTimeout(autosave) // reset timer
+
+    autosave = setTimeout(() => {
+      dispatch(
+        editItem({ sectionId: item?.section_id, item: itemChanges.value })
+      )
+    }, 1000)
   }
 
   return (
