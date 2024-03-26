@@ -29,7 +29,7 @@ export default function Section({ sectionId }) {
       includes: "",
     }
 
-    dispatch(createItem(item))
+    dispatch(createItem({ sectionId, item }))
   }
 
   let autosave // variable only assigned on field change

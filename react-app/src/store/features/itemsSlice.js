@@ -8,26 +8,33 @@ const initialState = {
 
 export const fetchSectionItems = createAsyncThunk(
   "items/fetchSectionItems",
-  async (id) => {
-    const res = await axios.get(`/api/sections/${id}/items`)
-    return { data: res.data, id }
+  async (sectionId) => {
+    const res = await axios.get(`/api/sections/${sectionId}/items`)
+    return { data: res.data, sectionId }
   }
 )
 
-export const createItem = createAsyncThunk("items/newItem", async (item) => {
-  const res = await axios.post(`/api/sections/${item.section_id}/items`, item)
-  return res.data
+export const createItem = createAsyncThunk("items/newItem", async (data) => {
+  const { sectionId, item } = data
+  const res = await axios.post(`/api/sections/${sectionId}/items`, item)
+  return { data: res.data, sectionId }
 })
 
-export const editItem = createAsyncThunk("items/editItem", async (item) => {
-  const res = await axios.put(`/api/items/${item.id}`, item)
-  return res.data
-})
+export const editItem = createAsyncThunk(
+  "items/editItem",
+  async (sectionId, item) => {
+    const res = await axios.put(`/api/items/${item.id}`, item)
+    return { data: res.data, sectionId }
+  }
+)
 
-export const deleteItem = createAsyncThunk("items/deleteItem", async (id) => {
-  const res = await axios.delete(`/api/items/${id}`)
-  return { message: res.data, id }
-})
+export const deleteItem = createAsyncThunk(
+  "items/deleteItem",
+  async (sectionId, id) => {
+    const res = await axios.delete(`/api/items/${id}`)
+    return { message: res.data, id, sectionId }
+  }
+)
 
 const itemsSlice = createSlice({
   name: "items",
@@ -41,12 +48,12 @@ const itemsSlice = createSlice({
       })
       .addCase(fetchSectionItems.fulfilled, (state, action) => {
         state.status = "Succeess"
-        const { id, data } = action.payload
+        const { sectionId, data } = action.payload
 
-        if (!state[id]) {
-          state[id] = {}
+        if (!state[sectionId]) {
+          state[sectionId] = {}
           data.forEach((item) => {
-            state[id][item.id] = item
+            state[sectionId][item.id] = item
           })
         }
       })
@@ -58,9 +65,9 @@ const itemsSlice = createSlice({
 
       // createItem
       .addCase(createItem.fulfilled, (state, action) => {
-        const item = action.payload
+        const { data, sectionId } = action.payload
         state.status = "Success"
-        state[item.section_id][item.id] = item
+        state[sectionId][data.id] = data
       })
       .addCase(createItem.rejected, (state, action) => {
         state.status = "Not created"
