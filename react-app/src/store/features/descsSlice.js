@@ -10,7 +10,7 @@ const initialState = {
 export const fetchItemDescs = createAsyncThunk(
   "descs/fetchItemDescs",
   async (id) => {
-    const res = await axios.get(`/api/itmes/${id}/descs`)
+    const res = await axios.get(`/api/items/${id}/descs`)
     return res.data
   }
 )
@@ -33,7 +33,11 @@ export const deleteDesc = createAsyncThunk("descs/deleteDesc", async (id) => {
 const descsSlice = createSlice({
   name: "descs",
   initialState,
-  reducers: {},
+  reducers: {
+    clearDescs(state, action) {
+      state.descList = {}
+    },
+  },
   extraReducers: (builder) => {
     builder
       // fetchItemDescs
@@ -42,7 +46,6 @@ const descsSlice = createSlice({
       })
       .addCase(fetchItemDescs.fulfilled, (state, action) => {
         state.status = "Succeess"
-        state.descList = {}
         action.payload.forEach((desc) => {
           state.descList[desc.id] = desc
         })
