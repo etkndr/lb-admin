@@ -22,18 +22,15 @@ export const createItem = createAsyncThunk("items/newItem", async (data) => {
 
 export const editItem = createAsyncThunk("items/editItem", async (data) => {
   const { sectionId, item } = data
-  console.log(data)
   const res = await axios.put(`/api/items/${item.id}`, item)
   return { item: res.data, sectionId }
 })
 
-export const deleteItem = createAsyncThunk(
-  "items/deleteItem",
-  async (sectionId, id) => {
-    const res = await axios.delete(`/api/items/${id}`)
-    return { message: res.data, id, sectionId }
-  }
-)
+export const deleteItem = createAsyncThunk("items/deleteItem", async (data) => {
+  const { sectionId, itemId } = data
+  const res = await axios.delete(`/api/items/${itemId}`)
+  return { message: res.data, itemId, sectionId }
+})
 
 const itemsSlice = createSlice({
   name: "items",

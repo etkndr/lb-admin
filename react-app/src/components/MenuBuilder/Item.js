@@ -1,24 +1,24 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { editItem } from "../../store/features/itemsSlice"
+import { editItem, deleteItem } from "../../store/features/itemsSlice"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 
 export default function Item({ sectionId, itemId }) {
   const dispatch = useDispatch()
-  const item = useSelector((state) => state[sectionId][itemId])
+  const item = useSelector((state) => state.itemsSlice[sectionId][itemId])
   const descs = useSelector((state) => state.descs.descList)
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChanges = useSignal(null)
 
   useEffect(() => {
-    dispatch(getAllDescs(item.id))
+    dispatch(getAllDescs(item?.id))
     itemChanges.value = item
     title.value = item?.title || ""
     includes.value = item?.includes || ""
-  }, [item, dispatch])
+  }, [itemId, dispatch])
 
   function handleAdd() {
     const desc = {
@@ -51,7 +51,7 @@ export default function Item({ sectionId, itemId }) {
             className="material-symbols-outlined"
             onClick={() => {
               if (window.confirm(`Delete item?`)) {
-                dispatch(deleteItem(item?.id))
+                dispatch(deleteItem({ sectionId, itemId }))
               }
             }}
           >
