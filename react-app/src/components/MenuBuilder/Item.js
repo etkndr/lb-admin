@@ -5,8 +5,9 @@ import { editItem } from "../../store/features/itemsSlice"
 import { getAllDescs } from "../../store/desc"
 import Desc from "./Desc"
 
-export default function Item({ item }) {
+export default function Item({ sectionId, itemId }) {
   const dispatch = useDispatch()
+  const item = useSelector((state) => state[sectionId][itemId])
   const descs = useSelector((state) => state.descs.descList)
   const title = useSignal(null)
   const includes = useSignal(null)
@@ -38,15 +39,25 @@ export default function Item({ item }) {
     clearTimeout(autosave) // reset timer
 
     autosave = setTimeout(() => {
-      dispatch(
-        editItem({ sectionId: item?.section_id, item: itemChanges.value })
-      )
+      dispatch(editItem({ sectionId, item: itemChanges.value }))
     }, 1000)
   }
 
   return (
     <>
       <div>
+        <div className="delete-item">
+          <span
+            className="material-symbols-outlined"
+            onClick={() => {
+              if (window.confirm(`Delete item?`)) {
+                dispatch(deleteItem(item?.id))
+              }
+            }}
+          >
+            close
+          </span>
+        </div>
         <input
           className="item-title"
           type="text"

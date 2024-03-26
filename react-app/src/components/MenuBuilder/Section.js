@@ -55,11 +55,11 @@ export default function Section({ sectionId }) {
             className="material-symbols-outlined"
             onClick={() => {
               if (window.confirm(`Delete section?`)) {
-                dispatch(deleteSection(section.id))
+                dispatch(deleteSection(section?.id))
               }
             }}
           >
-            delete
+            close
           </span>
         </div>
         <div>
@@ -98,7 +98,7 @@ export default function Section({ sectionId }) {
         Object.values(items)?.map((item, idx) => {
           return (
             <div className="item" key={item.id}>
-              <Item item={item} />
+              <Item sectionId={section?.id} itemId={item.id} />
             </div>
           )
         })}
