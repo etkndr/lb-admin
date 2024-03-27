@@ -1,7 +1,7 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { editDesc } from "../../store/features/descsSlice"
+import { editDesc, deleteDesc } from "../../store/features/descsSlice"
 
 export default function Desc({ itemTitle, descId }) {
   const dispatch = useDispatch()
@@ -45,6 +45,12 @@ export default function Desc({ itemTitle, descId }) {
             handleChange()
           }}
         />
+        <span
+          className="material-symbols-outlined"
+          onClick={() => dispatch(deleteDesc(descId))}
+        >
+          delete
+        </span>
       </div>
     </>
   )
