@@ -17,7 +17,6 @@ export const fetchItemDescs = createAsyncThunk(
 
 export const createDesc = createAsyncThunk("descs/newDesc", async (desc) => {
   const res = await axios.post(`/api/items/${desc.item_id}/descs`, desc)
-  console.log(res)
   return res.data
 })
 

@@ -1,50 +1,43 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { allLoaded, saveList, newList } from "../../App"
+import { useSelector } from "react-redux"
 
-export default function Desc({ desc, tempId, itemTitle }) {
+export default function Desc({ itemTitle, descId }) {
   const body = useSignal(null)
   const descChange = useSignal(null)
+  const desc = useSelector((state) => state.descsSlice.descList[descId])
 
   useEffect(() => {
     descChange.value = desc
     body.value = desc?.body
-  }, [desc])
+  }, [descId])
 
   function handleChange() {
     descChange.value = {
       ...descChange.value,
       body: body.value,
     }
-    if (desc.new) {
-      newList.descs[tempId] = descChange.value
-    } else {
-      saveList.descs.value = {
-        ...saveList.descs.value,
-        [desc?.id]: descChange.value,
-      }
-    }
   }
+
   return (
-    allLoaded.descs.value && (
-      <>
-        <div>
-          <input
-            className="desc-body"
-            type="text"
-            placeholder={
-              itemTitle
-                ? `Description/sub-item for ${itemTitle}`
-                : `Description/sub-item`
-            }
-            defaultValue={body.value}
-            onChange={(e) => {
-              body.value = e.target.value
-              handleChange()
-            }}
-          />
-        </div>
-      </>
-    )
+    <>
+      <div>
+        <input
+          className="desc-body"
+          type="text"
+          placeholder={
+            itemTitle
+              ? `Description/sub-item for ${itemTitle}`
+              : `Description/sub-item`
+          }
+          defaultValue={body.value}
+          onChange={(e) => {
+            body.value = e.target.value
+            handleChange()
+          }}
+        />
+      </div>
+    </>
   )
 }

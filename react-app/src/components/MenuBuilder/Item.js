@@ -93,8 +93,7 @@ export default function Item({ sectionId, itemId }) {
         descs?.map((desc, idx) => {
           return (
             <div className="desc" key={desc.id}>
-              {/* <Desc desc={desc} /> */}
-              {desc.body}
+              <Desc itemTitle={item.title} descId={desc.id} />
             </div>
           )
         })}
