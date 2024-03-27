@@ -12,6 +12,7 @@ import {
 import { clearChanges } from "../../store/features/saveSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
+import { clearDescs } from "../../store/features/descsSlice"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
@@ -70,6 +71,7 @@ export default function MenuBuilder() {
                     className="material-symbols-outlined"
                     onClick={() => {
                       dispatch(clearChanges())
+                      dispatch(clearDescs())
                       dispatch(menuSelected(menu))
                     }}
                   >
