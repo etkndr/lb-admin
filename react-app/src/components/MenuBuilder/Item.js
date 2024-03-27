@@ -17,8 +17,6 @@ export default function Item({ sectionId, itemId }) {
   const includes = useSignal(null)
   const itemChanges = useSignal(null)
 
-  console.log(descs)
-
   useEffect(() => {
     dispatch(fetchItemDescs(itemId))
     itemChanges.value = item
