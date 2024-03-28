@@ -47,7 +47,7 @@ export default function Desc({ itemId, itemTitle, descId }) {
         />
         <span
           className="material-symbols-outlined"
-          onClick={() => dispatch(deleteDesc(descId))}
+          onClick={() => dispatch(deleteDesc({ itemId, descId }))}
         >
           delete
         </span>

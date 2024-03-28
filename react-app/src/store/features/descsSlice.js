@@ -25,9 +25,10 @@ export const editDesc = createAsyncThunk("descs/editDesc", async (desc) => {
   return res.data
 })
 
-export const deleteDesc = createAsyncThunk("descs/deleteDesc", async (id) => {
-  const res = await axios.delete(`/api/descs/${id}`)
-  return { message: res.data, id }
+export const deleteDesc = createAsyncThunk("descs/deleteDesc", async (data) => {
+  const { itemId, descId } = data
+  const res = await axios.delete(`/api/descs/${descId}`)
+  return { message: res.data, itemId, descId }
 })
 
 const descsSlice = createSlice({
@@ -74,7 +75,8 @@ const descsSlice = createSlice({
 
       // editDesc
       .addCase(editDesc.fulfilled, (state, action) => {
-        state.descList[action.payload.id] = action.payload
+        const desc = action.payload
+        state[desc.item_id][desc.id] = action.payload
       })
       .addCase(editDesc.rejected, (state, action) => {
         state.status = "Not edited"
@@ -84,7 +86,8 @@ const descsSlice = createSlice({
 
       // deleteDesc
       .addCase(deleteDesc.fulfilled, (state, action) => {
-        delete state.descList[action.payload.id]
+        const { itemId, descId } = action.payload
+        delete state[itemId][descId]
       })
       .addCase(deleteDesc.rejected, (state, action) => {
         state.status = "Not deleted"
