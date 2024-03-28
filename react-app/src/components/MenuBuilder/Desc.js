@@ -1,50 +1,57 @@
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
-import { allLoaded, saveList, newList } from "../../App"
+import { useSelector, useDispatch } from "react-redux"
+import { editDesc, deleteDesc } from "../../store/features/descsSlice"
 
-export default function Desc({ desc, tempId, itemTitle }) {
+export default function Desc({ itemId, itemTitle, descId }) {
+  const dispatch = useDispatch()
   const body = useSignal(null)
   const descChange = useSignal(null)
+  const desc = useSelector((state) => state.descsSlice[itemId][descId])
 
   useEffect(() => {
     descChange.value = desc
     body.value = desc?.body
-  }, [desc])
+  }, [descId])
 
+  let autosave // variable only assigned on field change
   function handleChange() {
     descChange.value = {
       ...descChange.value,
       body: body.value,
     }
-    if (desc.new) {
-      newList.descs[tempId] = descChange.value
-    } else {
-      saveList.descs.value = {
-        ...saveList.descs.value,
-        [desc?.id]: descChange.value,
-      }
-    }
+
+    clearTimeout(autosave) // reset timer
+
+    autosave = setTimeout(() => {
+      dispatch(editDesc(descChange.value))
+    }, 1000)
   }
+
   return (
-    allLoaded.descs.value && (
-      <>
-        <div>
-          <input
-            className="desc-body"
-            type="text"
-            placeholder={
-              itemTitle
-                ? `Description/sub-item for ${itemTitle}`
-                : `Description/sub-item`
-            }
-            defaultValue={body.value}
-            onChange={(e) => {
-              body.value = e.target.value
-              handleChange()
-            }}
-          />
-        </div>
-      </>
-    )
+    <>
+      <div>
+        <input
+          className="desc-body"
+          type="text"
+          placeholder={
+            itemTitle
+              ? `Description/sub-item for ${itemTitle.toUpperCase()}`
+              : `Description/sub-item`
+          }
+          defaultValue={body.value}
+          onChange={(e) => {
+            body.value = e.target.value
+            handleChange()
+          }}
+        />
+        <span
+          className="material-symbols-outlined"
+          onClick={() => dispatch(deleteDesc({ itemId, descId }))}
+        >
+          delete
+        </span>
+      </div>
+    </>
   )
 }

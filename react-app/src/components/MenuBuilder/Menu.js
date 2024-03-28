@@ -6,7 +6,7 @@ import * as menuActions from "../../store/menu"
 import * as sectionActions from "../../store/section"
 import * as itemActions from "../../store/item"
 import * as descActions from "../../store/desc"
-import { editMenu } from "../../store/features/menus"
+import { editMenu } from "../../store/features/menusSlice"
 import {
   fetchMenuSections,
   createSection,

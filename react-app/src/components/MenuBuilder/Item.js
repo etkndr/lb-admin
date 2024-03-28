@@ -2,19 +2,19 @@ import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { editItem, deleteItem } from "../../store/features/itemsSlice"
-import { getAllDescs } from "../../store/desc"
+import { fetchItemDescs, createDesc } from "../../store/features/descsSlice"
 import Desc from "./Desc"
 
 export default function Item({ sectionId, itemId }) {
   const dispatch = useDispatch()
   const item = useSelector((state) => state.itemsSlice[sectionId][itemId])
-  const descs = useSelector((state) => state.descs.descList)
+  const descs = useSelector((state) => state.descsSlice[itemId])
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChanges = useSignal(null)
 
   useEffect(() => {
-    dispatch(getAllDescs(item?.id))
+    dispatch(fetchItemDescs(itemId))
     itemChanges.value = item
     title.value = item?.title || ""
     includes.value = item?.includes || ""
@@ -22,10 +22,11 @@ export default function Item({ sectionId, itemId }) {
 
   function handleAdd() {
     const desc = {
-      new: true,
-      item_id: item.id,
-      body: "",
+      item_id: itemId,
+      body: "New description",
     }
+
+    dispatch(createDesc(desc))
   }
 
   let autosave // variable only assigned on field change
@@ -83,10 +84,10 @@ export default function Item({ sectionId, itemId }) {
       </div>
       {!descs && null}
       {descs &&
-        descs[item?.id]?.map((desc, idx) => {
+        Object.values(descs)?.map((desc, idx) => {
           return (
             <div className="desc" key={desc.id}>
-              <Desc desc={desc} />
+              <Desc itemId={itemId} itemTitle={item.title} descId={desc.id} />
             </div>
           )
         })}

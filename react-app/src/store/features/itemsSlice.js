@@ -48,10 +48,10 @@ const itemsSlice = createSlice({
 
         if (!state[sectionId]) {
           state[sectionId] = {}
-          data.forEach((item) => {
-            state[sectionId][item.id] = item
-          })
         }
+        data.forEach((item) => {
+          state[sectionId][item.id] = item
+        })
       })
       .addCase(fetchSectionItems.rejected, (state, action) => {
         state.status = "item load failed"
