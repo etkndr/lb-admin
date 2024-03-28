@@ -11,7 +11,7 @@ export const fetchItemDescs = createAsyncThunk(
   "descs/fetchItemDescs",
   async (id) => {
     const res = await axios.get(`/api/items/${id}/descs`)
-    return res.data
+    return { data: res.data, itemId: id }
   }
 )
 
@@ -45,10 +45,14 @@ const descsSlice = createSlice({
         state.status = "Loading descs"
       })
       .addCase(fetchItemDescs.fulfilled, (state, action) => {
+        const { data, itemId } = action.payload
         state.status = "Succeess"
-        action.payload.forEach((desc) => {
-          state.descList[desc.id] = desc
-        })
+        if (!state[itemId]) {
+          state[itemId] = {}
+          data.forEach((desc) => {
+            state[itemId][desc.id] = desc
+          })
+        }
       })
       .addCase(fetchItemDescs.rejected, (state, action) => {
         state.status = "Desc load failed"

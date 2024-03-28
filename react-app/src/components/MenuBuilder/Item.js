@@ -8,11 +8,7 @@ import Desc from "./Desc"
 export default function Item({ sectionId, itemId }) {
   const dispatch = useDispatch()
   const item = useSelector((state) => state.itemsSlice[sectionId][itemId])
-  const descs = useSelector((state) =>
-    Object.values(state.descsSlice.descList).filter(
-      (desc) => desc.item_id === itemId
-    )
-  )
+  const descs = useSelector((state) => state.descsSlice[itemId])
   const title = useSignal(null)
   const includes = useSignal(null)
   const itemChanges = useSignal(null)
@@ -88,10 +84,10 @@ export default function Item({ sectionId, itemId }) {
       </div>
       {!descs && null}
       {descs &&
-        descs?.map((desc, idx) => {
+        Object.values(descs)?.map((desc, idx) => {
           return (
             <div className="desc" key={desc.id}>
-              <Desc itemTitle={item.title} descId={desc.id} />
+              <Desc itemId={itemId} itemTitle={item.title} descId={desc.id} />
             </div>
           )
         })}

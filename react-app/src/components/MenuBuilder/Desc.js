@@ -3,11 +3,11 @@ import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { editDesc, deleteDesc } from "../../store/features/descsSlice"
 
-export default function Desc({ itemTitle, descId }) {
+export default function Desc({ itemId, itemTitle, descId }) {
   const dispatch = useDispatch()
   const body = useSignal(null)
   const descChange = useSignal(null)
-  const desc = useSelector((state) => state.descsSlice.descList[descId])
+  const desc = useSelector((state) => state.descsSlice[itemId][descId])
 
   useEffect(() => {
     descChange.value = desc
