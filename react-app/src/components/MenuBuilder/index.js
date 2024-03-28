@@ -19,7 +19,9 @@ export default function MenuBuilder() {
   const menus = useSelector((state) => state.menusSlice.menuList)
   const loading = useSignal(false)
 
-  useEffect(() => dispatch(fetchUserMenus()), [dispatch])
+  useEffect(() => {
+    dispatch(fetchUserMenus())
+  }, [dispatch])
 
   function handleCreate() {
     const newMenu = {

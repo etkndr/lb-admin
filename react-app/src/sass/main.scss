@@ -3,7 +3,10 @@ $darkgreen: #346641;
 $nosave: #7ca386;
 $lightgray: #f2f2f2;
 $darkgray: #c4c4c4;
+$border-color: #a7c9b1;
+$weight: 2px;
 $sidebar-width: 80%;
+$shadow: 1px 1px 2px $lightgray;
 
 * {
   font-family: "Nunito", sans-serif;
@@ -53,8 +56,7 @@ li {
     position: sticky;
     top: 0;
     overflow: auto;
-    background-color: gainsboro;
-    border-right: 1px solid gray;
+    border-right: $weight solid $border-color;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -70,7 +72,7 @@ li {
       justify-content: space-between;
       margin: 5px 0;
       padding-bottom: 10px;
-      border-bottom: $weight solid $lightgray;
+      border-bottom: $weight solid $border-color;
       font-size: 11pt;
     }
 
@@ -169,11 +171,21 @@ li {
         padding: 3% 8% 5% 8%;
         box-sizing: border-box;
         margin: 10px auto;
-        border: 1px solid $darkgray;
+        border: $weight solid $border-color;
         border-radius: 10px;
-        box-shadow: 3px 4px $lightgray;
+        box-shadow: $shadow;
         display: flex;
         flex-direction: column;
+
+        .delete-section {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+
+          span {
+            cursor: pointer;
+          }
+        }
 
         .section-header {
           width: 100%;
@@ -203,15 +215,11 @@ li {
           margin: 10px auto;
           padding: 10px;
           box-sizing: border-box;
-          border: 1px solid $darkgray;
+          border: $weight solid $border-color;
           border-radius: 10px;
-          background-color: $lightgray;
           display: flex;
           flex-direction: column;
-
-          input {
-            background-color: $lightgray;
-          }
+          box-shadow: $shadow;
 
           .item-title {
             width: 100%;
@@ -237,7 +245,7 @@ li {
         padding: 3px 50px;
         margin: 10px auto;
         background-color: $green;
-        box-shadow: 1px 2px 1px 1px $darkgray;
+        box-shadow: $shadow;
       }
     }
     .save {
@@ -253,7 +261,7 @@ li {
       background-color: $green;
       color: white;
       cursor: pointer;
-      box-shadow: 3px 3px $darkgray;
+      box-shadow: $shadow;
       transition: 0.3s;
 
       span {
