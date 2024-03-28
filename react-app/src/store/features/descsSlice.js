@@ -49,10 +49,10 @@ const descsSlice = createSlice({
         state.status = "Succeess"
         if (!state[itemId]) {
           state[itemId] = {}
-          data.forEach((desc) => {
-            state[itemId][desc.id] = desc
-          })
         }
+        data.forEach((desc) => {
+          state[itemId][desc.id] = desc
+        })
       })
       .addCase(fetchItemDescs.rejected, (state, action) => {
         state.status = "Desc load failed"
@@ -64,7 +64,7 @@ const descsSlice = createSlice({
       .addCase(createDesc.fulfilled, (state, action) => {
         const desc = action.payload
         state.status = "Success"
-        state.descList[desc.id] = desc
+        state[desc.item_id][desc.id] = desc
       })
       .addCase(createDesc.rejected, (state, action) => {
         state.status = "Not created"
