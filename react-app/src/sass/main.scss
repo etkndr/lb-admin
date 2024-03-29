@@ -5,7 +5,7 @@ $lightgray: #f2f2f2;
 $darkgray: #c4c4c4;
 $border-color: #a7c9b1;
 $weight: 2px;
-$sidebar-width: 80%;
+$sidebar-width: 100%;
 $shadow: 1px 1px 2px $lightgray;
 
 * {
@@ -71,14 +71,16 @@ li {
       display: flex;
       justify-content: space-between;
       margin: 5px 0;
-      padding-bottom: 10px;
+      padding: 5px 20px;
       border-bottom: $weight solid $border-color;
       font-size: 11pt;
+      box-sizing: border-box;
     }
 
-    .sidebar-item-last {
-      @include sidebar-item(0px);
-      margin-bottom: 20px;
+    .sidebar-item-selected {
+      @include sidebar-item(1px);
+      border-left: 4px solid $green;
+      padding-left: 17px;
     }
 
     .sidebar-item {
@@ -92,7 +94,7 @@ li {
     }
 
     .sidebar-buttons {
-      width: 90px;
+      width: 35%;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -105,11 +107,12 @@ li {
 
     .sidebar-controls {
       height: 100%;
-      width: $sidebar-width;
+      width: 80%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       text-align: center;
+      margin-top: 15px;
       padding-bottom: 20px;
 
       .logout {
@@ -168,7 +171,7 @@ li {
       .section {
         width: 100%;
         background-color: white;
-        padding: 3% 8% 5% 8%;
+        padding: 2% 3% 5% 3%;
         box-sizing: border-box;
         margin: 10px auto;
         border: $weight solid $border-color;
@@ -220,6 +223,17 @@ li {
           display: flex;
           flex-direction: column;
           box-shadow: $shadow;
+
+          .delete-item {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+
+            span {
+              font-size: 14pt;
+              cursor: pointer;
+            }
+          }
 
           .item-title {
             width: 100%;
