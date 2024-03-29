@@ -30,7 +30,13 @@ export default function Desc({ itemId, itemTitle, descId }) {
 
   return (
     <>
-      <div>
+      <div className="desc">
+        <span
+          className="material-symbols-outlined"
+          onClick={() => dispatch(deleteDesc({ itemId, descId }))}
+        >
+          close
+        </span>
         <input
           className="desc-body"
           type="text"
@@ -45,12 +51,6 @@ export default function Desc({ itemId, itemTitle, descId }) {
             handleChange()
           }}
         />
-        <span
-          className="material-symbols-outlined"
-          onClick={() => dispatch(deleteDesc({ itemId, descId }))}
-        >
-          delete
-        </span>
       </div>
     </>
   )
