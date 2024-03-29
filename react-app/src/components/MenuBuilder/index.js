@@ -17,9 +17,12 @@ import { clearDescs } from "../../store/features/descsSlice"
 export default function MenuBuilder() {
   const dispatch = useDispatch()
   const menus = useSelector((state) => state.menusSlice.menuList)
+  const selected = useSelector((state) => state.menusSlice.currMenu)
   const loading = useSignal(false)
 
-  useEffect(() => dispatch(fetchUserMenus()), [dispatch])
+  useEffect(() => {
+    dispatch(fetchUserMenus())
+  }, [dispatch])
 
   function handleCreate() {
     const newMenu = {
@@ -51,9 +54,9 @@ export default function MenuBuilder() {
             return (
               <div
                 className={
-                  idx !== Object.values(menus).length - 1
-                    ? "sidebar-item"
-                    : "sidebar-item-last"
+                  menu.id === selected?.id
+                    ? "sidebar-item-selected"
+                    : "sidebar-item"
                 }
                 key={Math.random()}
               >

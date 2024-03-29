@@ -3,7 +3,10 @@ $darkgreen: #346641;
 $nosave: #7ca386;
 $lightgray: #f2f2f2;
 $darkgray: #c4c4c4;
-$sidebar-width: 80%;
+$border-color: #a7c9b1;
+$weight: 2px;
+$sidebar-width: 77%;
+$shadow: 1px 1px 2px $lightgray;
 
 * {
   font-family: "Nunito", sans-serif;
@@ -48,13 +51,12 @@ li {
   overflow: auto;
 
   .sidebar-container {
-    width: 20%;
+    width: 25%;
     height: 100%;
     position: sticky;
     top: 0;
     overflow: auto;
-    background-color: gainsboro;
-    border-right: 1px solid gray;
+    border-right: $weight solid $border-color;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,22 +67,26 @@ li {
     }
 
     @mixin sidebar-item($weight) {
+      &:hover {
+        background-color: $lightgray;
+      }
+
       width: $sidebar-width;
       display: flex;
       justify-content: space-between;
-      margin: 5px 0;
-      padding-bottom: 10px;
-      border-bottom: $weight solid $lightgray;
+      margin: 0;
+      padding: 10px 20px;
+      border-bottom: $weight solid $border-color;
       font-size: 11pt;
     }
 
-    .sidebar-item-last {
-      @include sidebar-item(0px);
-      margin-bottom: 20px;
+    .sidebar-item-selected {
+      @include sidebar-item(0);
+      border-left: 2pt solid $green;
     }
 
     .sidebar-item {
-      @include sidebar-item(1px);
+      @include sidebar-item(0);
     }
 
     .sidebar-title {
@@ -90,7 +96,7 @@ li {
     }
 
     .sidebar-buttons {
-      width: 90px;
+      width: 35%;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -103,11 +109,12 @@ li {
 
     .sidebar-controls {
       height: 100%;
-      width: $sidebar-width;
+      width: 80%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       text-align: center;
+      margin-top: 15px;
       padding-bottom: 20px;
 
       .logout {
@@ -166,14 +173,24 @@ li {
       .section {
         width: 100%;
         background-color: white;
-        padding: 3% 8% 5% 8%;
+        padding: 2% 3% 5% 3%;
         box-sizing: border-box;
         margin: 10px auto;
-        border: 1px solid $darkgray;
+        border: $weight solid $border-color;
         border-radius: 10px;
-        box-shadow: 3px 4px $lightgray;
+        box-shadow: $shadow;
         display: flex;
         flex-direction: column;
+
+        .delete-section {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+
+          span {
+            cursor: pointer;
+          }
+        }
 
         .section-header {
           width: 100%;
@@ -203,14 +220,21 @@ li {
           margin: 10px auto;
           padding: 10px;
           box-sizing: border-box;
-          border: 1px solid $darkgray;
+          border: $weight solid $border-color;
           border-radius: 10px;
-          background-color: $lightgray;
           display: flex;
           flex-direction: column;
+          box-shadow: $shadow;
 
-          input {
-            background-color: $lightgray;
+          .delete-item {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+
+            span {
+              font-size: 14pt;
+              cursor: pointer;
+            }
           }
 
           .item-title {
@@ -237,7 +261,7 @@ li {
         padding: 3px 50px;
         margin: 10px auto;
         background-color: $green;
-        box-shadow: 1px 2px 1px 1px $darkgray;
+        box-shadow: $shadow;
       }
     }
     .save {
@@ -253,7 +277,7 @@ li {
       background-color: $green;
       color: white;
       cursor: pointer;
-      box-shadow: 3px 3px $darkgray;
+      box-shadow: $shadow;
       transition: 0.3s;
 
       span {
