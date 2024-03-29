@@ -46,54 +46,58 @@ export default function MenuBuilder() {
   return (
     <div className="main-container">
       <div className="sidebar-container">
-        <h3>MENUS</h3>
-        {loading.value && "Loading menus"}
-        {!loading.value &&
-          menus &&
-          Object.values(menus)?.map((menu, idx) => {
-            return (
-              <div
-                className={
-                  menu.id === selected?.id
-                    ? "sidebar-item-selected"
-                    : "sidebar-item"
-                }
-                key={Math.random()}
-              >
-                <div className="sidebar-title">{menu.title}</div>
-                <div className="sidebar-buttons">
-                  <span
-                    className="material-symbols-outlined"
-                    onClick={() => handleVis(menu.id)}
+        <div className="sidebar-top">
+          <h3>MENUS</h3>
+          {loading.value && "Loading menus"}
+          <div className="sidebar-items">
+            {!loading.value &&
+              menus &&
+              Object.values(menus)?.map((menu, idx) => {
+                return (
+                  <div
+                    className={
+                      menu.id === selected?.id
+                        ? "sidebar-item-selected"
+                        : "sidebar-item"
+                    }
+                    key={Math.random()}
                   >
-                    {menu.visible === "hidden"
-                      ? "visibility_off"
-                      : "visibility"}
-                  </span>
-                  <span
-                    className="material-symbols-outlined"
-                    onClick={() => {
-                      dispatch(clearChanges())
-                      dispatch(clearDescs())
-                      dispatch(menuSelected(menu))
-                    }}
-                  >
-                    edit
-                  </span>
-                  <span
-                    className="material-symbols-outlined"
-                    onClick={() => {
-                      if (window.confirm(`Delete menu '${menu.title}'?`)) {
-                        dispatch(deleteMenu(menu.id))
-                      }
-                    }}
-                  >
-                    delete
-                  </span>
-                </div>
-              </div>
-            )
-          })}
+                    <div className="sidebar-title">{menu.title}</div>
+                    <div className="sidebar-buttons">
+                      <span
+                        className="material-symbols-outlined"
+                        onClick={() => handleVis(menu.id)}
+                      >
+                        {menu.visible === "hidden"
+                          ? "visibility_off"
+                          : "visibility"}
+                      </span>
+                      <span
+                        className="material-symbols-outlined"
+                        onClick={() => {
+                          dispatch(clearChanges())
+                          dispatch(clearDescs())
+                          dispatch(menuSelected(menu))
+                        }}
+                      >
+                        edit
+                      </span>
+                      <span
+                        className="material-symbols-outlined"
+                        onClick={() => {
+                          if (window.confirm(`Delete menu '${menu.title}'?`)) {
+                            dispatch(deleteMenu(menu.id))
+                          }
+                        }}
+                      >
+                        delete
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+          </div>
+        </div>
         <div className="sidebar-controls">
           <button onClick={handleCreate}>New menu</button>
           <div className="logout" onClick={() => dispatch(logout())}>

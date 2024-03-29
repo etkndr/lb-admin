@@ -3,9 +3,9 @@ $darkgreen: #346641;
 $nosave: #7ca386;
 $lightgray: #f2f2f2;
 $darkgray: #c4c4c4;
-$border-color: #a7c9b1;
+$border-color: #dfdfdf;
 $weight: 2px;
-$sidebar-width: 77%;
+$sidebar-width: 95%;
 $shadow: 1px 1px 2px $lightgray;
 
 * {
@@ -52,7 +52,7 @@ li {
 
   .sidebar-container {
     width: 25%;
-    height: 100%;
+    max-height: 100vh;
     position: sticky;
     top: 0;
     overflow: auto;
@@ -60,67 +60,96 @@ li {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0;
+    justify-content: space-between;
+    padding: 2vh 0 0 0;
 
     button {
       margin: 5px auto;
     }
 
-    @mixin sidebar-item($weight) {
-      &:hover {
-        background-color: $lightgray;
-      }
+    .sidebar-top {
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
 
-      width: $sidebar-width;
-      display: flex;
-      justify-content: space-between;
-      margin: 0;
-      padding: 10px 20px;
-      border-bottom: $weight solid $border-color;
-      font-size: 11pt;
-    }
+      .sidebar-items {
+        width: 90%;
+        box-sizing: border-box;
+        height: 65vh;
+        max-height: 65vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-top: $weight solid $border-color;
+        border-bottom: $weight solid $border-color;
+        padding: 3vh 0 4vh 0;
+        margin: 10px auto;
+        text-align: left;
 
-    .sidebar-item-selected {
-      @include sidebar-item(0);
-      border-left: 2pt solid $green;
-    }
+        @mixin sidebar-item($weight) {
+          &:hover {
+            background-color: $lightgray;
+          }
 
-    .sidebar-item {
-      @include sidebar-item(0);
-    }
+          width: $sidebar-width;
+          display: flex;
+          justify-content: space-between;
+          margin: 3px 0;
+          padding: 5px 0px 5px 0px;
+          border-bottom: $weight solid $border-color;
+          border-radius: 0 10px 10px 0;
+          font-size: 11pt;
+        }
 
-    .sidebar-title {
-      width: 60%;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
+        .sidebar-item-selected {
+          @include sidebar-item(0);
+          border-left: 2pt solid $green;
+        }
 
-    .sidebar-buttons {
-      width: 35%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+        .sidebar-item {
+          @include sidebar-item(0);
+        }
 
-      span {
-        cursor: pointer;
-        font-size: 14pt;
+        .sidebar-title {
+          width: 60%;
+          margin-left: 10px;
+          font-weight: 800;
+        }
+
+        .sidebar-buttons {
+          width: 35%;
+          margin-right: 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          span {
+            cursor: pointer;
+            font-size: 14pt;
+          }
+        }
       }
     }
 
     .sidebar-controls {
-      height: 100%;
-      width: 80%;
+      height: 20vh;
+      min-height: 20vh;
+      width: 90%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       text-align: center;
-      margin-top: 15px;
-      padding-bottom: 20px;
 
       .logout {
+        width: 100%;
+        border-top: $weight solid $border-color;
         cursor: pointer;
         font-weight: 800;
         font-size: 10pt;
+        padding: 2vh 0;
+        margin-bottom: 2vh;
       }
 
       button {
@@ -133,7 +162,7 @@ li {
     width: 100%;
 
     .menu {
-      margin: 0 auto;
+      margin: 0 auto 10vh auto;
       width: 80%;
       color: $green;
       overflow: auto;
@@ -156,6 +185,7 @@ li {
       .price {
         display: flex;
         align-items: baseline;
+        margin-bottom: 3vh;
       }
 
       .gen-container {
@@ -250,9 +280,24 @@ li {
             text-align: center;
           }
 
-          .desc-body {
-            width: 100%;
-            font-size: 12pt;
+          .desc {
+            width: 90%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 auto;
+
+            .desc-body {
+              font-size: 11pt;
+              width: 90%;
+            }
+
+            span {
+              cursor: pointer;
+              font-size: 11pt;
+              font-weight: 600;
+            }
           }
         }
       }
