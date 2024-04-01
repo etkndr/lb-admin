@@ -92,7 +92,6 @@ li {
         overflow-x: hidden;
 
         border-top: $weight solid $border-color;
-        border-bottom: $weight solid $border-color;
         padding: 3vh 0 4vh 0;
         margin: 10px auto;
 
@@ -150,10 +149,8 @@ li {
     .sidebar-controls {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
 
-      height: 20vh;
-      min-height: 20vh;
       width: 90%;
 
       text-align: center;
@@ -162,8 +159,7 @@ li {
         cursor: pointer;
 
         width: 100%;
-        padding: 2vh 0;
-        margin-bottom: 2vh;
+        padding: 4vh 0;
         border-top: $weight solid $border-color;
 
         font-weight: 800;
