@@ -53,14 +53,14 @@ export default function Menu() {
 
   return (
     <>
-      <div className="save" onClick={handleSave}>
+      {/* <div className="save" onClick={handleSave}>
         {!saving.value && (
           <span className="material-symbols-outlined">save</span>
         )}
         {saving.value && (
           <span className="material-symbols-outlined">check_circle</span>
         )}
-      </div>
+      </div> */}
       <div className="menu">
         <div className="menu-header">
           <input
