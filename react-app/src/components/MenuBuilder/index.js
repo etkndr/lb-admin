@@ -96,7 +96,9 @@ export default function MenuBuilder() {
                   </div>
                 )
               })}
-            <button onClick={handleCreate}>New menu</button>
+            <div className="new-menu" onClick={handleCreate}>
+              <span className="material-symbols-outlined">add</span> New menu
+            </div>
           </div>
         </div>
         <div className="sidebar-controls">
