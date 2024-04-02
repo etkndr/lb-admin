@@ -13,6 +13,7 @@ import { clearChanges } from "../../store/features/saveSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
 import { clearDescs } from "../../store/features/descsSlice"
+import Popup from "reactjs-popup"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()
@@ -96,9 +97,18 @@ export default function MenuBuilder() {
                   </div>
                 )
               })}
-            <div className="new-menu" onClick={handleCreate}>
-              +
-            </div>
+            <Popup
+              trigger={(open) => (
+                <div className="new-menu" onClick={handleCreate}>
+                  +
+                </div>
+              )}
+              position={"right center"}
+              on={"hover"}
+              closeOnDocumentClick
+            >
+              <span>New menu</span>
+            </Popup>
           </div>
         </div>
         <div className="sidebar-controls">
