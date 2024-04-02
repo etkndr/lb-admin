@@ -96,10 +96,12 @@ export default function MenuBuilder() {
                   </div>
                 )
               })}
+            <div className="new-menu" onClick={handleCreate}>
+              +
+            </div>
           </div>
         </div>
         <div className="sidebar-controls">
-          <button onClick={handleCreate}>New menu</button>
           <div className="logout" onClick={() => dispatch(logout())}>
             Log out
           </div>
