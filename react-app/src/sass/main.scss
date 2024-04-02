@@ -143,11 +143,18 @@ li {
             font-size: 14pt;
           }
         }
-      }
+        .new-menu {
+          &:hover {
+            background-color: $lightgray;
+          }
 
-      .new-menu {
-        width: 100%;
-        margin-top: 2vh;
+          cursor: pointer;
+
+          width: 100%;
+          margin-top: 2vh;
+
+          text-align: center;
+        }
       }
     }
 

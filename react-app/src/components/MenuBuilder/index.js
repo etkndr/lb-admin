@@ -96,7 +96,7 @@ export default function MenuBuilder() {
                   </div>
                 )
               })}
-            <div className="sidebar-item" onClick={handleCreate}>
+            <div className="new-menu" onClick={handleCreate}>
               +
             </div>
           </div>
