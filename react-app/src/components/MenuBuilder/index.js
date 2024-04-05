@@ -1,3 +1,4 @@
+import Popup from "reactjs-popup"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
@@ -13,7 +14,6 @@ import { clearChanges } from "../../store/features/saveSlice"
 import "../../sass/main.scss"
 import Menu from "./Menu"
 import { clearDescs } from "../../store/features/descsSlice"
-import Popup from "reactjs-popup"
 
 export default function MenuBuilder() {
   const dispatch = useDispatch()

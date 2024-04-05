@@ -1,10 +1,10 @@
+import Popup from "reactjs-popup"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { editSection, deleteSection } from "../../store/features/sectionsSlice"
 import { fetchSectionItems, createItem } from "../../store/features/itemsSlice"
 import Item from "./Item"
-import Popup from "reactjs-popup"
 
 export default function Section({ sectionId }) {
   const dispatch = useDispatch()

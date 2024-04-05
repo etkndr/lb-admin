@@ -1,3 +1,4 @@
+import Popup from "reactjs-popup"
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -48,16 +49,25 @@ export default function Item({ sectionId, itemId }) {
     <>
       <div>
         <div className="delete-item">
-          <span
-            className="material-symbols-outlined"
-            onClick={() => {
-              if (window.confirm(`Delete item?`)) {
-                dispatch(deleteItem({ sectionId, itemId }))
-              }
-            }}
+          <Popup
+            trigger={(open) => (
+              <span
+                className="material-symbols-outlined"
+                onClick={() => {
+                  if (window.confirm(`Delete item?`)) {
+                    dispatch(deleteItem({ sectionId, itemId }))
+                  }
+                }}
+              >
+                close
+              </span>
+            )}
+            position={"right center"}
+            on={"hover"}
+            closeOnDocumentClick
           >
-            close
-          </span>
+            <span>Delete item</span>
+          </Popup>
         </div>
         <input
           className="item-title"
