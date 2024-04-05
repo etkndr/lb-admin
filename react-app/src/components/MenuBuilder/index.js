@@ -65,23 +65,14 @@ export default function MenuBuilder() {
                   >
                     <div className="sidebar-title">{menu.title}</div>
                     <div className="sidebar-buttons">
-                      <Popup
-                        trigger={(open) => (
-                          <span
-                            className="material-symbols-outlined"
-                            onClick={() => handleVis(menu.id)}
-                          >
-                            {menu.visible === "hidden"
-                              ? "visibility_off"
-                              : "visibility"}
-                          </span>
-                        )}
-                        position={"right center"}
-                        on={"hover"}
-                        closeOnDocumentClick
+                      <span
+                        className="material-symbols-outlined"
+                        onClick={() => handleVis(menu.id)}
                       >
-                        <span>Change visibility</span>
-                      </Popup>
+                        {menu.visible === "hidden"
+                          ? "visibility_off"
+                          : "visibility"}
+                      </span>
                       <span
                         className="material-symbols-outlined"
                         onClick={() => {

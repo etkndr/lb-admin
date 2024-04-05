@@ -4,6 +4,7 @@ import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { editSection, deleteSection } from "../../store/features/sectionsSlice"
 import { fetchSectionItems, createItem } from "../../store/features/itemsSlice"
 import Item from "./Item"
+import Popup from "reactjs-popup"
 
 export default function Section({ sectionId }) {
   const dispatch = useDispatch()
@@ -51,16 +52,25 @@ export default function Section({ sectionId }) {
     <>
       <div>
         <div className="delete-section">
-          <span
-            className="material-symbols-outlined"
-            onClick={() => {
-              if (window.confirm(`Delete section?`)) {
-                dispatch(deleteSection(section?.id))
-              }
-            }}
+          <Popup
+            trigger={(open) => (
+              <span
+                className="material-symbols-outlined"
+                onClick={() => {
+                  if (window.confirm(`Delete section?`)) {
+                    dispatch(deleteSection(section?.id))
+                  }
+                }}
+              >
+                close
+              </span>
+            )}
+            position={"right center"}
+            on={"hover"}
+            closeOnDocumentClick
           >
-            close
-          </span>
+            <span>Delete section</span>
+          </Popup>
         </div>
         <div>
           <input
