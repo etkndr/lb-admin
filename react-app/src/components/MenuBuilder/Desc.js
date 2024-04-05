@@ -1,3 +1,4 @@
+import Popup from "reactjs-popup"
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
@@ -31,12 +32,21 @@ export default function Desc({ itemId, itemTitle, descId }) {
   return (
     <>
       <div className="desc">
-        <span
-          className="material-symbols-outlined"
-          onClick={() => dispatch(deleteDesc({ itemId, descId }))}
+        <Popup
+          trigger={(open) => (
+            <span
+              className="material-symbols-outlined"
+              onClick={() => dispatch(deleteDesc({ itemId, descId }))}
+            >
+              close
+            </span>
+          )}
+          position={"right center"}
+          on={"hover"}
+          closeOnDocumentClick
         >
-          close
-        </span>
+          <span>Delete description</span>
+        </Popup>
         <input
           className="desc-body"
           type="text"
