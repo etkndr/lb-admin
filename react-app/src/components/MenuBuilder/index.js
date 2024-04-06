@@ -1,3 +1,4 @@
+import Popup from "reactjs-popup"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
@@ -96,9 +97,18 @@ export default function MenuBuilder() {
                   </div>
                 )
               })}
-            <div className="new-menu" onClick={handleCreate}>
-              +
-            </div>
+            <Popup
+              trigger={(open) => (
+                <div className="new-menu" onClick={handleCreate}>
+                  +
+                </div>
+              )}
+              position={"right center"}
+              on={"hover"}
+              closeOnDocumentClick
+            >
+              <span>New menu</span>
+            </Popup>
           </div>
         </div>
         <div className="sidebar-controls">

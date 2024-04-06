@@ -1,3 +1,4 @@
+import Popup from "reactjs-popup"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
@@ -51,16 +52,25 @@ export default function Section({ sectionId }) {
     <>
       <div>
         <div className="delete-section">
-          <span
-            className="material-symbols-outlined"
-            onClick={() => {
-              if (window.confirm(`Delete section?`)) {
-                dispatch(deleteSection(section?.id))
-              }
-            }}
+          <Popup
+            trigger={(open) => (
+              <span
+                className="material-symbols-outlined"
+                onClick={() => {
+                  if (window.confirm(`Delete section?`)) {
+                    dispatch(deleteSection(section?.id))
+                  }
+                }}
+              >
+                close
+              </span>
+            )}
+            position={"right center"}
+            on={"hover"}
+            closeOnDocumentClick
           >
-            close
-          </span>
+            <span>Delete section</span>
+          </Popup>
         </div>
         <div>
           <input
