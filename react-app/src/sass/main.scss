@@ -42,6 +42,11 @@ input:is([type="number"]) {
   font-size: 12pt;
 }
 
+.login {
+  border: 1px solid black;
+  max-width: 40%;
+}
+
 li {
   list-style: none;
 }

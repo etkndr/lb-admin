@@ -32,6 +32,7 @@ function LoginFormPage() {
           Email
           <input
             type="text"
+            className="login"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -41,6 +42,7 @@ function LoginFormPage() {
           Password
           <input
             type="password"
+            className="login"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
