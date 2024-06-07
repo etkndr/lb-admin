@@ -88,22 +88,29 @@ li {
 }
 
 .login-container {
-  width: 60%;
-  margin: 0 auto;
+  width: 40%;
+  margin: 15vh auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #7ca386;
+  padding: 30px;
+  color: white;
 
   form {
     width: 100%;
-  }
+    display: flex;
+    flex-direction: column;
 
-  input {
-    width: 100%;
+    input {
+      border: 1px solid black;
+      width: 100%;
+    }
   }
 
   button {
     width: 100px;
+    margin: 30px auto;
   }
 }
 
