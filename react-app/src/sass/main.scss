@@ -42,6 +42,11 @@ input:is([type="number"]) {
   font-size: 12pt;
 }
 
+.login {
+  border: 1px solid black;
+  max-width: 40%;
+}
+
 li {
   list-style: none;
 }
@@ -79,6 +84,34 @@ li {
 }
 .popup-content {
   -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+  animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+}
+
+.login-container {
+  width: 40%;
+  margin: 15vh auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #7ca386;
+  padding: 30px;
+  color: white;
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    input {
+      border: 1px solid black;
+      width: 100%;
+    }
+  }
+
+  button {
+    width: 100px;
+    margin: 30px auto;
+  }
 }
 
 .main-container {
