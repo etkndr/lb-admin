@@ -15,7 +15,7 @@ import {
 
 import Popup from "reactjs-popup"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { editSection, deleteSection } from "../../store/features/sectionsSlice"
 import { fetchSectionItems, createItem } from "../../store/features/itemsSlice"
@@ -27,15 +27,29 @@ export default function Section({ sectionId }) {
     (state) => state.sectionsSlice.sectionList[sectionId]
   )
   const items = useSelector((state) => state.itemsSlice[sectionId])
+  const [itemList, setItemList] = useState(null)
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
   const sectionChanges = useSignal(null)
+
+  // used for drag and drop
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
 
   useEffect(() => {
     dispatch(fetchSectionItems(sectionId))
     sectionChanges.value = section
     price.value = section?.price || ""
     choiceDesc.value = section?.choice_desc || ""
+
+    if (items) {
+      setItemList([...items])
+      console.log(itemList)
+    }
   }, [sectionId, dispatch])
 
   function handleAdd() {
@@ -61,6 +75,18 @@ export default function Section({ sectionId }) {
     autosave = setTimeout(() => {
       dispatch(editSection(sectionChanges.value))
     }, 1000)
+  }
+
+  function handleDragEnd(event) {
+    const { active, over } = event
+    if (active.id !== over.id) {
+      setItemList((itemList) => {
+        const oldIndex = itemList.indexOf(active.id)
+        const newIndex = itemList.indexOf(over.id)
+
+        return arrayMove(itemList, oldIndex, newIndex)
+      })
+    }
   }
 
   return (
@@ -119,16 +145,26 @@ export default function Section({ sectionId }) {
 
       {!items && null}
 
-      {items &&
-        Object.values(items)?.map((item, idx) => {
-          return (
-            <div className="item" key={item.id}>
-              <DndContext>
-                <Item sectionId={section?.id} itemId={item.id} />
-              </DndContext>
-            </div>
-          )
-        })}
+      {itemList && (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={itemList}
+            strategy={verticalListSortingStrategy}
+          >
+            {Object.values(items)?.map((item, idx) => {
+              return (
+                <div className="item" key={item.id}>
+                  <Item sectionId={section?.id} itemId={item.id} />
+                </div>
+              )
+            })}
+          </SortableContext>
+        </DndContext>
+      )}
 
       <div className="gen-container">
         <button className="add" onClick={handleAdd}>
