@@ -1,3 +1,18 @@
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core"
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable"
+
 import Popup from "reactjs-popup"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
@@ -108,7 +123,9 @@ export default function Section({ sectionId }) {
         Object.values(items)?.map((item, idx) => {
           return (
             <div className="item" key={item.id}>
-              <Item sectionId={section?.id} itemId={item.id} />
+              <DndContext>
+                <Item sectionId={section?.id} itemId={item.id} />
+              </DndContext>
             </div>
           )
         })}
