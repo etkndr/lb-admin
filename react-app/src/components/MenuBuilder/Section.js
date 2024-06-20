@@ -1,18 +1,3 @@
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core"
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable"
-
 import Popup from "reactjs-popup"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
@@ -27,40 +12,16 @@ export default function Section({ sectionId }) {
     (state) => state.sectionsSlice.sectionList[sectionId]
   )
   const items = useSelector((state) => state.itemsSlice[sectionId])
-  const [itemList, setItemList] = useState(null)
   const price = useSignal(null)
   const choiceDesc = useSignal(null)
   const sectionChanges = useSignal(null)
-
-  // used for drag and drop
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  )
 
   useEffect(() => {
     dispatch(fetchSectionItems(sectionId))
     sectionChanges.value = section
     price.value = section?.price || ""
     choiceDesc.value = section?.choice_desc || ""
-
-    if (items) {
-      setItemList([...items])
-      console.log(itemList)
-    }
   }, [sectionId, dispatch])
-
-  function handleAdd() {
-    const item = {
-      section_id: sectionId,
-      title: "New item",
-      includes: "",
-    }
-
-    dispatch(createItem({ sectionId, item }))
-  }
 
   let autosave // variable only assigned on field change
   function handleChange() {
@@ -145,26 +106,14 @@ export default function Section({ sectionId }) {
 
       {!items && null}
 
-      {itemList && (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={itemList}
-            strategy={verticalListSortingStrategy}
-          >
-            {Object.values(items)?.map((item, idx) => {
-              return (
-                <div className="item" key={item.id}>
-                  <Item sectionId={section?.id} itemId={item.id} />
-                </div>
-              )
-            })}
-          </SortableContext>
-        </DndContext>
-      )}
+      {items &&
+        Object.values(items)?.map((item, idx) => {
+          return (
+            <div className="item" key={item.id}>
+              <Item sectionId={section?.id} itemId={item.id} />
+            </div>
+          )
+        })}
 
       <div className="gen-container">
         <button className="add" onClick={handleAdd}>
