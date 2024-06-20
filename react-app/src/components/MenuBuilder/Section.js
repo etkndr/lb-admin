@@ -1,6 +1,6 @@
 import Popup from "reactjs-popup"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
 import { editSection, deleteSection } from "../../store/features/sectionsSlice"
 import { fetchSectionItems, createItem } from "../../store/features/itemsSlice"
@@ -23,16 +23,6 @@ export default function Section({ sectionId }) {
     choiceDesc.value = section?.choice_desc || ""
   }, [sectionId, dispatch])
 
-  function handleAdd() {
-    const item = {
-      section_id: sectionId,
-      title: "New item",
-      includes: "",
-    }
-
-    dispatch(createItem({ sectionId, item }))
-  }
-
   let autosave // variable only assigned on field change
   function handleChange() {
     sectionChanges.value = {
@@ -46,6 +36,18 @@ export default function Section({ sectionId }) {
     autosave = setTimeout(() => {
       dispatch(editSection(sectionChanges.value))
     }, 1000)
+  }
+
+  function handleDragEnd(event) {
+    const { active, over } = event
+    if (active.id !== over.id) {
+      setItemList((itemList) => {
+        const oldIndex = itemList.indexOf(active.id)
+        const newIndex = itemList.indexOf(over.id)
+
+        return arrayMove(itemList, oldIndex, newIndex)
+      })
+    }
   }
 
   return (
