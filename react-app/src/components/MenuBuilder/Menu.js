@@ -92,9 +92,6 @@ export default function Menu() {
                   <div className="section" key={section.id}>
                     <Section sectionId={section.id} />
                   </div>
-                  {/* <button className="add" onClick={handleAdd}>
-                  + section
-                </button> */}
                 </div>
               )
             })}
