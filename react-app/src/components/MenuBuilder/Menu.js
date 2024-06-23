@@ -53,14 +53,6 @@ export default function Menu() {
 
   return (
     <>
-      {/* <div className="save" onClick={handleSave}>
-        {!saving.value && (
-          <span className="material-symbols-outlined">save</span>
-        )}
-        {saving.value && (
-          <span className="material-symbols-outlined">check_circle</span>
-        )}
-      </div> */}
       <div className="menu">
         <div className="menu-header">
           <input
@@ -100,9 +92,6 @@ export default function Menu() {
                   <div className="section" key={section.id}>
                     <Section sectionId={section.id} />
                   </div>
-                  {/* <button className="add" onClick={handleAdd}>
-                  + section
-                </button> */}
                 </div>
               )
             })}
