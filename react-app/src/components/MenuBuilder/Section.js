@@ -38,16 +38,14 @@ export default function Section({ sectionId }) {
     }, 1000)
   }
 
-  function handleDragEnd(event) {
-    const { active, over } = event
-    if (active.id !== over.id) {
-      setItemList((itemList) => {
-        const oldIndex = itemList.indexOf(active.id)
-        const newIndex = itemList.indexOf(over.id)
-
-        return arrayMove(itemList, oldIndex, newIndex)
-      })
+  function handleAdd() {
+    const item = {
+      section_id: sectionId,
+      title: "New item",
+      includes: "",
     }
+
+    dispatch(createItem({ sectionId, item }))
   }
 
   return (
