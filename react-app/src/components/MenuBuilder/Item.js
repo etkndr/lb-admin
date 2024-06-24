@@ -1,5 +1,4 @@
 import Popup from "reactjs-popup"
-import { Draggable } from "react-beautiful-dnd"
 import { useSignal } from "@preact/signals-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -48,68 +47,66 @@ export default function Item({ sectionId, itemId }) {
 
   return (
     <>
-      <Draggable>
-        <div>
-          <div className="delete-item">
-            <Popup
-              trigger={(open) => (
-                <span
-                  className="material-symbols-outlined"
-                  onClick={() => {
-                    if (window.confirm(`Delete item?`)) {
-                      dispatch(deleteItem({ sectionId, itemId }))
-                    }
-                  }}
-                >
-                  close
-                </span>
-              )}
-              position={"right center"}
-              on={"hover"}
-              closeOnDocumentClick
-            >
-              <span>Delete item</span>
-            </Popup>
-          </div>
-          <input
-            className="item-title"
-            type="text"
-            placeholder="Item title"
-            defaultValue={item?.title}
-            onChange={(e) => {
-              title.value = e.target.value
-              handleChange()
-            }}
-          />
+      <div>
+        <div className="delete-item">
+          <Popup
+            trigger={(open) => (
+              <span
+                className="material-symbols-outlined"
+                onClick={() => {
+                  if (window.confirm(`Delete item?`)) {
+                    dispatch(deleteItem({ sectionId, itemId }))
+                  }
+                }}
+              >
+                close
+              </span>
+            )}
+            position={"right center"}
+            on={"hover"}
+            closeOnDocumentClick
+          >
+            <span>Delete item</span>
+          </Popup>
         </div>
-        <div>
-          <input
-            className="item-includes"
-            type="text"
-            placeholder="Optional item sub-heading (e.g. 'Includes rolls')"
-            defaultValue={item?.includes}
-            onChange={(e) => {
-              includes.value = e.target.value
-              handleChange()
-            }}
-          />
-        </div>
-        {!descs && null}
-        {descs &&
-          Object.values(descs)?.map((desc, idx) => {
-            return (
-              <div className="desc" key={desc.id}>
-                <Desc itemId={itemId} itemTitle={item.title} descId={desc.id} />
-              </div>
-            )
-          })}
+        <input
+          className="item-title"
+          type="text"
+          placeholder="Item title"
+          defaultValue={item?.title}
+          onChange={(e) => {
+            title.value = e.target.value
+            handleChange()
+          }}
+        />
+      </div>
+      <div>
+        <input
+          className="item-includes"
+          type="text"
+          placeholder="Optional item sub-heading (e.g. 'Includes rolls')"
+          defaultValue={item?.includes}
+          onChange={(e) => {
+            includes.value = e.target.value
+            handleChange()
+          }}
+        />
+      </div>
+      {!descs && null}
+      {descs &&
+        Object.values(descs)?.map((desc, idx) => {
+          return (
+            <div className="desc" key={desc.id}>
+              <Desc itemId={itemId} itemTitle={item.title} descId={desc.id} />
+            </div>
+          )
+        })}
 
-        <div className="gen-container">
-          <button className="add" onClick={handleAdd}>
-            + description
-          </button>
-        </div>
-      </Draggable>
+      <div className="gen-container">
+        <button className="add" onClick={handleAdd}>
+          + description
+        </button>
+      </div>
     </>
   )
 }
