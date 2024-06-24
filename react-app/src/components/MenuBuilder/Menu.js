@@ -1,3 +1,4 @@
+import { DragDropContext } from "react-beautiful-dnd"
 import { useEffect } from "react"
 import { useSignal } from "@preact/signals-react"
 import { useDispatch, useSelector } from "react-redux"
@@ -85,16 +86,18 @@ export default function Menu() {
 
         <div>
           {!sections && null}
-          {sections &&
-            Object.values(sections)?.map((section, idx) => {
-              return (
-                <div className="gen-container" key={`container${section.id}`}>
-                  <div className="section" key={section.id}>
-                    <Section sectionId={section.id} />
+          <DragDropContext>
+            {sections &&
+              Object.values(sections)?.map((section, idx) => {
+                return (
+                  <div className="gen-container" key={`container${section.id}`}>
+                    <div className="section" key={section.id}>
+                      <Section sectionId={section.id} />
+                    </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
+          </DragDropContext>
           <div className="gen-container">
             <button className="add" onClick={handleAdd}>
               + section

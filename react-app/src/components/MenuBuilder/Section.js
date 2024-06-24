@@ -1,5 +1,5 @@
 import Popup from "reactjs-popup"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { Droppable } from "react-beautiful-dnd"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { useSignal, useSignalEffect } from "@preact/signals-react"
@@ -105,14 +105,16 @@ export default function Section({ sectionId }) {
 
       {!items && null}
 
-      {items &&
-        Object.values(items)?.map((item, idx) => {
-          return (
-            <div className="item" key={item.id}>
-              <Item sectionId={section?.id} itemId={item.id} />
-            </div>
-          )
-        })}
+      <Droppable>
+        {items &&
+          Object.values(items)?.map((item, idx) => {
+            return (
+              <div className="item" key={item.id}>
+                <Item sectionId={section?.id} itemId={item.id} />
+              </div>
+            )
+          })}
+      </Droppable>
 
       <div className="gen-container">
         <button className="add" onClick={handleAdd}>
